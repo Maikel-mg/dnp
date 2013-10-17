@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <script type="text/javascript" src="../js/libs/json2.js"></script>
+    <link rel='stylesheet' type='text/css' href='../css/ipkweb/jquery-ui-1.8.18.custom.css' />
+    <link rel='stylesheet' type='text/css' href='../css/base.css' />
+    <link rel='stylesheet' type='text/css' href='../css/estilos.css' />
+
+    <title>Pruebas de Factory</title>
+</head>
+<body>
+
+    <script type="text/javascript" src='../js/libs/jquery-1.7.1.min.js'></script>
+    <script type="text/javascript" src='../js/libs/jquery-ui-1.8.18.custom.min.js'></script>
+    <script type="text/javascript" src="../js/libs/jquery.layout.min.js"></script>
+    <script type="text/javascript" src="../js/libs/jquery.tmpl.min.js"></script>
+    <script type="text/javascript" src="../js/libs/underscore-min.js"></script>
+
+    <script type="text/javascript" src="../js/base/Utils.js"></script>
+    <script type="text/javascript" src="../js/base/framework.base.js"></script>
+    <script type="text/javascript" src="../js/base/framework.project.js"></script>
+    <script type="text/javascript" src="../js/clases/DataSource.js"></script>
+
+    <script type="text/javascript" src="../js/controles/form.CheckBox.js"></script>
+    <script type="text/javascript" src="../js/controles/form.Hidden.js"></script>
+    <script type="text/javascript" src="../js/controles/form.Textbox.js"></script>
+    <script type="text/javascript" src="../js/controles/form.TextboxCalendario.js"></script>
+    <script type="text/javascript" src="../js/controles/form.TextboxNumerico.js"></script>
+    <script type="text/javascript" src="../js/controles/form.ComboNavision.js"></script>
+
+    <script type="text/javascript" src="../js/controles/ipkRemoteDataSource.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkToolbar.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkLista.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTabla.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkFicha.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkFactory.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteTabla.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTablaEditable.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTablaRelacion.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTablaHijos.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkMostrarElegir.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteFicha.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteInfraestructura.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteDataSourceNavision.js"></script>
+
+    <script type="text/javascript" src="../js/vistas/Pruebas/Factoria.js"></script>
+
+    <script type="text/javascript">
+        var factoria = undefined;
+
+        $(document).ready(function(){
+            factoria = new Factoria_Test_Page();
+
+            factoria.configurar_DS_Modelo('Dossier');
+
+//            factoria.configurar_Tabla('Dossier', 'dossieres');
+            factoria.configurar_Tabla('Solucion', 'dossieres');
+
+            /*
+            factoria.configurar_Tabla('Solucion', 'soluciones');
+            factoria.configurar_Tabla('FormaArt', 'articulos');
+            factoria.configurar_Tabla('FormaEmb', 'eDossier');
+
+*/
+            //factoria.configurar_Ficha('Dossier', 'ficha');
+
+        });
+
+    </script>
+
+    <div id='ficha'></div>
+
+    <div id='dossieres'></div>
+    <br>
+    <br>
+    <div id='soluciones'></div>
+    <br>
+    <br>
+    <div id='articulos'></div>
+    <br>
+    <br>
+    <div id='embalajes'></div>
+
+
+
+</body>
+</html>

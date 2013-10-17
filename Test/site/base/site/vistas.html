@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gestión de Vistas</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../../js/libs/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="../../../js/libs/codemirror/lib/util/simple-hint.css">
+    <link rel="stylesheet" href="../../../css/ipkweb/jquery-ui-1.8.18.custom.css">
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/estilos.css">
+    <link rel="stylesheet" href="../../../css/famfamfam.css">
+    <link rel="stylesheet" href="../../../css/controles.css">
+
+    <!-- THIRD PARTY -->
+    <script type="text/javascript" src="../../../js/libs/class.js"></script>
+    <script type="text/javascript" src="../../../js/libs/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="../../../js/libs/jquery-ui-1.8.18.custom.min.js"></script>
+    <script type="text/javascript" src="../../../js/libs/underscore-min.js"></script>
+
+    <script type="text/javascript" src="../../../js/libs/codemirror/lib/codemirror.js"></script>
+    <script src="../../../js/libs/codemirror/mode/javascript/javascript.js"></script>
+    <script src="../../../js/libs/codemirror/lib/util/formatting.js"></script>
+    <script src="../../../js/libs/codemirror/lib/util/simple-hint.js"></script>
+    <script src="../../../js/libs/codemirror/lib/util/javascript-hint.js"></script>
+    <script src="../../../js/libs/codemirror/lib/util/dialog.js"></script>
+    <script src="../../../js/libs/codemirror/lib/util/search.js"></script>
+    <script src="../../../js/libs/codemirror/lib/util/searchcursor.js"></script>
+    <script src="../../../js/libs/codemirror/lib/util/match-highlighter.js"></script>
+
+    <!-- OURS -->
+    <script type="text/javascript" src="../../../config/appConfig.js"></script>
+    <script type="text/javascript" src="../../../js/data.js"></script>
+    <script type="text/javascript" src="../../../js/componentes.js"></script>
+    <script type="text/javascript" src="../../../js/app/plantillas.js"></script>
+    <script type="text/javascript" src="../../../js/app/project.Controls.js"></script>
+
+    <script type="text/javascript" src="../js/vistasView.js"></script>
+    <script type="text/javascript">
+        var view;
+
+        $(function(){  view = new VistasView(); });
+    </script>
+</head>
+<body>
+
+<div class='page'>
+    <table class='layout' cellspacing='0' cellpadding='0'>
+        <tr>
+            <td colspan="3" >
+                <div class='headerpanel'>
+                    <div class="toolbar">
+                        <ul>
+                            <li title="Maestro de los modelos de la aplicación" alt="Maestro de los modelos de la aplicación" >
+                                <a href="modelos.html" accesskey="n"><span ></span><span >Modelos</span></a>
+                            </li>
+                            <li title="Maestro de las presentaciones de la aplicación" alt="Maestro de las presentaciones de la aplicación">
+                                <a href="presentaciones.html" accesskey="e"><span></span><span >Presentaciones</span></a>
+                            </li>
+                            <li title="Configura las vistas de las presentaciones dependiendo de la fase y rol" alt="Configura las vistas de las presentaciones dependiendo de la fase y rol" class="bold">
+                                <a href="vistas.html" accesskey="n"><span ></span><span>Vistas</span></a>
+                            </li>
+                            <li title="Maestro de los roles de la aplicación" alt="Maestro de los roles de la aplicación">
+                                <a href="roles.html" accesskey="e"><span ></span><span >Roles</span></a>
+                            </li>
+                            <li title="Maestro de las fases de la aplicación" alt="Maestro de las fases de la aplicación">
+                                <a href="fases.html" accesskey="e"><span ></span><span >Fases</span></a>
+                            </li>
+                            <li title="Configura los accesos a los modelos dependiendo de la fase y rol" alt="Configura los accesos a los modelos dependiendo de la fase y rol" >
+                                <a href="accesos.html" accesskey="n"><span ></span><span>Accesos</span></a>
+                            </li>
+                        </ul>
+                        <div class="clearFix"></div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="leftPanel">
+
+                <h5 class="width100p floatLeft borEmerland tableHeader"> Presentaciones</h5>
+                <div id="gridModelos" class="width100p  floatLeft" style="margin-right: 15px"></div>
+                <br>
+
+                <h5 class="width100p floatLeft borCarrot tableHeader"> Roles</h5>
+                <div id="gridRoles" class="width100p  floatLeft" style="margin-right: 15px"></div>
+                <br>
+
+                <h5 class="width100p floatLeft borPomergranate tableHeader"> Fases</h5>
+                <div id="gridFases" class="width100p  floatLeft" style="margin-right: 15px"></div>
+
+            </td>
+            <td class="layoutHSeparator" ></td>
+            <td class="centerPanel">
+                <div class='contentpanel'>
+
+                    <h5 class="width100p floatLeft borBelizeHole tableHeader"> Configuracion de las vistas a la PRESENTACION-ROL-FASE seleccionado</h5>
+                    <div id="gridAccesos" class="width100p floatLeft"></div>
+
+                    <h5 class="width100p floatLeft borTurquoise tableHeader"> Campos de la vista</h5>
+                    <div id="gridCamposVista" class="width100p floatLeft"></div>
+
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+</body>
+</html>

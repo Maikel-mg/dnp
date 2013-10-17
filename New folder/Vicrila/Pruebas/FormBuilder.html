@@ -1,0 +1,345 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <script type="text/javascript" src="../js/libs/json2.js"></script>
+    <link rel='stylesheet' type='text/css' href='../css/ipkweb/jquery-ui-1.8.18.custom.css' />
+    <link rel='stylesheet' type='text/css' href='../css/base.css' />
+    <link rel='stylesheet' type='text/css' href='../css/estilos.css' />
+
+    <title>Form Builder</title>
+</head>
+<body>
+
+    <script type="text/javascript" src='../js/libs/jquery-1.7.1.min.js'></script>
+    <script type="text/javascript" src='../js/libs/jquery-ui-1.8.18.custom.min.js'></script>
+    <script type="text/javascript" src="../js/libs/jquery.layout.min.js"></script>
+    <script type="text/javascript" src="../js/libs/jquery.tmpl.min.js"></script>
+    <script type="text/javascript" src="../js/libs/underscore-min.js"></script>
+
+    <script type="text/javascript" src="../js/base/Utils.js"></script>
+    <script type="text/javascript" src="../js/base/framework.base.js"></script>
+    <script type="text/javascript" src="../js/base/framework.project.js"></script>
+    <script type="text/javascript" src="../js/clases/DataSource.js"></script>
+
+    <script type="text/javascript" src="../js/controles/form.CheckBox.js"></script>
+    <script type="text/javascript" src="../js/controles/form.Hidden.js"></script>
+    <script type="text/javascript" src="../js/controles/form.Textbox.js"></script>
+    <script type="text/javascript" src="../js/controles/form.TextboxCalendario.js"></script>
+    <script type="text/javascript" src="../js/controles/form.TextboxNumerico.js"></script>
+    <script type="text/javascript" src="../js/controles/form.ComboNavision.js"></script>
+
+    <script type="text/javascript" src="../js/controles/ipkRemoteDataSource.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkToolbar.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkLista.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTabla.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkFicha.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkFactory.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteTabla.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTablaEditable.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTablaRelacion.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTablaHijos.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkMostrarElegir.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteFicha.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteInfraestructura.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteDataSourceNavision.js"></script>
+    <script type="text/javascript" src="../js/controles/pruebas/UI.Lista.js"></script>
+    <script type="text/javascript" src="../js/componentes/IpkComportamientos.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+        });
+
+    </script>
+
+    <style type="text/css">
+
+        .uiBuilder{
+            border: 1px solid #DDD;
+            width : 100%;
+        }
+
+        .uiBuilder div{
+            border: 1px solid #561;
+            margin: 5px;
+            padding: 5px;
+        }
+
+        .uiBuilder div.seleccionado{
+            border: 1px solid #F00;
+        }
+
+    </style>
+
+
+
+    <script type="text/javascript">
+
+        var Logger_ = function(){
+            this.mensajes = [];
+
+            return {
+                log    : $.proxy(this.log ,this),
+                getLog : $.proxy(this.getLog , this),
+                clear  : $.proxy(this.clear , this),
+            };
+        };
+        Logger_.prototype.log = function(mensaje){
+            this.mensajes.push(mensaje);
+
+            return this;
+        };
+        Logger_.prototype.getLog = function(){
+            var salida = '';
+
+            for(var i = 0 ; i < this.mensajes.length; i++ )
+            {
+                salida += this.mensajes[i] + "\n";
+            }
+
+            return salida;
+        };
+        Logger_.prototype.clear = function(){
+            this.mensajes = [];
+
+            return this;
+        };
+
+        var Base = {};
+        Base.Logger = new Logger_();
+
+        var UI = {};
+        UI.Base = {};
+        UI.Types = {
+            Panel               : "Panel",
+            VerticalPanel       : "VerticalPanel",
+            Button              : "Button",
+            Label               : "Label",
+            TextBox             : "TextBox",
+            EmptyLine           : "EmptyLine"
+        };
+
+        UI.Base.HtmlControl = function(){
+            this.id = '';
+            this.name = '';
+            this.type = '';
+            this.control = {};
+            this.parent = undefined;
+
+            return this;
+        };
+        UI.Base.HtmlControl.prototype.getAttribute = function(nombre){
+            return this.control.attr(nombre);
+        };
+        UI.Base.HtmlControl.prototype.setAttribute = function(nombre , valor){
+            this.control.attr(nombre ,valor);
+            return this;
+        };
+        UI.Base.HtmlControl.prototype.getId = function(){
+
+            return this.getAttribute('id');
+        };
+        UI.Base.HtmlControl.prototype.setId = function(id){
+            this.setAttribute('id', id);
+            return this;
+        };
+
+        UI.Base.Container = function(){
+            $.extend(this, new UI.Base.HtmlControl());
+            this.controls = [];
+            this.isContainer = true;
+
+            return this;
+        };
+        UI.Base.Container.prototype.addNew = function(type){
+            var control = new UI[type]().create();
+            this.addControl(control);
+
+            return this;
+        };
+        UI.Base.Container.prototype.addControl = function(control){
+            this.controls.push(control);
+            control.parent = this;
+
+            this.control.append(control.control);
+
+            return this;
+        };
+
+        UI.Builder = function(){
+            $.extend(this, new UI.Base.Container());
+
+
+            return this;
+        };
+        UI.Builder.prototype.create = function(){
+
+            this.control = $("<div id='uiBuilder' class='uiBuilder'></div>");
+            $('body').append(this.control);
+
+            var that = this;
+            $(this.control).delegate('div','click', function(){
+                $('.seleccionado', that.control).removeClass('seleccionado');
+                $(this).addClass('seleccionado');
+                that.controlSeleccionado = $(this);
+            });
+
+            Base.Logger.log('UI.Builder.create Exit');
+        };
+
+        UI.Panel = function(){
+            $.extend(this, new UI.Base.Container());
+            this.type = 'Panel';
+
+            return this;
+        };
+        UI.Panel.prototype.create = function(){
+            this.control = $("<div>Panel</div>");
+
+            return this;
+        };
+        UI.Panel.prototype.addType = function(type){
+            this.addNew(type);
+
+            return this;
+        };
+
+        UI.VerticalPanel = function(){
+            $.extend(this, new UI.Base.Container());
+
+            this.type = 'VerticalPanel';
+
+            return this;
+        };
+        UI.VerticalPanel.prototype.create = function(){
+            this.control = $("<div>" + this.type + "</div>");
+            this.addNew(UI.Types.EmptyLine);
+
+            return this;
+        };
+        UI.VerticalPanel.prototype.addType = function(type){
+            this.addNew(type);
+            this.addNew(UI.Types.EmptyLine);
+
+            return this;
+        };
+        UI.VerticalPanel.prototype.appendControl = function(control){
+            this.addControl(control);
+            this.addNew(UI.Types.EmptyLine);
+
+            return this;
+        };
+
+        UI.Label = function(){
+            $.extend(this, new UI.Base.HtmlControl());
+            this.type = 'Label';
+
+            return this;
+        };
+        UI.Label.prototype.create = function(){
+            this.control = $("<label>Label</label>");
+
+            return this;
+        };
+        UI.Label.prototype.setText = function(texto){
+            this.control.text(texto);
+
+            return this;
+        };
+
+        UI.TextBox = function(){
+            $.extend(this, new UI.Base.HtmlControl());
+            this.type = 'TextBox';
+
+            return this;
+        };
+        UI.TextBox.prototype.create = function(){
+            this.control = $("<input type='text'/>");
+
+            return this;
+        };
+
+        UI.Button = function(){
+            $.extend(this, new UI.Base.HtmlControl());
+            this.type = 'Button';
+
+            return this;
+        };
+        UI.Button.prototype.create = function(){
+            this.control = $("<input type='button' value='button'/>");
+
+            return this;
+        };
+
+        UI.EmptyLine = function(){
+            $.extend(this, new UI.Base.HtmlControl());
+            this.type = 'EmptyLine';
+
+            return this;
+        };
+        UI.EmptyLine.prototype.create = function(){
+            this.control = $("<br/>");
+
+            return this;
+        };
+
+        var obj = new UI.Builder();
+        obj.create();
+/*
+        obj.addNew(UI.Types.Label)
+           .addNew(UI.Types.TextBox)
+           .addNew(UI.Types.EmptyLine);
+        obj.addNew(UI.Types.Button);
+        obj.addNew(UI.Types.EmptyLine);
+        obj.addNew(UI.Types.Panel);
+*/
+        var p = new UI.Panel().create();
+        p.addType(UI.Types.Label)
+            .addType(UI.Types.TextBox)
+            .addType(UI.Types.Label)
+            .addType(UI.Types.TextBox)
+            .addType(UI.Types.Label)
+            .addType(UI.Types.TextBox)
+            .addType(UI.Types.Label)
+            .addType(UI.Types.TextBox)
+            .addType(UI.Types.Label)
+            .addType(UI.Types.TextBox)
+            .addType(UI.Types.Button);
+
+        var vp = new UI.VerticalPanel().create();
+        vp.addType(UI.Types.Label)
+          .addType(UI.Types.TextBox)
+          .addType(UI.Types.Label)
+          .addType(UI.Types.TextBox)
+          .addType(UI.Types.Button);
+
+        var vp2 = new UI.VerticalPanel().create();
+        vp2.addType(UI.Types.Label)
+           .addType(UI.Types.TextBox)
+           .addType(UI.Types.Label)
+           .addType(UI.Types.TextBox)
+           .addType(UI.Types.Button);
+
+        obj.addControl(p);
+        obj.addControl(vp);
+        obj.addControl(vp2);
+        var separador = new UI.EmptyLine().create();
+        separador.setAttribute('style', 'clear:both;');
+        obj.addControl(separador);
+
+        vp.setAttribute('style', 'float:left;');
+        vp2.setAttribute('style', 'float:left;');
+
+        vp2.controls[1].setText('Id:');
+        vp2.controls[5].setText('Name:');
+
+
+
+
+    </script>
+
+
+
+</body>
+</html>
+

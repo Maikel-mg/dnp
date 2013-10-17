@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Ficha</title>
+    <link rel='stylesheet' type='text/css' href='../../css/ipktheme/jquery-ui-1.8.18.custom.css' />
+    <link rel='stylesheet' type='text/css' href='../../css/base.css' />
+    <link rel='stylesheet' type='text/css' href='../../css/estilos.css' />
+</head>
+<body>
+<style type="text/css">
+    .areaNoficaciones .btnClose{
+        position: relative;
+        right: 5px;
+        top: 5px;
+        float : right;
+        margin: 0;
+        padding:0;
+        margin-right: 10px;
+    }
+
+    .areaNoficaciones{
+        display: none;
+        margin: 0;
+        padding: 0;
+        color: #999;
+        height: 100px;
+        border-bottom: 1px solid #DDD;
+        margin-top: -5px;
+    }
+    
+    .controles{
+        padding: 10px 5px;
+    }
+    .ficha{
+        border-left: 1px solid #DDD;
+        border-right: 1px solid #DDD;
+        border-bottom: 1px solid #DDD;
+    }
+</style>
+<div id='contenido'>
+    <div id='informacion'>
+        <h2>Proyecto Cotizaci&oacute;n</h2>
+    </div>
+    <div id='resumen'>
+
+    </div>
+</div>
+
+<script	type="text/template" id="fichaTemplate">
+    <tr id='ficha-${IdModelo}'>
+        <td>${Entidad}</td>
+        <td>${Nombre}</td>
+    </tr>
+</script>
+<script	type="text/template" id="modeloTemplate">
+    <tr id='modelo-${IdModelo}'>
+        <td>${Nombre}</td>
+    </tr>
+</script>
+<style type="text/css">
+    label{
+        width : 150px;
+        display: inline-block;
+        text-align: right;
+    }
+</style>
+
+<script type="text/javascript" src='../../js/libs/jquery-1.7.1.min.js'></script>
+<script type="text/javascript" src='../../js/libs/jquery-ui-1.8.18.custom.min.js'></script>
+<script type="text/javascript" src="../../js/libs/jquery.layout.min.js"></script>
+<script type="text/javascript" src="../../js/libs/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../js/libs/underscore-min.js"></script>
+<script type="text/javascript" src="../../js/base/Utils.js"></script>
+<script type="text/javascript" src="../../js/base/framework.base.js"></script>
+<script type="text/javascript" src="../../js/base/framework.project.js"></script>
+<script type="text/javascript" src="../../js/componentes/ComponenteFicha.js"></script>
+<script type="text/javascript" src="../../js/componentes/plugins/ipkFicha.js"></script>
+<script type="text/javascript">
+        var controller;
+        var claveListado = "Coches";
+        var plugin = {};
+
+        app.eventos.subscribir("Buscar", function(event, eventArgs){
+            if(eventArgs.entidad == 'zz_Fichas')
+            {
+                app.log.debug('Busqueda Ficha', eventArgs.datos[0]);
+
+                cargarCamposFichas(eventArgs.datos[0].IdFicha);
+            }
+
+            if(eventArgs.entidad == 'Coches')
+            {
+                app.log.debug('Coches', eventArgs);
+                //plugin.setData(eventArgs.datos);
+                cargarFicha('Coches');
+            }
+
+        });
+        app.eventos.subscribir("Filtrar", function(event, eventArgs){
+            if(eventArgs.entidad = 'zz_CamposFichas')
+            {
+                //app.log.debug('Campos de la ficha', eventArgs);
+                plugin.setEstructura(eventArgs.datos);
+            }
+        });
+
+        function cargarCoche(id){
+            var where = {
+                "IdCoche" : id
+            };
+
+            var parametros = {
+                Entidad : "Coches",
+                Where   : where
+            };
+
+
+
+            app.servicios.generales.Buscar(JSON.stringify(parametros));
+        }
+        function cargarFicha(clave){
+
+            var where = {
+                "Clave" : "'"+clave+"'"
+            };
+
+            var parametros = {
+                Entidad : "zz_Fichas",
+                Where   : where
+            };
+
+            app.servicios.generales.Buscar(JSON.stringify(parametros));
+        };
+        function cargarCamposFichas(clave){
+            var parametros = {
+                Entidad : "zz_CamposFichas",
+                Where   : " it.zz_Fichas.IdFicha = " + clave
+            };
+
+            app.servicios.generales.Filtrar( JSON.stringify(parametros) );
+        };
+
+        $(document).ready(function(){
+
+            var stub = [
+                {
+                    IdUsuario : 1,
+                    Nombre : "Maikel",
+                    Activo : true,
+                    FechaAlta : '06/01/2012'
+                }];
+
+            plugin = $('#resumen').ficha({});
+            //cargarCoche(1);
+            cargarFicha("Coches");
+            app.log.debug('plugin', plugin);
+        });
+
+    </script>
+
+<script	type="text/template" id="booleanTemplate">
+    <label for="${Nombre}" class="">${Nombre}</label>
+    <input type="checkbox" name="${Nombre}" id="${Nombre}" class="${Tipo}" />
+    <br>
+</script>
+
+<script	type="text/template" id="referenciaTemplate">
+    <label for="${Titulo}" class="">${Titulo}</label>
+    <input type="text" name="${Nombre}" id="${Nombre}" class="${Tipo}" />
+    <a id="${Nombre}-enlace" href="Ficha.html?entidad=${Nombre}&clave=${IdReferencia}">Ver</a>
+    <br>
+</script>
+
+<script	type="text/template" id="campoTemplate">
+    <label for="${Titulo}" class="">${Titulo}</label>
+    <input type="text" name="${Nombre}" id="${Nombre}" class="${Tipo}" />
+    <br>
+</script>
+</body>
+</html>

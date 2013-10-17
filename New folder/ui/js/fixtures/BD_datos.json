@@ -1,0 +1,144 @@
+{
+    "modelos"       : [
+        {
+            "IdModelo"  : 1,
+            "Nombre"    : "Usuarios"
+        },
+        {
+            "IdModelo"  : 2,
+            "Nombre"    : "Fichas"
+        },
+        {
+            "IdModelo"  : 3,
+            "Nombre"    : "Dossieres"
+        }
+    ],
+    "camposModelo"  : [
+        {
+            "IdCampo"       : 1,
+            "IdModelo"      : 1,
+            "Nombre"        : "IdUsuario",
+            "Tipo"          : "Int32",
+            "Nullable"      : false
+        },
+        {
+            "IdCampo"       : 2,
+            "IdModelo"      : 1,
+            "Nombre"        : "Nombre",
+            "Tipo"          : "String",
+            "Nullable"      : false
+        },
+        {
+            "IdCampo"       : 3,
+            "IdModelo"      : 1,
+            "Nombre"        : "Activo",
+            "Tipo"          : "Boolean",
+            "Nullable"      : true
+        },
+        {
+            "IdCampo"       : 4,
+            "IdModelo"      : 1,
+            "Nombre"        : "FechaAlta",
+            "Tipo"          : "DateTime",
+            "Nullable"      : false
+        },
+        {
+            "IdCampo"       : 5,
+            "IdModelo"      : 1,
+            "Nombre"        : "Fichas",
+            "Tipo"          : "Collection",
+            "Nullable"      : false
+        },
+        {
+            "IdCampo"       : 6,
+            "IdModelo"      : 2,
+            "Nombre"        : "IdFicha",
+            "Tipo"          : "Int32",
+            "Nullable"      : false
+        },
+        {
+            "IdCampo"       : 7,
+            "IdModelo"      : 2,
+            "Nombre"        : "Nombre",
+            "Tipo"          : "String",
+            "Nullable"      : true
+        },
+        {
+            "IdCampo"       : 8,
+            "IdModelo"      : 2,
+            "Nombre"        : "Usuarios",
+            "Tipo"          : "Reference",
+            "IdReferencia"  : "IdUsuario",
+            "Nullable"      : true
+        },
+        {
+            "IdCampo"       : 9,
+            "IdModelo"      : 3,
+            "Nombre"        : "IdDossier",
+            "Tipo"          : "Int32",
+            "Nullable"      : true
+        }
+    ],
+    "listados"      : [
+        {
+            "IdListado"     : 1,
+            "Entidad"       : 1,
+            "Clave"         : "Usuarios",
+            "Nombre"        : "Usuarios",
+            "Descripcion"   : "Listado de los Usuarios",
+            "Campos"        : ["Nombre","Activo", "FechaAlta"]
+        },
+        {
+            "IdListado"     : 2,
+            "Entidad"       : 2,
+            "Clave"         : "Fichas",
+            "Nombre"        : "Fichas",
+            "Descripcion"   : "Listado de los Fichas",
+            "Campos"        : ["Nombre"]
+        },
+        {
+            "IdListado"     : 3,
+            "Entidad"       : 3,
+            "Clave"         : "Dossieres",
+            "Nombre"        : "Dossieres",
+            "Descripcion"   : "Listado de los dossieres",
+            "Campos"        : ["Nombre"]
+        }
+    ],
+    "listadosCampos"      : [
+        {
+            "IdCampoListado"     : 1,
+            "IdListado"          : 1,
+            "Nombre"             : "FechaAlta",
+            "Titulo"             : "F. Alta",
+            "busquedaInterna"    : true
+    }
+    ],
+    "usuarios"      : [
+        {
+            "IdUsuario" : 1,
+            "Nombre"    : "Maikel",
+            "Activo"    : true,
+            "FechaAlta" : "25/06/2012"
+        },
+        {
+            "IdUsuario" : 2,
+            "Nombre"    : "Paco",
+            "Activo"    : true,
+            "FechaAlta" : "25/06/2012"
+        },
+        {
+            "IdUsuario" : 3,
+            "Nombre"    : "Xabi",
+            "Activo"    : false,
+            "FechaAlta" : "25/06/2012"
+        }
+    ],
+    "fichas" : [
+        {
+            "IdFicha"  : 1,
+            "Nombre"   : "Prueba",
+            "Usuarios" : 2
+        }
+    ]
+}

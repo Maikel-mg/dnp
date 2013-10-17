@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Administraci&oacute;n del sitio</title>
+    <link rel='stylesheet' type='text/css' href='../../css/ipktheme/jquery-ui-1.8.18.custom.css' />
+    <link rel='stylesheet' type='text/css' href='../../css/base.css' />
+    <link rel='stylesheet' type='text/css' href='../../css/estilos.css' />
+</head>
+<body>
+
+<div id='contenido'>
+    <div id='informacion'>
+        <h2>Proyecto Cotizaci&oacute;n</h2>
+
+        <div id='toolbar' class='toolbar'>
+            <ul>
+                <li id='btnDossieres' title='Listado Dossieres'>
+                    <a href="Listado.html?entidad=Dossieres&clave=IdDossier">
+                        <span class='icon-th-list'></span><span>Dossieres</span>
+                    </a>
+                </li>
+                <li id='btnSoluciones' title='Listado Soluciones'>
+                    <a href="Listado.html?entidad=Soluciones&clave=IdSolucion">
+                        <span class='icon-th-list'></span><span>Soluciones</span>
+                    </a>
+                </li>
+                <li id='btnUsuarios' title='Listado Usuarios'>
+                    <a href="Listado.html?entidad=Usuarios&clave=IdUsuario">
+                        <span class='icon-th-list'></span><span>Usuarios</span>
+                    </a>
+                </li>
+                <li title='Separador'>
+                    <a href="#">
+                        <span class=''></span><span>&nbsp;</span>
+                    </a>
+                </li>
+                <li id='btnModelos' title='Listado Modelos'>
+                    <a href="#">
+                        <span class='icon-th-list'></span><span>Modelos</span>
+                    </a>
+                </li>
+            </ul>
+            <div class='clearFix'></div>
+        </div>
+    </div>
+    <div id='resumen'>
+        <div id="listado" class='listado'>
+            <h3>LISTADO</h3>
+            <table class='tabla width100p'>
+                <caption>
+                    <div id='toolbar' class='toolbar'>
+                        <ul>
+                            <li class='boton' id='btnNuevoDossier' title='A&ntilde;adir nuevo registro'>
+                                <a href="#">
+                                    <span class='icon-plus-sign'></span><span>Crear nuevo</span>
+                                </a>
+                            </li>
+                            <li class='boton' id='btnIrAFichar' title='Ir a fichar del registro seleccionado'>
+                                <a href="#ficha">
+                                    <span class='icon-list-alt'></span><span>Ir a ficha</span>
+                                </a>
+                            </li>
+                            <li class='boton' id='btnBorrar' title='Borrar el registro seleccionado'>
+                                <a href="#borrar">
+                                    <span class='icon-trash'></span><span>Borrar</span>
+                                </a>
+                            </li>
+                            <li class='boton' id='btnCopiar' title='Copiar el registro seleccionado'>
+                                <a href="#copiar"><span class='icon-repeat'></span> <span>Copiar</span> </a>
+                            </li>
+                        </ul>
+                        <div class='clearFix'></div>
+                    </div>
+                </caption>
+                <thead></thead>
+                <tbody></tbody>
+                <tfoot>
+                <tr id="panelFiltro" class='noDisplay'>
+                    <td colspan="6">
+                        <div >
+                            <label for="filtro">Buscar:</label>
+                            <input type="text" id='filtroTexto' />
+                            <select id='filtroCampo'>
+                                <option value='NumeroDossier'>Numero Dossier</option>
+                                <option value='Descripcion'>Descripcion</option>
+                                <option value='Version'>Version</option>
+                            </select>
+                            <input type="button" id='btnFiltro' value='Buscar' />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='6'>
+                        <div>
+                            <div id='gridActions' class='floatLeft'>
+                                <a href="#" id='btnFiltrar' class='inline'>
+                                    <span class='icon-search'>&nbsp;</span>
+                                </a>
+                            </div>
+                            <div id='numeroRegistros' class='floatRight'>
+                                N&uacute;m Registros:  <span id='count'> 0</span>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script	type="text/template" id="DossieresTemplate">
+    <tr id='Dossieres-${IdDossier}'>
+        <td>${TipoDossier}</td>
+        <td>${NumeroDossier}</td>
+        <td>${Version}</td>
+        <td>${FechaCierre}</td>
+        <td>${Descripcion}</td>
+        <td>${IdCliente} - ${NombreCliente}</td>
+    </tr>
+</script>
+
+<script	type="text/template" id="SolucionesTemplate">
+    <tr id='Soluciones-${IdSolucion}'>
+        <td>${CodigoSolucion}</td>
+        <td>${Descripcion}</td>
+        <td>${FechaCreacion}</td>
+    </tr>
+</script>
+
+<script	type="text/template" id="UsuariosTemplate">
+    <tr id='Usuarios-${IdUsuario}'>
+        <td>${Nombre}</td>
+        <td>${Password}</td>
+    </tr>
+</script>
+
+
+<script type="text/javascript" src='../../js/libs/jquery-1.7.1.min.js'></script>
+<script type="text/javascript" src='../../js/libs/jquery-ui-1.8.18.custom.min.js'></script>
+<script type="text/javascript" src="../../js/libs/jquery.layout.min.js"></script>
+<script type="text/javascript" src="../../js/libs/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../js/libs/underscore-min.js"></script>
+<script type="text/javascript" src="../../js/base/Utils.js"></script>
+<script type="text/javascript" src="../../js/base/framework.base.js"></script>
+<script type="text/javascript" src="../../js/base/framework.project.js"></script>
+<script type="text/javascript" src="../../js/componentes/ComponenteListado.js"></script>
+<script type="text/javascript" src="../js/logica/Listado.js"></script>
+<script type="text/javascript">
+        var listado;
+
+        var cabeceras = {
+            "Dossieres"  :  ["Tipo", "Num. Dossier", "Version", "F. Cierre", "Descripcion", "Cliente"],
+            "Soluciones" :  ["Codigo", "Descripcion", "F. Creacion"],
+            "Usuarios"   :  ["Nombre", "Password"]
+        };
+
+        $(document).ready(function(){
+
+            var configuracion = {
+                Entidad        :   $.QueryString["entidad"],
+                ClaveEntidad   :   $.QueryString["clave"],
+                Cabecera       :   cabeceras[$.QueryString["entidad"]],
+                PlantillaFila  :   '#' + $.QueryString["entidad"] +'Template'
+            };
+
+            listado = new Listado(configuracion);
+
+        });
+    </script>
+</body>
+</html>

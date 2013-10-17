@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Propiedades Ficha</title>
+    </head>
+    <body>
+    <div class="ui-layout-east">
+        <span class='block-Title'>Propiedades</span>
+        <div id='panelPropiedades'>
+            <label for='nombreCampo'>Nombre:</label>
+            <br>
+            <input type='text' id='nombreCampo' name='nombreCampo' style='width:100%;'/>
+            <label for='tituloCampo'>Titulo:</label>
+            <br>
+            <input type='text' id='tituloCampo' name='tituloCampo' style='width:100%;'/>
+            <br>
+            <input type='checkbox' id='esClave' /> <span style='font-size:10px;'>Clave Primaria</span>
+            <br>
+            <input type='checkbox' id='esIndice' /> <span style='font-size:10px;'>Indice Unico</span>
+            <br>
+            <input type='checkbox' id='esNullable' /> <span style='font-size:10px;'>Acepta Nulos</span>
+            <br>
+            <input type='checkbox' id='esLectura' /> <span style='font-size:10px;'>Solo Lectura</span>
+            <br>
+            <label for='tipoCampo'>Tipo:</label>
+            <br>
+            <select id='tipoCampo' name='tipoCampo' style='width:100%;'>
+                <option value='String'>Texto</option>
+                <option value='Int32'>Numerico</option>
+                <option value='DateTime'>Fecha</option>
+                <option value='Boolean'>Checkbox</option>
+                <option value='ComboNavision'>Combo Navision</option>
+                <option value='ComboInterno'>Combo Interno</option>
+                <option value='Reference'>Referencia</option>
+                <option value='Collection'>Colecci&oacute;n</option>
+            </select>
+
+
+            <select id='referencia' name='referencia' style='width:100%;' class='noDisplay'>
+            </select>
+            <div id='propiedadesReferencia' class='noDisplay'>
+                <input type='checkbox' id='esPadre' name='esPadre' /> <label for="esPadre" style='font-size:10px;'>Es Padre</label>
+            </div>
+            <div id='propiedadesColeccion' class='noDisplay'>
+                <input type='checkbox' id='sonHijos' name='sonHijos' /> <label for="sonHijos" style='font-size:10px;'>Son Hijos</label>
+            </div>
+            <div id='propiedadesComboNavision' class='noDisplay width100p'>
+                <select name="fuenteNavision" id="fuenteNavision" class='width100p'></select>
+
+                <script	type="text/template" id="comboFuenteNavisionTemplate">
+                    <option value='${IdFuente}'>${Nombre}</option>
+                </script>
+            </div>
+            <div id='propiedadesComboInterno' class='noDisplay width100p'>
+                <select name="fuenteInterna" id="fuenteInterna" class='width100p'></select>
+
+                <script	type="text/template" id="comboFuenteInternaTemplate">
+                    <option value='${IdFuente}'>${Nombre}</option>
+                </script>
+            </div>
+            <br>
+            <label for='ordenCampo'>Orden:</label>
+            <br>
+            <input type='text' id='ordenCampo' name='ordenCampo' style='width:50%;'/>
+            <div id='panelGrupos'>
+                <label for="grupo">Grupo:</label>
+                <select name="grupo" id="grupo">
+                    <option value=""></option>
+                    <option value="cotiz_analitica">ANALITICA</option>
+                    <option value="cotiz_comercial">COMERCIAL</option>
+                    <option value="cotiz_dnp">DNP</option>
+                    <option value="cotiz_moldes">MOLDES</option>
+                    <option value="cotiz_produccion">PRODUCCION</option>
+                    <option value="cotiz_programacion">PROGRAMACION</option>
+                </select>
+            </div>
+
+            <br>
+        </div>
+        <div id="eventos"></div>
+        <div id='dlgEditorEventos'></div>
+        <div id='botoneraPropiedades'>
+            <br><input type='button' id='btnEventos' value='Eventos' />
+            <br><input type='button' id='btnGuardarCampo' value='Guardar' />
+        </div>
+    </div>
+    </body>
+</html>

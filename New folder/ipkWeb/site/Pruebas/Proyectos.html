@@ -1,0 +1,295 @@
+
+<html lang="es">
+	<head>
+		<title>Proyectos</title>
+
+        <style type="text/css">
+	/**
+	 *	Basic Layout Theme
+	 * 
+	 *	This theme uses the default layout class-names for all classes
+	 *	Add any 'custom class-names', from options: paneClass, resizerClass, togglerClass
+	 */
+	body{
+		font-family: Arial;
+	}
+
+	.ui-layout-pane { /* all 'panes' */ 
+		background: #FFF; 
+		border: 1px solid #BBB; 
+		padding: 10px; 
+		overflow: auto;
+	} 
+
+	.ui-layout-resizer { /* all 'resizer-bars' */ 
+		background: #DDD; 
+	} 
+
+	.ui-layout-toggler { /* all 'toggler-buttons' */ 
+		background: #AAA; 
+	}
+
+            .ipkLista {
+                border: 1px solid #DDD;
+                font-family: Arial;
+
+                margin:0px;
+                padding: 0px;
+
+            }
+            .ipkLista .cuerpo ul.datos{
+                padding: 0px;
+                margin: 0px;
+            }
+
+            .ipkLista .cuerpo ul.datos li{
+                /*background-color: #E9E9E9;*/
+                font-size: 13px;
+                border-bottom: 1px solid #CCC;
+                padding:5px 5px;
+                list-style-type: none;
+            }
+            .ipkLista .cuerpo ul.datos li:hover{
+                background-color: #EEE;
+                border-bottom: 1px solid #CCC;
+                font-weight: bold;
+
+            }
+            .ipkLista .cuerpo ul.datos li.seleccionado{
+                background-color: #E9e9e9;
+                background-color: #C6E031;
+                font-weight: bold;
+            }
+            .ipkLista .cuerpo ul.datos li a{
+                text-decoration:  none;
+                color: #333;
+            }
+
+            .ipkLista .miniToolbar{
+                margin-bottom: 0px;
+            }
+
+
+	#grupos {
+		border: 1px solid #DDD;
+		font-family: Arial;
+
+		margin:0px;
+		padding: 0px;
+
+	}
+	#grupos li{
+		/*background-color: #E9E9E9;*/
+		font-size: 13px;
+		border-bottom: 1px solid #CCC;
+		padding:5px 5px;
+		list-style-type: none;
+	}
+	#grupos li:hover{
+		background-color: #EEE;
+		border-bottom: 1px solid #CCC;
+		font-weight: bold;
+
+	}
+	#grupos li.seleccionado{
+		background-color: #E9e9e9;
+		background-color: #C6E031;
+		font-weight: bold;
+	}
+	#grupos li a{
+		text-decoration:  none;
+		color: #333;
+	}
+
+	.miniToolbar{
+		background-color: #E9E9E9;
+		border:1px solid #D9D9D9;
+		width: 100%;
+		margin:0px 0px 5px 0px;
+		padding:0px;
+	}
+		.miniToolbar ul{
+			margin:0px;
+			padding:0px;	
+		}
+		.miniToolbar ul li{
+			border-right: 1px solid #CCC;
+			float: left;
+			font-size: 13px;
+			list-style-type: none;
+			margin:0px;
+			padding:5px 5px 5px 7px; 
+			width: 20px;
+		}
+		.miniToolbar ul li:hover{
+			background-color: #DDD;
+			border-right: 1px solid #888;
+		}
+		.miniToolbar ul a{
+			text-decoration: none;
+			color: #333;
+		}
+
+	#listadoCampos tbody tr:hover{
+		background-color: #E9E9E9;
+	}
+		#listadoCampos tbody tr.seleccionado{
+			background-color: #C6E031;		
+			font-weight: bold;
+		}
+
+	.listado tbody tr:hover{
+		background-color: #E9E9E9;
+	}
+		.listado tbody tr.seleccionado{
+			background-color: #C6E031;		
+			font-weight: bold;
+		}
+
+	.clearFix{
+		clear: both;
+	}
+
+        .textboxNumerico{
+            margin-bottom: 2px;
+        }
+            .textboxNumerico.noValido input[type='text']{
+                border-style:  solid;
+                border-color:  #e9322d;
+                background-color: #fef1ec;
+            }
+
+            input[type='text']{
+                border-style: solid;
+                border-width: 1px;
+                /*border-right-width: 2px;*/
+                border-color: #CCC;
+
+                height: 25px;
+                margin:0;
+                margin-top: 2px;
+                margin-bottom: 2px;
+            }
+
+            .textboxNumerico.noValido label{
+                color : #e9322d;
+            }
+
+
+
+            .numerico{
+                margin-right:  0;
+                padding-right:  0;
+                height: 20px;
+            }
+/*
+            span.noValido{
+                background-color: red;
+                display: inline-block   ;
+                width :10px;
+                margin: 0;
+                padding: 0;
+                padding-top: 3px;
+                padding-bottom: 4px;
+            }
+*/
+            .indicadorTipo{
+                display: inline-block;
+                width :10px;
+                padding: 5px;
+                border: 1px solid #CCC;
+                background-color: #EEE;
+                padding-top: 2px;
+                padding-bottom: 3px;
+                border-left: 0 solid transparent;
+                font-weight: 500;
+                color: #888;
+                height: 18px;
+                /*margin-left: 1px;*/
+            }
+            span.noValido{
+                background-color: red;
+                border: 1px solid #e9322d;
+                border-right: 0 solid transparent;
+                display: inline-block;
+                height: 18px;
+                padding: 5px;
+                padding-top: 2px;
+                padding-bottom: 3px;
+                vertical-align: baseline;
+                width :15px;
+            }
+
+	</style>
+        <link rel='stylesheet' type='text/css' href='../../css/ipktheme/jquery-ui-1.8.18.custom.css' />
+        <link rel='stylesheet' type='text/css' href='../../css/base.css' />
+        <link rel='stylesheet' type='text/css' href='../../css/estilos.css' />
+	</head>
+	<body>
+
+			<div class='ui-layout-north'>
+				<span class=''>Listado ficha</span>
+			</div>
+			<div class="ui-layout-west">
+                <div id="listado" class='listado '>
+                <div id='contenedorLista' class='listado'>
+                </div>
+                </div>
+			</div>
+			<div class="ui-layout-center">
+				<div id='center-content' class="width100p">
+                    <h3 id='tituloCentro'>TITULO</h3>
+
+                    <div id='contenedorFicha'></div>
+                    <br>
+                    <div id='contenedorTabla'></div>
+			    </div>
+            </div>
+
+
+		<script type="text/javascript" src='../../js/libs/jquery-1.7.1.min.js'></script>
+		<script type="text/javascript" src='../../js/libs/jquery-ui-1.8.18.custom.min.js'></script>
+		<script type="text/javascript" src="../../js/libs/jquery.layout.min.js"></script>
+		<script type="text/javascript" src="../../js/libs/jquery.tmpl.min.js"></script>
+		<script type="text/javascript" src="../../js/libs/underscore-min.js"></script>
+		<script type="text/javascript" src="../../js/base/Utils.js"></script>
+		<script type="text/javascript" src="../../js/base/framework.base.js"></script>
+        <script type="text/javascript" src="../../js/base/framework.project.js"></script>
+        <script type="text/javascript" src="../../js/clases/DataSource.js"></script>
+        <script type="text/javascript" src="../../js/clases/ComponenteListado.js"></script>
+        <script type="text/javascript" src="../../js/vistas/Administracion/Configurador.js"></script>
+        <script type="text/javascript" src="../../js/componentes/plugins/ipkLista.js"></script>
+        <script type="text/javascript" src="../../js/componentes/plugins/ipkFicha.js"></script>
+        <script type="text/javascript" src="../../js/componentes/plugins/ipkListado.js"></script>
+        <script type="text/javascript" src="../../js/componentes/plugins/Textbox.js"></script>
+        <script type="text/javascript" src="../../js/componentes/plugins/TextboxNumerico.js"></script>
+        <script type="text/javascript" src="../../js/componentes/plugins/TextboxCalendario.js"></script>
+        <script type="text/javascript" src="../../js/componentes/plugins/ipkReferencia.js"></script>
+        <script type="text/javascript" src="../../js/vistas/Plantillas/Proyectos.js"></script>
+		<script type="text/javascript">
+            var controller = null;
+
+            $(document).ready(function(){
+				$('body').layout({
+					north: {
+						resizable  : false,
+						closable : true,
+						size: '40'
+					}
+				});
+
+                var options = {
+                    Listado : "Solucion",
+                    Ficha   : "Solucion",
+                    campo   : "Descripcion",
+                    campoId   : "IdSolucion"
+                };
+
+                controller = new ProyectosController(options);
+			});
+		</script>
+	</body>
+</html>
+
+
+

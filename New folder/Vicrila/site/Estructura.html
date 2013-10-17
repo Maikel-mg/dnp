@@ -1,0 +1,342 @@
+
+<html lang="es">
+	<head>
+		<title>Estructura del dossier</title>
+
+        <script type="text/javascript" src="../js/libs/json2.js"></script>
+        <link rel='stylesheet' type='text/css' href='../css/ipkweb/jquery-ui-1.8.18.custom.css' />
+        <link rel='stylesheet' type='text/css' href='../css/base.css' />
+        <link rel='stylesheet' type='text/css' href='../css/estilos.css' />
+
+        <style type="text/css">
+            #resumenDossier{
+                background-color: #f8f8f8;
+                border-top   : 1px solid #DDD;
+                border-left  : 1px solid #DDD;
+                border-right : 1px solid #DDD;
+                padding: 10px;
+            }
+
+
+            #estructura{
+                font-family: Arial;
+                /*border   : 1px solid #DDD;*/
+            }
+            #estructura ul {
+                list-style: none;
+                margin-top:  2px;
+                margin-bottom:  2px;
+                padding-left: 15px;
+            }
+
+            .areaSolucion:hover .headerSolucion{ background-color: #D2D2D2; }
+            .headerSolucion{
+                background-color: #F1F1F1;
+                height: 25px;
+                padding: 10px;
+            };
+            .contentSolucion{
+
+            }
+
+            .headerFormas{
+                background-color: #a6c9e2;
+                padding: 5px;
+                padding-left:  10px;
+            }
+            .contentFormas {
+                background-color: #FFF;
+                border-top      : 1px solid #a6c9e2;
+                border-bottom   : 1px solid #a6c9e2;
+                border-left     : 1px solid #a6c9e2;
+                border-right    : 1px solid #a6c9e2;
+
+            }
+            .contentFormas ul li{
+                padding-left : 15px;
+                height: 30px;
+                display: block;
+            }
+            .contentFormas ul li:hover{
+                /*background-color: #F7DA9C;*/
+            }
+            .headerEmbalajes{
+                background-color: #8DDB99;
+                padding: 5px;
+                padding-left:  10px;
+            }
+
+            .contentEmbalajes{
+                background-color: #FFF;
+                border-top: 1px solid #8DDB99;
+                border-bottom   : 1px solid #8DDB99;
+                border-left     : 1px solid #8DDB99;
+                border-right    : 1px solid #8DDB99;
+            }
+            .contentEmbalajes ul li{
+                padding-left : 15px;
+                height: 30px;
+            }
+            .contentEmbalajess ul li:hover{
+                /*background-color: #F7DA9C;*/
+            }
+
+        </style>
+	</head>
+	<body>
+
+			<div class='ui-layout-north' style='margin: 0; padding: 0; overflow: hidden;'>
+                <div id='menuPlaceholder'></div>
+			</div>
+			<div class="ui-layout-center">
+				<div id='center-content' class="width100p">
+                    <h3 id='tituloCentro'>Estructura de dossier</h3>
+                    <input type="button" id='editarDossier' value='Ver dossier completo'/>
+                    <input type="button" class='boton' id='btnAbrirWorkflow' value='Ver workflow'/>
+                    <div id='workflowPlaceHolder'></div>
+                    <br>
+                    <br>
+                    <div id='contenedorFicha1'></div>
+
+                    <div id='resumenDossier'>
+                        <span >Nun. Dossier:</span>
+                        <span id='rsNumDossier' class='bold'></span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <span>Tipo Dossier:</span>
+                        <span id='rsTipoDossier' class='bold'></span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <span>F. Creaci&oacute;n:</span>
+                        <span id='rsFechaCreacion' class='bold'></span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <span>F. Cierre:</span>
+                        <span id='rsFechaCierre' class='bold'></span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <span>Estado:</span>
+                        <span id='rsEstado' class='bold'></span>
+                        <br>
+                        <span>Descripci&oacute;n:</span>
+                        <span id='rsDescripcion' class='bold'></span>
+                        <br>
+                        <span>Observaciones:</span>
+                        <span id='rsObservaciones' class='bold'></span>
+                    </div>
+                    <div id='relaciones' class="miniToolbar">
+                        <ul >
+                            <li>
+                                <a href="#" id='verSoluciones'>
+                                    <span class='icon-book'>&nbsp;</span>
+                                    <span>Soluciones</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" id='verArticulos'>
+                                    <span class='icon-glass'>&nbsp;</span>
+                                    <span>Articulos</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" id='verEmbalajes'>
+                                    <span class='icon-inbox'>&nbsp;</span>
+                                    <span>Embalajes</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="clearFix"></div>
+                    </div>
+                    <br>
+                    <div id='contenedorTablaSoluciones' class='listado'></div>
+                    <div id='contenedorTablaEmbalajes' class='listado'></div>
+                    <div id='contenedorTablaArticulos' class='listado'></div>
+                    <div id='listaEmbalajesME' class='listado'></div>
+                    <div id='listaArticulosME' class='listado'></div>
+                    <div id='estructura' class='estructura'>
+
+                    </div>
+                    <br>
+			    </div>
+            </div>
+
+        <script type="text/template" id='plantillaSolucion'>
+            <div id='solucion-${idSolucion}' class='areaSolucion'>
+                <div class='headerSolucion'>
+                    <div class='info' style='float: left'>
+                        <span class='icon-book'>&nbsp;</span>&nbsp;<span>${Descripcion}</span>
+                    </div>
+                    <div class='actions' style='float: right'>
+                        <div class="miniToolbar">
+                            <ul >
+                                <li>
+                                    <a id='btnVerHojaCotizacion' href="#" >
+                                        <span class='icon-search'>&nbsp;</span>
+                                        <span>Ver Hoja</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a id='btnAgregarArticulo' href="#" >
+                                        <span class='icon-plus'>&nbsp;</span>
+                                        <span>Agregar Forma</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a id='btnAgregarEmbalaje' href="#" >
+                                        <span class='icon-plus'>&nbsp;</span>
+                                        <span>Agregar Embalaje</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a id="btnAceptarSolucion" href="#" >
+                                        <span class='icon-ok'>&nbsp;</span>
+                                        <span>Aceptar Solucion</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a id="btnRechazarSolucion" href="#" >
+                                        <span class='icon-remove'>&nbsp;</span>
+                                        <span>Rechazar Solucion</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="clearFix"></div>
+                        </div>
+                    </div>
+                    <div class="clearFix"></div>
+                </div>
+                <div class='contentSolucion' style='padding: 15px; border: 1px solid #D2D2D2; background-color: #F8F8F8;'>
+                    <div class='areaFormas'>
+                        <div class='headerFormas'>
+                            <div class='infoFormas'>
+                                <span class='icon-glass'>&nbsp;</span>
+                                <span style='font-family: Arial; font-weight: bold;'>FORMAS</span>
+                                <span class='bold numeroFormas'></span>
+                            </div>
+                        </div>
+                        <div class="contentFormas">
+                            <ul>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class='areaEmbalajes'>
+                        <div class='headerEmbalajes'>
+                            <div class='info'>
+                                <span class='icon-book'>&nbsp;</span>
+                                <span style='font-family: Arial; font-weight: bold;'>EMBALAJES</span>
+                                <span class='bold numeroEmbalajes'></span>
+                            </div>
+                        </div>
+                        <div class='contentEmbalajes'>
+                            <ul>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </script>
+
+        <script type="text/template" id='plantillaForma'>
+            <li id='forma-${idFormaArt}'>
+                <div class='forma'>
+                    <div class='info' style='float: left'>${Nombre}</div>
+                    <div class='actions'  style='float: right'>
+                        <a class='btnQuitarForma' href="#" style='text-decoration:none; font-size: 12px; vertical-align: middle; color: #444;'>
+                            <span class='icon-remove'>&nbsp;</span>
+                            <span>Quitar Forma</span>
+                        </a>
+                    </div>
+                    <div class="clearFix"></div>
+                </div>
+            </li>
+        </script>
+        <script type="text/template" id='plantillaEmbalaje'>
+            <li id='embalaje-${idFormaEmb}'>
+                <div class='forma'>
+                    <div class='info' style='float: left'>${Nombre}</div>
+                    <div class='actions'  style='float: right'>
+                        <a class='btnQuitarEmbalaje' href="#" style='text-decoration:none; font-size: 12px; vertical-align: middle; color: #444;'>
+                            <span class='icon-remove'>&nbsp;</span>
+                            <span>Quitar Embalaje</span>
+                        </a>
+                    </div>
+                    <div class="clearFix"></div>
+                </div>
+            </li>
+        </script>
+
+            <script type="text/javascript" src='../js/libs/jquery-1.7.1.min.js'></script>
+            <script type="text/javascript" src='../js/libs/jquery-ui-1.8.18.custom.min.js'></script>
+            <script type="text/javascript" src="../js/libs/jquery.layout.min.js"></script>
+            <script type="text/javascript" src="../js/libs/jquery.tmpl.min.js"></script>
+            <script type="text/javascript" src="../js/libs/underscore-min.js"></script>
+            <script type="text/javascript" src="../js/base/Utils.js"></script>
+            <script type="text/javascript" src="../js/base/framework.base.js"></script>
+            <script type="text/javascript" src="../js/base/framework.project.js"></script>
+            <script type="text/javascript" src="../js/clases/DataSource.js"></script>
+
+            <script type="text/javascript" src="../js/controles/form.CheckBox.js"></script>
+            <script type="text/javascript" src="../js/controles/form.Hidden.js"></script>
+            <script type="text/javascript" src="../js/controles/form.Textbox.js"></script>
+            <script type="text/javascript" src="../js/controles/form.TextboxCalendario.js"></script>
+            <script type="text/javascript" src="../js/controles/form.TextboxNumerico.js"></script>
+            <script type="text/javascript" src="../js/controles/form.ComboNavision.js"></script>
+            <script type="text/javascript" src="../js/controles/form.ComboInterno.js"></script>
+
+            <script type="text/javascript" src="../js/controles/ipkRemoteDataSource.js"></script>
+            <script type="text/javascript" src="../js/controles/ipkToolbar.js"></script>
+            <script type="text/javascript" src="../js/controles/ipkLista.js"></script>
+            <script type="text/javascript" src="../js/controles/ipkTabla.js"></script>
+            <script type="text/javascript" src="../js/controles/ipkFicha.js"></script>
+            <script type="text/javascript" src="../js/controles/ipkRemoteTabla.js"></script>
+            <script type="text/javascript" src="../js/controles/ipkTablaEditable.js"></script>
+            <script type="text/javascript" src="../js/controles/ipkTablaHijos.js"></script>
+            <script type="text/javascript" src="../js/controles/ipkTablaRelacion.js"></script>
+            <script type="text/javascript" src="../js/controles/ipkMostrarElegir.js"></script>
+            <script type="text/javascript" src="../js/controles/ipkRemoteFicha.js"></script>
+            <script type="text/javascript" src="../js/controles/ipkRemoteInfraestructura.js"></script>
+            <script type="text/javascript" src="../js/controles/ipkRemoteDataSourceNavision.js"></script>
+            <script type="text/javascript" src="../js/controles/ipkFactory.js"></script>
+
+            <script type="text/javascript" src="../js/componentes/arbolEstructura.js"></script>
+            <script type="text/javascript" src="../js/componentes/IpkComportamientos.js"></script>
+            <script type="text/javascript" src="../js/componentes/workflowManager.js"></script>
+
+            <script type="text/javascript" src="../js/vistas/Estructura_V2.js"></script>
+
+		<script type="text/javascript">
+            var controller = null;
+            var listado = null;
+            var listadoEmb = null;
+            var listadoArt = null;
+            var estructura = null;
+
+
+            $(document).ready(function(){
+				$('body').layout({
+					north: {
+						resizable  : false,
+						closable : false,
+						size: '30'
+					}
+				});
+
+
+                estructura = new Estructura();
+
+                /*
+                if($.QueryString["Id"] !== undefined)
+                {
+                    estructura.obtenerDossier($.QueryString["Id"]);
+                }
+                */
+
+			});
+		</script>
+	</body>
+</html>
+
+
+
+

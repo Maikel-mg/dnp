@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Creación de la aplicaci&oacute;n</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../../css/ipkweb/jquery-ui-1.8.18.custom.css">
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/estilos.css">
+    <link rel="stylesheet" href="../../../css/famfamfam.css">
+    <link rel="stylesheet" href="../../../css/controles.css">
+
+    <!-- THIRD PARTY -->
+    <script type="text/javascript" src="../../../js/libs/class.js"></script>
+    <script type="text/javascript" src="../../../js/libs/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="../../../js/libs/jquery-ui-1.8.18.custom.min.js"></script>
+    <script type="text/javascript" src="../../../js/libs/underscore-min.js"></script>
+
+    <!-- OURS -->
+    <script type="text/javascript" src="../../../config/appConfig.js"></script>
+
+    <script type="text/javascript" src="../js/creacionView.js"></script>
+
+    <script type="text/javascript">
+        var view;
+
+        $(function(){  view = new CreacionView(); });
+    </script>
+</head>
+<body>
+
+<div class='page'>
+    <table class='layout' cellspacing='0' cellpadding='0'>
+        <tr>
+            <td colspan="3" style="display:none;">
+                <div class='headerpanel'></div>
+            </td>
+        </tr>
+        <tr>
+            <td class="leftPanel">
+            </td>
+            <td class="centerPanel">
+                <div class='contentpanel'>
+                    <input type="button" id="crearApp" value="Crear Aplicación"/>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+.ctrlPanel{
+    border: 1px solid #d1d1d1;
+    margin: 5px;
+}
+.ctrlPanel .header{
+    background-color: #3498DB;   color: #FFF;
+    padding: 3px;
+    font-family: "Lucida Grande", arial, sans;
+    font-size: 14px;
+    font-weight: bold;
+}
+.ctrlPanel .content{
+    padding: 10px;
+}
+.ctrlPanel .footer{
+    padding: 5px;
+}
+
+.ctrlPanel.ctrlTree .content{
+    padding: 0 5px;
+    overflow: hidden;
+}
+.ctrlTree ul{
+    margin:  0;
+    padding: 1px 15px;
+    list-style: none;
+    width: 100%;
+    overflow: hidden;
+}
+.ctrlTree li{
+    width: 100%;
+}
+.ctrlTree .textoNodo{
+    display: inline-block;
+    /*padding: 5px 5px 5px 7px;*/
+    width: 100%;
+}
+.ctrlTree .textoNodo:hover{
+    background-color: #BCD279;
+    cursor: pointer;
+}
+.ctrlTree .textoNodo span{
+    font-size: 11px;
+    vertical-align: text-top;
+}
+
+.ctrlListview .content{
+    padding: 0;
+}
+
+.ctrlListview .content>div{
+    display: inline-block;
+    width: 100%;
+}
+.ctrlListview .content>div:hover{
+    background-color: #BCD279;
+    cursor: pointer;
+}
+
+.boton {
+    border: 1px solid #888;
+    padding: 3px 10px;
+}
+.boton:hover {
+    border: 2px solid #666;
+    padding: 2px 9px;
+}

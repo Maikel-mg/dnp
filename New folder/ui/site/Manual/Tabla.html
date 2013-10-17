@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Tabla</title>
+
+    <link rel='stylesheet' type='text/css' href='../../css/ipkweb/jquery-ui-1.8.18.custom.css' />
+    <link rel='stylesheet' type='text/css' href='../../css/base.css' />
+    <link rel='stylesheet' type='text/css' href='../../css/estilos.css' />
+</head>
+<body>
+
+<div id='contenedorTabla'></div>
+
+<script type="text/javascript" src='../../js/libs/jquery-1.7.1.min.js'></script>
+<script type="text/javascript" src='../../js/libs/jquery-ui-1.8.18.custom.min.js'></script>
+<script type="text/javascript" src="../../js/libs/jquery.layout.min.js"></script>
+<script type="text/javascript" src="../../js/libs/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../js/libs/underscore-min.js"></script>
+<script type="text/javascript" src="../../js/base/Utils.js"></script>
+<script type="text/javascript" src="../../js/base/framework.base.js"></script>
+<script type="text/javascript" src="../../js/base/framework.project.js"></script>
+<script type="text/javascript" src="../../js/clases/DataSource.js"></script>
+<script type="text/javascript" src="../../js/controles/ipkRemoteDataSource.js"></script>
+<script type="text/javascript" src="../../js/controles/ipkToolbar.js"></script>
+<script type="text/javascript" src="../../js/controles/ipkLista.js"></script>
+<script type="text/javascript" src="../../js/controles/ipkTabla.js"></script>
+<script type="text/javascript" src="../../js/vistas/Manual/Tabla.js"></script>
+
+<script type="text/javascript">
+    var pagina = undefined;
+
+    $(document).ready(function(){
+        pagina = new TablaManualPage();
+    });
+</script>
+</body>
+</html>

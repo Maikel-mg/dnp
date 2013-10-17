@@ -1,0 +1,51 @@
+<html lang="es">
+	<head>
+		<title>Listado Clientes</title>
+
+        <link rel='stylesheet' type='text/css' href='../../css/ipkweb/jquery-ui-1.8.18.custom.css' />
+        <link rel='stylesheet' type='text/css' href='../../css/base.css' />
+        <link rel='stylesheet' type='text/css' href='../../css/estilos.css' />
+	</head>
+	<body>
+
+            <div class='ui-layout-north' style='margin: 0; padding: 0; overflow: hidden;'>
+                <div id='menuPlaceholder'>
+                </div>
+            </div>
+			<div class="ui-layout-center">
+                <div id='tablaPlaceholder'>
+
+                </div>
+            </div>
+            <div class="ui-layout-south">
+            </div>
+
+
+		<script type="text/javascript" src='../../js/libs/jquery-1.7.1.min.js'></script>
+		<script type="text/javascript" src='../../js/libs/jquery-ui-1.8.18.custom.min.js'></script>
+		<script type="text/javascript" src="../../js/libs/jquery.layout.min.js"></script>
+		<script type="text/javascript" src="../../js/libs/jquery.tmpl.min.js"></script>
+		<script type="text/javascript" src="../../js/libs/underscore-min.js"></script>
+		<script type="text/javascript" src="../../js/base/Utils.js"></script>
+		<script type="text/javascript" src="../../js/base/framework.base.js"></script>
+        <script type="text/javascript" src="../../js/base/framework.project.js"></script>
+            <script type="text/javascript" src="../../js/clases/DataSource.js"></script>
+        <script type="text/javascript" src="../../js/controles/ipkToolbar.js"></script>
+        <script type="text/javascript" src="../../js/controles/ipkRemoteDataSource.js"></script>
+        <script type="text/javascript" src="../../js/controles/ipkTabla.js"></script>
+        <script type="text/javascript" src="../../js/vistas/Tabla/Tabla.js"></script>
+
+
+		<script type="text/javascript">
+            var pagina = undefined;
+
+            $(document).ready(function(){
+                pagina = new TablaPage();
+			});
+		</script>
+	</body>
+</html>
+
+
+
+

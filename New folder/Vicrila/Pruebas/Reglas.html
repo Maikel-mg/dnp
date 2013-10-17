@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <script type="text/javascript" src="../js/libs/json2.js"></script>
+    <link rel='stylesheet' type='text/css' href='../css/ipkweb/jquery-ui-1.8.18.custom.css' />
+    <link rel='stylesheet' type='text/css' href='../css/base.css' />
+    <link rel='stylesheet' type='text/css' href='../css/estilos.css' />
+
+    <title>Reglas</title>
+</head>
+<body>
+
+    <script type="text/javascript" src='../js/libs/jquery-1.7.1.min.js'></script>
+    <script type="text/javascript" src='../js/libs/jquery-ui-1.8.18.custom.min.js'></script>
+    <script type="text/javascript" src="../js/libs/jquery.layout.min.js"></script>
+    <script type="text/javascript" src="../js/libs/jquery.tmpl.min.js"></script>
+    <script type="text/javascript" src="../js/libs/underscore-min.js"></script>
+
+    <script type="text/javascript" src="../js/base/Utils.js"></script>
+    <script type="text/javascript" src="../js/base/framework.base.js"></script>
+    <script type="text/javascript" src="../js/base/framework.project.js"></script>
+    <script type="text/javascript" src="../js/clases/DataSource.js"></script>
+
+    <script type="text/javascript" src="../js/controles/form.CheckBox.js"></script>
+    <script type="text/javascript" src="../js/controles/form.Hidden.js"></script>
+    <script type="text/javascript" src="../js/controles/form.Textbox.js"></script>
+    <script type="text/javascript" src="../js/controles/form.TextboxCalendario.js"></script>
+    <script type="text/javascript" src="../js/controles/form.TextboxNumerico.js"></script>
+    <script type="text/javascript" src="../js/controles/form.ComboNavision.js"></script>
+
+    <script type="text/javascript" src="../js/controles/ipkRemoteDataSource.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkToolbar.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkLista.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTabla.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkFicha.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkFactory.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteTabla.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTablaEditable.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTablaRelacion.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTablaHijos.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkMostrarElegir.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteFicha.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteInfraestructura.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteDataSourceNavision.js"></script>
+    <script type="text/javascript" src="../js/controles/pruebas/UI.Lista.js"></script>
+    <script type="text/javascript" src="../js/componentes/IpkComportamientos.js"></script>
+    <script type="text/javascript" src="../js/componentes/editorComportamientos.js"></script>
+
+
+    <script type="text/javascript" src="../js/vistas/Pruebas/Factoria.js"></script>
+
+    <script type="text/javascript">
+        var editorComportamientos = undefined ;
+
+        var acciones = [
+            {
+                id: 1,
+                nombre  : 'Set',
+                options : {
+                    control : 'textbox2',
+                    valor   : '20'
+                }
+            },
+            {
+                id: 2,
+                nombre  : 'Disable',
+                options : {
+                    control : 'textbox2'
+                }
+            },
+            {
+                id: 3,
+                nombre  : 'Disable',
+                options : {
+                    control : 'textbox4'
+                }
+            },
+            {
+                id: 4,
+                nombre  : 'Alert',
+                options : {
+                    valor : 'Se han cargado los valores por defecto'
+                }
+            }
+        ];
+
+        var condicion = {
+            nombre : 'Equals',
+            options : {
+                control : 'textbox',
+                valor   : 'a'
+            }
+        };
+        var acciones2 = {
+            nombre : 'CargarNavision',
+            options : {
+                control : 'textbox',
+                valor   : ''
+            }
+        };
+
+        var comportamientoPrueba = {
+            control     : 'textbox',
+            trigger     : 'change',
+            condicion   : condicion,
+            acciones    : acciones2
+        };
+
+        var controles = [
+            {
+                Nombre  :   'textbox',
+                tipo    :   'String',
+                comportamientos : [
+                    {
+                        id: 1,
+                        control     : 'textbox',
+                        trigger     : 'change',
+                        condicion   : condicion,
+                        acciones    : acciones
+                    },
+                    {
+                        id: 2,
+                        control     : 'textbox',
+                        trigger     : 'blur',
+                        condicion   : condicion,
+                        acciones    : acciones2
+                    }
+                ]
+            },
+            {
+                nombre  :   'textbox2',
+                tipo    :   'String',
+                comportamientos : [
+                    {
+                        id: 1,
+                        control     : 'textbox',
+                        trigger     : 'blur',
+                        condicion   : condicion,
+                        acciones    : acciones
+                    }
+                ]
+            }
+        ];
+
+        var comportamiento = undefined;
+
+        $(document).ready(function(){
+            editorComportamientos = new EditorComportamientos();
+            editorComportamientos.Crear($('#editorComportamiento'));
+            //editorComportamientos.CargarControl(controles[0]);
+
+            comportamiento = new Comportamiento();
+            comportamiento.Configurar(controles[0].comportamientos[0])
+        });
+
+    </script>
+
+    <div id='ficha'>
+        <label for="textbox">Texto 1</label>
+        <input id="textbox" name="textbox" type="text" />
+        <br>
+        <label for="textbox2">Texto 2</label>
+        <input id="textbox2" name="textbox2" type="text" />
+        <br>
+        <label for="textbox3">Texto 3</label>
+        <input id="textbox3" name="textbox3" type="text" />
+        <br>
+        <label for="textbox4">Texto 4</label>
+        <input id="textbox4" name="textbox4" type="text" />
+    </div>
+
+    <br>
+
+    <div id='editorComportamiento'></div>
+
+</body>
+</html>
+

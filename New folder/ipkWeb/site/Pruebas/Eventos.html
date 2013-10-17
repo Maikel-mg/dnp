@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Eventos</title>
+    <script type="text/javascript">
+
+        var pubSub = function(){
+            this.eventos = [];
+        };
+        pubSub.prototype.suscribir = function(evento , sender, funcion  ){
+
+            var i = this.eventos.length;
+            var existe = false;
+            for( i = this.eventos.length - 1; i >= 0; i--)
+            {
+                if( this.eventos[i].evento == evento && this.eventos[i].sender === sender)
+                    existe = true;
+            }
+
+            if(!existe)
+            {
+                console.log("Evento insertado - " + evento + " *** Sender -" +  sender.nombre);
+
+                this.eventos.push({
+                    evento  : evento,
+                    sender   : sender,
+                    funcion : funcion
+                });
+            }
+
+        };
+        pubSub.prototype.publicar = function(evento, sender){
+            var i = this.eventos.length - 1;
+            for( i = this.eventos.length - 1; i >= 0; i--)
+            {
+
+                if(this.eventos[i].evento == evento  && this.eventos[i].sender === sender)
+                {
+                    console.log( this.eventos[i].evento );
+                    this.eventos[i].funcion.apply(null, [this.eventos[i].sender]);
+                }
+
+            }
+        };
+
+        this.nombre = "Ventana";
+        var ventana = this;
+
+        var ps = new pubSub();
+
+        ps.suscribir("Click", ventana, function(sender){
+            if(sender.nombre == ventana.nombre)
+                alert('Click Ventana');
+        });
+
+        ps.suscribir("DoubleClick" , ventana,  function(){
+            console.log(arguments);
+            alert('Doubleclick');
+        });
+
+        var clase1 = function(){
+            var self = this;
+            this.nombre = "Clase1";
+
+
+            ps.suscribir("Click", self, function(){
+                console.log(self);
+                if(arguments[0].nombre == self.nombre )
+                    alert('Click clase 1');
+            });
+
+            this.click = function(){
+                ps.publicar("Click", self);
+            };
+        };
+
+        var clase2 = function(){
+            var self = this;
+            this.nombre = "Clase2";
+
+            ps.suscribir("Click", self, function(){
+                console.log(self);
+                if(arguments[0].nombre == self.nombre )
+                    alert('Click clase 2');
+            });
+
+            this.click = function(){
+                ps.publicar("Click", self);
+            };
+        };
+
+        var prueba = new clase1();
+        var prueba2 = new clase2();
+
+
+
+    </script>
+</head>
+<body>
+    Eventos
+</body>
+</html>

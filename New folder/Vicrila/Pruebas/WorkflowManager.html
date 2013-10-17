@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <script type="text/javascript" src="../js/libs/json2.js"></script>
+    <link rel='stylesheet' type='text/css' href='../css/ipkweb/jquery-ui-1.8.18.custom.css' />
+    <link rel='stylesheet' type='text/css' href='../css/base.css' />
+    <link rel='stylesheet' type='text/css' href='../css/estilos.css' />
+
+    <title>Workflow Manager</title>
+    <style type="text/css">
+        .tag {
+            font-size: 8px;
+            padding: 5px;
+        }
+        .accionesPendientes{
+            display: inline-block;
+        }
+        .accionesCompletadas{
+            display: inline-block;
+        }
+        .inlineButton{
+            background-color: transparent;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .boton{
+            border: 1px solid #888;
+            padding: 3px 10px;
+        }
+
+        .boton:hover{
+            border: 2px solid #666;
+            padding: 2px 9px;
+        }
+
+        .boton:active{
+            border: 1px solid #666;
+            padding: 2px 9px;
+            background-color: #DDD;
+        }
+    </style>
+</head>
+<body>
+
+    <script type="text/javascript" src='../js/libs/jquery-1.7.1.min.js'></script>
+    <script type="text/javascript" src='../js/libs/jquery-ui-1.8.18.custom.min.js'></script>
+    <script type="text/javascript" src="../js/libs/jquery.layout.min.js"></script>
+    <script type="text/javascript" src="../js/libs/jquery.tmpl.min.js"></script>
+    <script type="text/javascript" src="../js/libs/underscore-min.js"></script>
+
+    <script type="text/javascript" src="../js/base/Utils.js"></script>
+    <script type="text/javascript" src="../js/base/framework.base.js"></script>
+    <script type="text/javascript" src="../js/base/framework.project.js"></script>
+    <script type="text/javascript" src="../js/clases/DataSource.js"></script>
+
+    <script type="text/javascript" src="../js/controles/form.CheckBox.js"></script>
+    <script type="text/javascript" src="../js/controles/form.Hidden.js"></script>
+    <script type="text/javascript" src="../js/controles/form.Textbox.js"></script>
+    <script type="text/javascript" src="../js/controles/form.TextboxCalendario.js"></script>
+    <script type="text/javascript" src="../js/controles/form.TextboxNumerico.js"></script>
+    <script type="text/javascript" src="../js/controles/form.ComboNavision.js"></script>
+
+    <script type="text/javascript" src="../js/controles/ipkRemoteDataSource.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkToolbar.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkLista.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTabla.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkFicha.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkFactory.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteTabla.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTablaEditable.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTablaRelacion.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTablaHijos.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkMostrarElegir.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteFicha.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteInfraestructura.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteDataSourceNavision.js"></script>
+    <script type="text/javascript" src="../js/controles/pruebas/UI.Lista.js"></script>
+    <script type="text/javascript" src="../js/componentes/IpkComportamientos.js"></script>
+
+    <script type="text/javascript" src="../js/componentes/workflowManager.js"></script>
+
+    <div id='trigger'>
+        <input type="button" class='boton' id='btnAbrirWorkflow' value='Lanzar Workflow' style='margin-bottom: 5px;'/>
+    </div>
+    <div id='placeHolder'></div>
+
+    <script type="text/javascript">
+
+        var wfm = undefined ;
+
+        $(document).ready(function(){
+            wfm = new WorkFlowManager({
+                contenedor : '#placeHolder',
+                trigger    : '#btnAbrirWorkflow'
+            });
+            wfm.create();
+            wfm.cargarDossier(41);
+
+        });
+
+    </script>
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+</head>
+<body>
+    <div id='listaComportamientos' ></div>
+    <div id='dlgEditorComportamiento' class='panel'>
+        <div class='panelContent'>
+            <div >
+                <label for="triggerComportamiento">Trigger</label>
+                <br>
+                <select id="triggerComportamiento" >
+                    <option value="change">Change</option>
+                    <option value="blur">Blur</option>
+                    <option value="focus">Focus</option>
+                </select>
+                <br>
+                <br>
+                <label for="condicionComportamiento">Condici&oacute;n</label>
+                <br>
+                <select id="condicionComportamiento">
+                    <option value="Equals">Equals</option>
+                    <option value="NotEquals">NotEquals</option>
+                </select>
+                <input type="text" id='condicionValor' />
+                <br>
+                <br>
+                <div id='toolbarAcciones'></div>
+                <div id='tablaAcciones'></div>
+                <div id='dlgAcciones'>
+                    <label for="acciones">Acci&oacute;n</label>
+                    <br>
+                    <select name="acciones" id="acciones">
+                        <option value="Disable">Disable</option>
+                        <option value="Enable">Enable</option>
+                        <option value="Hide">Hide</option>
+                        <option value="Show">Show</option>
+                        <option value="Set">Set</option>
+                        <option value="Alert">Alert</option>
+                        <option value="CargarNavision">CargarNavision</option>
+                        <option value="GenerarNumDossier">Generar NumDossier</option>
+                    </select>
+                    <select name="controles" id="controles"></select>
+                    <input type="text" id='valor' />
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

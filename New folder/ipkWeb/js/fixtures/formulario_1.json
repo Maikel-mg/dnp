@@ -1,0 +1,101 @@
+{
+	"versionActual" : "1",
+	"propiedades" : {
+		"nombre": "Formulario",
+		"titulo": "Formulario de prueba",
+		"fechaCreacion" : "16-05-2012"
+	},
+	"grupos" : [
+		{
+			"id": 1,
+			"nombre" : "DESARROLLO",
+			"campos" : [
+				{
+					"id" : 1,
+					"tipo" : "textbox",
+					"nombre" : "nombre",
+					"etiqueta" : "Nombre",
+					"porDefecto" : "Maikel",
+					"observaciones" : "",
+					"propiedades" : [
+						{
+
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": 2,
+			"nombre" :"COMERCIAL",
+			"campos" : [
+				{
+					"id" : 1,
+					"tipo" : "textbox",
+					"nombre" : "nombre",
+					"etiqueta" : "Nombre",
+					"porDefecto" : "Maikel",
+					"observaciones" : "",
+					"propiedades" : [
+						{
+
+						}
+					]
+				},
+				{
+					"id" : 2,
+					"tipo" : "textbox",
+					"nombre": "Apellido",
+					"etiqueta": "apellido",
+					"porDefecto" : "Merillas",
+					"observaciones" : "",
+					"propiedades" : [
+						{
+
+						}
+					]
+				},
+				{
+					"id" : 3,
+					"tipo" : "textbox",
+					"nombre": "direccion",
+					"etiqueta": "Direccion",
+					"porDefecto" : "Uribarri nº33",
+					"observaciones" : "",
+					"propiedades" : [
+						{
+
+						}
+					]
+				},
+				{
+					"id" : 4,
+					"tipo" : "checkbox",
+					"nombre": "activo",
+					"etiqueta": "Activo",
+					"porDefecto" : "true",
+					"observaciones" : "Solo los usuarios activos tienen acceso a la aplicación",
+					"propiedades" : [
+						{
+
+						}
+					]
+				},
+				{
+					"id" : 5,
+					"tipo" : "comboInterno",
+					"nombre": "activo",
+					"etiqueta": "Activo",
+					"porDefecto" : "true",
+					"observaciones" : "Solo los usuarios activos tienen acceso a la aplicación",
+					"propiedades" : [
+						{
+							"fuente" : ["SI","NO"]
+						}
+					]
+				}
+
+			]
+		}
+	]
+}

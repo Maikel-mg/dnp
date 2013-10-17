@@ -1,0 +1,108 @@
+var $Nombre$View = Class.extend({
+    initialize : function(){
+        this.initializeComponent();
+
+        return this;
+    },
+    initializeComponent : function(){
+        this.initializeData();
+        this.createVariables();
+        this.initializeUI();
+        this.initializeEvents();
+    },
+
+    createVariables : function () {
+     /*
+        this.colUsuarios = Env.colecciones('usuario', Env.dataBBDD.usuario);
+        this.colGrupos = Env.colecciones('grupo', Env.dataBBDD.grupo);
+
+        this.tablaUsuariosConfig  = {
+            type: 'Table',
+            name: 'tbUsuarios',
+            renderTo : '#gridUsuarios',
+            presentacion :  Env.presentaciones('tbUsuarios'), // _.find(this.adminBBDD.presentaciones, function(r){ return r.clave === 'tbUsuarios'}),
+            modelCollection: this.colUsuarios,
+            events: {}
+        };
+        this.fichaUsuariosConfig = {
+            type : 'Ficha',
+            name : 'fchUsuarios',
+            title : 'Edición de usuarios',
+            presentacion : Env.presentaciones('fchUsuarios'), //_.find(this.adminBBDD.presentaciones, function(r){ return r.clave === 'fchUsuarios'}),
+            events : {
+                control : {
+                    guardar : function(event){
+                        console.log('Guardamos');
+
+                        console.log(event.modo);
+                        console.log(event.nuevodDatos);
+                    }
+                }
+            }
+        };
+        this.gridUsuarios = {
+            type: 'Grid',
+            name: 'gridUsuarios',
+            fichaConfig: this.fichaUsuariosConfig,
+            tablaConfig: this.tablaUsuariosConfig
+        };
+
+        this.tablaGruposConfig  = {
+            type: 'Table',
+            name: 'tbGrupos',
+            renderTo : '#gridGrupos',
+            presentacion :  Env.presentaciones('tbGrupos'), //.find(this.adminBBDD.presentaciones, function(r){ return r.clave === 'tbGrupos'}),
+            modelCollection: this.colGrupos,
+            events: {}
+        };
+        this.fichaGruposConfig = {
+            type : 'Ficha',
+            name : 'fchGrupos',
+            title : 'Edición de grupos',
+            presentacion : Env.presentaciones('fchGrupos'), //_.find(this.adminBBDD.presentaciones, function(r){ return r.clave === 'fchGrupos'}),
+            events : {
+                control : {
+                    guardar : function(event){
+                        console.log('Guardamos');
+
+                        console.log(event.modo);
+                        console.log(event.nuevodDatos);
+                    }
+                }
+            }
+        };
+        this.gridGrupos = {
+            type: 'Grid',
+            name: 'gridGrupos',
+            fichaConfig: this.fichaGruposConfig,
+            tablaConfig: this.tablaGruposConfig
+        };
+    */
+    },
+    initializeData : function () {
+    },
+    initializeUI : function(){
+    /*
+        this.gridUsuarios = new Grid(this.gridUsuarios);
+        this.gridUsuarios.render();
+        this.gridUsuarios.tabla.toolbar.onlyIcons();
+
+        this.gridGrupos = new Grid(this.gridGrupos);
+        this.gridGrupos.render();
+        this.gridGrupos.tabla.toolbar.onlyIcons();
+     */
+    },
+    initializeEvents : function(){
+    /*
+        var that = this;
+        this.colUsuarios.on('dataChanged', function(registro){
+            that.BBDD.usuario = registro.coleccion.to_JSON();
+            localStorage[AppConfig.dataBD] = JSON.stringify( that.BBDD );
+        });
+        this.colGrupos.on('dataChanged', function(registro){
+            that.BBDD.grupo = registro.coleccion.to_JSON();
+            localStorage[AppConfig.dataBD] = JSON.stringify( that.BBDD );
+        });
+    }
+    */
+});

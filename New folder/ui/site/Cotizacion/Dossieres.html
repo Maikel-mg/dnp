@@ -1,0 +1,92 @@
+<html lang="es">
+	<head>
+		<title>Busqueda de dossieres</title>
+
+        <link rel='stylesheet' type='text/css' href='../../css/ipkweb/jquery-ui-1.8.18.custom.css' />
+        <link rel='stylesheet' type='text/css' href='../../css/base.css' />
+        <link rel='stylesheet' type='text/css' href='../../css/estilos.css' />
+
+        <style type="text/css">
+            .filtro{
+                border-left: 1px solid #DDD;
+                border-right: 1px solid #DDD;
+                border-bottom: 1px solid #DDD;
+
+
+                overflow: hidden;
+            }
+            .filtro .contenido{
+                padding: 10px;
+            }
+            .filtro .contenido label{
+                width : 150px;
+                display: inline-block;
+                text-align: right;
+
+                margin-right: 5px;
+            }
+        </style>
+	</head>
+	<body>
+
+            <div class='ui-layout-north' style='margin: 0; padding: 0; overflow: hidden;'>
+                <div id='menuPlaceholder'>
+                </div>
+            </div>
+			<div class="ui-layout-center">
+                <div id='accionesTabla'>
+                </div>
+                <div id='tablaPlaceholder' class='listado'>
+                </div>
+            </div>
+            <div class="ui-layout-south">
+                <div id='areaFiltro' class='filtro'>
+                    <span class='block-Title textAlignIzquierda' style='font-size: 17px;'>Filtro</span>
+
+                    <div id='accionesFiltro'></div>
+
+                    <div class='contenido'>
+                        <label for="Marca">Marca</label>
+                        <input type="text" id="Marca" name="Marca" class='width20p'/>
+                        <br>
+                        <label for="Cliente">Cliente</label>
+                        <input type="text" id="Cliente" name="Cliente" class='width20p'/>
+                        <br>
+                        <label for="NumDossier">Num. Dossier</label>
+                        <input type="text" id="NumDossier" name="NumDossier" class='width20p'/>
+                        <br>
+                        <label for="TipoDossier">Tipo Dossier</label>
+                        <input type="text" id="TipoDossier" name="TipoDossier" class='width20p'/>
+                    </div>
+                </div>
+            </div>
+
+		<script type="text/javascript" src='../../js/libs/jquery-1.7.1.min.js'></script>
+		<script type="text/javascript" src='../../js/libs/jquery-ui-1.8.18.custom.min.js'></script>
+		<script type="text/javascript" src="../../js/libs/jquery.layout.min.js"></script>
+		<script type="text/javascript" src="../../js/libs/jquery.tmpl.min.js"></script>
+		<script type="text/javascript" src="../../js/libs/underscore-min.js"></script>
+		<script type="text/javascript" src="../../js/base/Utils.js"></script>
+		<script type="text/javascript" src="../../js/base/framework.base.js"></script>
+        <script type="text/javascript" src="../../js/base/framework.project.js"></script>
+        <script type="text/javascript" src="../../js/clases/DataSource.js"></script>
+        <script type="text/javascript" src="../../js/controles/ipkRemoteDataSource.js"></script>
+        <script type="text/javascript" src="../../js/controles/ipkToolbar.js"></script>
+        <script type="text/javascript" src="../../js/controles/ipkLista.js"></script>
+        <script type="text/javascript" src="../../js/controles/ipkTabla.js"></script>
+        <script type="text/javascript" src="../../js/vistas/Cotizacion/Dossieres.js"></script>
+
+
+		<script type="text/javascript">
+            var pagina = undefined;
+
+            $(document).ready(function(){
+                pagina = new DossieresPage();
+			});
+		</script>
+	</body>
+</html>
+
+
+
+

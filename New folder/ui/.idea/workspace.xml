@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="39729754-0883-448c-82c7-ff854f3feb6f" name="Default" comment="" />
+    <ignored path="ui.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="ui" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf />
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="Git.Settings">
+    <option name="CHECKOUT_INCLUDE_TAGS" value="false" />
+    <option name="UPDATE_CHANGES_POLICY" value="STASH" />
+    <option name="LINE_SEPARATORS_CONVERSION" value="ASK" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/site/Manual/TablaConectada.html" />
+        <option value="$PROJECT_DIR$/js/controles/ipkTablaContectada.js" />
+        <option value="$PROJECT_DIR$/js/controles/ipkMostrarElegir.js" />
+        <option value="$PROJECT_DIR$/js/vistas/Manual/TablaConectada.js" />
+        <option value="$PROJECT_DIR$/site/Manual/MostrarElegir.html" />
+        <option value="$PROJECT_DIR$/js/vistas/Manual/MostrarElegir.js" />
+        <option value="$PROJECT_DIR$/js/controles/ipkRemoteFicha.js" />
+        <option value="$PROJECT_DIR$/site/Ficha/Ficha.html" />
+        <option value="$PROJECT_DIR$/site/Manual/FichaConectada.html" />
+        <option value="$PROJECT_DIR$/site/Manual/TablaHijos.html" />
+        <option value="$PROJECT_DIR$/js/vistas/Manual/TablaHijos.js" />
+        <option value="$PROJECT_DIR$/js/controles/ipkTabla.js" />
+        <option value="$PROJECT_DIR$/js/vistas/Manual/Ficha.js" />
+        <option value="$PROJECT_DIR$/js/controles/ipkFicha.js" />
+        <option value="$PROJECT_DIR$/js/controles/ipkTablaHijos.js" />
+        <option value="$PROJECT_DIR$/js/controles/ipkTablarelacion.js" />
+      </list>
+    </option>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1696" />
+    <option name="height" value="1026" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="Scope" currentSubView="Project Files" proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents ProjectPane="true" />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="options.lastSelected" value="preferences.externalTools" />
+    <property name="DefaultHtmlFileTemplate" value="Html" />
+    <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\inetpub\wwwroot\VCL_Cotizacion\ui\js\vistas\Manual" />
+      <recent name="C:\inetpub\wwwroot\VCL_Cotizacion\ui\site\Manual" />
+      <recent name="C:\inetpub\wwwroot\VCL_Cotizacion\ui\js\controles" />
+      <recent name="C:\inetpub\wwwroot\VCL_Cotizacion\ui\js\vistas" />
+      <recent name="C:\inetpub\wwwroot\VCL_Cotizacion\ui\site" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JavascriptDebugSession" factoryName="Local">
+      <JSDebuggerConfigurationSettings>
+        <option name="engineId" value="embedded" />
+        <option name="fileUrl" />
+      </JSDebuggerConfigurationSettings>
+      <method />
+    </configuration>
+    <list size="0" />
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration" maxAnnotateRevisions="500">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="DETECT_NESTED_COPIES" value="true" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <configuration useDefault="true">C:\Users\mg01\AppData\Roaming\Subversion</configuration>
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="39729754-0883-448c-82c7-ff854f3feb6f" name="Default" comment="" />
+      <created>1344248675369</created>
+      <updated>1344248675369</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19362745" sideWeight="0.67741936" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32258064" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="CHECK_NEW_TODO" value="true" />
+    <option name="myTodoPanelSettings">
+      <value>
+        <are-packages-shown value="false" />
+        <are-modules-shown value="false" />
+        <flatten-packages value="false" />
+        <is-autoscroll-to-source value="false" />
+      </value>
+    </option>
+    <option name="PERFORM_UPDATE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_COMMIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
+    <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="false" />
+    <option name="ENABLE_BACKGROUND_PROCESSES" value="false" />
+    <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
+    <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
+    <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
+    <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
+    <option name="SHORT_DIFF_HORISONTALLY" value="true" />
+    <option name="SHORT_DIFF_EXTRA_LINES" value="2" />
+    <option name="SOFT_WRAPS_IN_SHORT_DIFF" value="true" />
+    <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
+    <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
+    <option name="CREATE_PATCH_EXPAND_DETAILS_DEFAULT" value="true" />
+    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
+    <option name="LAST_COMMIT_MESSAGE" />
+    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
+    <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
+    <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
+    <option name="ACTIVE_VCS_NAME" />
+    <option name="UPDATE_GROUP_BY_PACKAGES" value="false" />
+    <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
+    <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
+    <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/js/vistas/Manual/TablaHijos.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="57" selection-start="793" selection-end="793" vertical-scroll-proportion="0.54092526" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/site/Manual/FichaConectada.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="0" selection-start="1174" selection-end="2586" vertical-scroll-proportion="0.23067485" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/site/Manual/TablaHijos.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="13" selection-start="453" selection-end="468" vertical-scroll-proportion="0.30306748" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/controles/ipkRemoteFicha.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="21" selection-start="183" selection-end="183" vertical-scroll-proportion="0.022538552">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/componentes/arbolEstructura.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="205" column="2" selection-start="7309" selection-end="7309" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/vistas/Manual/MostrarElegir.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="29" selection-start="720" selection-end="741" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/controles/ipkLista.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="237" column="2" selection-start="7145" selection-end="7468" vertical-scroll-proportion="0.74377227">
+          <folding>
+            <element signature="e#38#462#0" expanded="false" />
+            <element signature="e#60#148#0" expanded="false" />
+            <element signature="e#155#179#0" expanded="false" />
+            <element signature="e#466#579#0" expanded="false" />
+            <element signature="e#618#644#0" expanded="false" />
+            <element signature="e#688#868#0" expanded="false" />
+            <element signature="e#917#1376#0" expanded="false" />
+            <element signature="e#1452#1614#0" expanded="false" />
+            <element signature="e#1666#1864#0" expanded="false" />
+            <element signature="e#1914#1965#0" expanded="false" />
+            <element signature="e#2012#2113#0" expanded="false" />
+            <element signature="e#2163#3271#0" expanded="false" />
+            <element signature="e#2259#2442#0" expanded="false" />
+            <element signature="e#2319#2397#0" expanded="false" />
+            <element signature="e#2530#2804#0" expanded="false" />
+            <element signature="e#2647#2756#0" expanded="false" />
+            <element signature="e#2894#3167#0" expanded="false" />
+            <element signature="e#3011#3120#0" expanded="false" />
+            <element signature="e#3231#3267#0" expanded="false" />
+            <element signature="e#3320#3925#0" expanded="false" />
+            <element signature="e#3972#4287#0" expanded="false" />
+            <element signature="e#3998#4092#0" expanded="false" />
+            <element signature="e#4327#4630#0" expanded="false" />
+            <element signature="e#4692#5235#0" expanded="false" />
+            <element signature="e#4765#5062#0" expanded="false" />
+            <element signature="e#4817#5056#0" expanded="false" />
+            <element signature="e#5126#5232#0" expanded="false" />
+            <element signature="e#5289#5606#0" expanded="false" />
+            <element signature="e#5664#6006#0" expanded="false" />
+            <element signature="e#6055#6213#0" expanded="false" />
+            <element signature="e#6266#6300#0" expanded="false" />
+            <element signature="e#6359#6638#0" expanded="false" />
+            <element signature="e#6430#6486#0" expanded="false" />
+            <element signature="e#6500#6620#0" expanded="false" />
+            <element signature="e#6690#6973#0" expanded="false" />
+            <element signature="e#6735#6848#0" expanded="false" />
+            <element signature="e#6858#6971#0" expanded="false" />
+            <element signature="e#7029#7143#0" expanded="false" />
+            <element signature="e#7470#7574#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ipkWeb/js/vistas/Pruebas/Estructura.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="158" column="31" selection-start="5555" selection-end="5555" vertical-scroll-proportion="0.48410758">
+          <folding>
+            <element signature="e#1354#1979#0" expanded="false" />
+            <element signature="e#2192#2566#0" expanded="false" />
+            <element signature="e#2651#2797#0" expanded="false" />
+            <element signature="e#3571#3626#0" expanded="false" />
+            <element signature="e#3710#4066#0" expanded="false" />
+            <element signature="e#4151#4288#0" expanded="false" />
+            <element signature="e#4413#4523#0" expanded="false" />
+            <element signature="e#4573#4731#0" expanded="false" />
+            <element signature="e#4779#4936#0" expanded="false" />
+            <element signature="e#4984#5140#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/controles/ipkTablaContectada.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="0" selection-start="559" selection-end="559" vertical-scroll-proportion="0.45077106">
+          <folding>
+            <element signature="e#404#474#0" expanded="false" />
+            <element signature="e#683#1399#0" expanded="false" />
+            <element signature="e#752#818#0" expanded="false" />
+            <element signature="e#873#1396#0" expanded="false" />
+            <element signature="e#919#1339#0" expanded="false" />
+            <element signature="e#1055#1329#0" expanded="false" />
+            <element signature="e#1456#2648#0" expanded="false" />
+            <element signature="e#1524#1590#0" expanded="false" />
+            <element signature="e#1644#2091#0" expanded="false" />
+            <element signature="e#1690#2034#0" expanded="false" />
+            <element signature="e#1826#2023#0" expanded="false" />
+            <element signature="e#2142#2645#0" expanded="false" />
+            <element signature="e#2188#2588#0" expanded="false" />
+            <element signature="e#2324#2578#0" expanded="false" />
+            <element signature="e#2706#3332#0" expanded="false" />
+            <element signature="e#2775#2843#0" expanded="false" />
+            <element signature="e#2897#3329#0" expanded="false" />
+            <element signature="e#2943#3272#0" expanded="false" />
+            <element signature="e#3079#3262#0" expanded="false" />
+            <element signature="e#3395#3578#0" expanded="false" />
+            <element signature="e#3658#3760#0" expanded="false" />
+            <element signature="e#3917#4033#0" expanded="false" />
+            <element signature="e#3937#3981#0" expanded="false" />
+            <element signature="e#4102#4351#0" expanded="false" />
+            <element signature="e#4181#4239#0" expanded="false" />
+            <element signature="e#4409#4443#0" expanded="false" />
+            <element signature="e#4499#4534#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/controles/ipkRemoteTabla.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/controles/ipkTabla.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="133" column="2" selection-start="4002" selection-end="4002" vertical-scroll-proportion="0.36061683">
+          <folding>
+            <element signature="e#38#377#0" expanded="false" />
+            <element signature="e#69#103#0" expanded="false" />
+            <element signature="e#593#692#0" expanded="false" />
+            <element signature="e#736#994#0" expanded="false" />
+            <element signature="e#1046#1205#0" expanded="false" />
+            <element signature="e#1268#1831#0" expanded="false" />
+            <element signature="e#1453#1769#0" expanded="false" />
+            <element signature="e#1510#1761#0" expanded="false" />
+            <element signature="e#1558#1751#0" expanded="false" />
+            <element signature="e#1883#2226#0" expanded="false" />
+            <element signature="e#1915#2201#0" expanded="false" />
+            <element signature="e#2276#2358#0" expanded="false" />
+            <element signature="e#2405#2579#0" expanded="false" />
+            <element signature="e#2640#3408#0" expanded="false" />
+            <element signature="e#2681#3406#0" expanded="false" />
+            <element signature="e#3081#3229#0" expanded="false" />
+            <element signature="e#3461#4001#0" expanded="false" />
+            <element signature="e#3501#3999#0" expanded="false" />
+            <element signature="e#4051#4340#0" expanded="false" />
+            <element signature="e#4079#4090#0" expanded="false" />
+            <element signature="e#4183#4202#0" expanded="false" />
+            <element signature="e#4262#4336#0" expanded="false" />
+            <element signature="e#4393#4457#0" expanded="false" />
+            <element signature="e#4502#4820#0" expanded="false" />
+            <element signature="e#4864#4923#0" expanded="false" />
+            <element signature="e#4971#5693#0" expanded="false" />
+            <element signature="e#5333#5593#0" expanded="false" />
+            <element signature="e#5425#5587#0" expanded="false" />
+            <element signature="e#5740#6212#0" expanded="false" />
+            <element signature="e#5766#5853#0" expanded="false" />
+            <element signature="e#6265#6378#0" expanded="false" />
+            <element signature="e#6431#6468#0" expanded="false" />
+            <element signature="e#6527#6813#0" expanded="false" />
+            <element signature="e#6601#6657#0" expanded="false" />
+            <element signature="e#6671#6795#0" expanded="false" />
+            <element signature="e#6869#7020#0" expanded="false" />
+            <element signature="e#7074#7138#0" expanded="false" />
+            <element signature="e#7187#7333#0" expanded="false" />
+            <element signature="e#7336#7440#0" expanded="false" />
+            <element signature="e#7489#7776#0" expanded="false" />
+            <element signature="e#7694#7774#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/vistas/Manual/Ficha.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="0" selection-start="398" selection-end="398" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/controles/ipkFicha.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="349" column="0" selection-start="11241" selection-end="11241" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#38#481#0" expanded="false" />
+            <element signature="e#359#408#0" expanded="false" />
+            <element signature="e#422#479#0" expanded="false" />
+            <element signature="e#522#644#0" expanded="false" />
+            <element signature="e#584#606#0" expanded="false" />
+            <element signature="e#743#1051#0" expanded="false" />
+            <element signature="e#1100#3230#0" expanded="false" />
+            <element signature="e#1298#1369#0" expanded="false" />
+            <element signature="e#1403#1558#0" expanded="false" />
+            <element signature="e#1591#1745#0" expanded="false" />
+            <element signature="e#1778#1932#0" expanded="false" />
+            <element signature="e#1965#2118#0" expanded="false" />
+            <element signature="e#2151#2323#0" expanded="false" />
+            <element signature="e#2386#2585#0" expanded="false" />
+            <element signature="e#2625#2733#0" expanded="false" />
+            <element signature="e#2773#2880#0" expanded="false" />
+            <element signature="e#2921#3029#0" expanded="false" />
+            <element signature="e#3071#3227#0" expanded="false" />
+            <element signature="e#3290#3448#0" expanded="false" />
+            <element signature="e#3504#3648#0" expanded="false" />
+            <element signature="e#3948#9757#0" expanded="false" />
+            <element signature="e#4358#9486#0" expanded="false" />
+            <element signature="e#4417#4740#0" expanded="false" />
+            <element signature="e#4762#9480#0" expanded="false" />
+            <element signature="e#4776#9470#0" expanded="false" />
+            <element signature="e#4857#5226#0" expanded="false" />
+            <element signature="e#5277#5756#0" expanded="false" />
+            <element signature="e#5339#5710#0" expanded="false" />
+            <element signature="e#5806#6226#0" expanded="false" />
+            <element signature="e#6278#7881#0" expanded="false" />
+            <element signature="e#6360#7834#0" expanded="false" />
+            <element signature="e#6584#7616#0" expanded="false" />
+            <element signature="e#6662#7069#0" expanded="false" />
+            <element signature="e#7131#7533#0" expanded="false" />
+            <element signature="e#7928#8449#0" expanded="false" />
+            <element signature="e#7989#8108#0" expanded="false" />
+            <element signature="e#8497#9017#0" expanded="false" />
+            <element signature="e#8558#8676#0" expanded="false" />
+            <element signature="e#9060#9456#0" expanded="false" />
+            <element signature="e#10027#10161#0" expanded="false" />
+            <element signature="e#10204#10376#0" expanded="false" />
+            <element signature="e#10418#10589#0" expanded="false" />
+            <element signature="e#10874#11108#0" expanded="false" />
+            <element signature="e#12212#12383#0" expanded="false" />
+            <element signature="e#12423#12595#0" expanded="false" />
+            <element signature="e#12630#12801#0" expanded="false" />
+            <element signature="e#12978#13093#0" expanded="false" />
+            <element signature="e#13140#13191#0" expanded="false" />
+            <element signature="e#13236#14401#0" expanded="false" />
+            <element signature="e#13286#13440#0" expanded="false" />
+            <element signature="e#13361#13431#0" expanded="false" />
+            <element signature="e#13486#13753#0" expanded="false" />
+            <element signature="e#13798#14066#0" expanded="false" />
+            <element signature="e#14108#14376#0" expanded="false" />
+            <element signature="e#14448#14480#0" expanded="false" />
+            <element signature="e#14536#15533#0" expanded="false" />
+            <element signature="e#14797#15512#0" expanded="false" />
+            <element signature="e#14938#15506#0" expanded="false" />
+            <element signature="e#15008#15205#0" expanded="false" />
+            <element signature="e#15067#15191#0" expanded="false" />
+            <element signature="e#15235#15496#0" expanded="false" />
+            <element signature="e#15335#15482#0" expanded="false" />
+            <element signature="e#15574#15657#0" expanded="false" />
+            <element signature="e#15703#15864#0" expanded="false" />
+            <element signature="e#15908#16007#0" expanded="false" />
+            <element signature="e#16051#16110#0" expanded="false" />
+            <element signature="e#16165#16221#0" expanded="false" />
+            <element signature="e#16520#16640#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/controles/ipkTablaHijos.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="375" column="3" selection-start="10058" selection-end="10058" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#379#742#0" expanded="false" />
+            <element signature="e#790#880#0" expanded="false" />
+            <element signature="e#937#1258#0" expanded="false" />
+            <element signature="e#1315#1599#0" expanded="false" />
+            <element signature="e#1651#3072#0" expanded="false" />
+            <element signature="e#1862#1933#0" expanded="false" />
+            <element signature="e#1967#2132#0" expanded="false" />
+            <element signature="e#2165#2349#0" expanded="false" />
+            <element signature="e#2382#2549#0" expanded="false" />
+            <element signature="e#2582#2749#0" expanded="false" />
+            <element signature="e#2816#2847#0" expanded="false" />
+            <element signature="e#2889#2925#0" expanded="false" />
+            <element signature="e#2965#2997#0" expanded="false" />
+            <element signature="e#3037#3069#0" expanded="false" />
+            <element signature="e#3194#10058#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/controles/ipkTablarelacion.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="55" selection-start="732" selection-end="732" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#269#339#0" expanded="false" />
+            <element signature="e#861#983#0" expanded="false" />
+            <element signature="e#1043#1297#0" expanded="false" />
+            <element signature="e#1357#1641#0" expanded="false" />
+            <element signature="e#1696#3218#0" expanded="false" />
+            <element signature="e#1907#1978#0" expanded="false" />
+            <element signature="e#2012#2199#0" expanded="false" />
+            <element signature="e#2232#2422#0" expanded="false" />
+            <element signature="e#2492#2535#0" expanded="false" />
+            <element signature="e#2585#3215#0" expanded="false" />
+            <element signature="e#2681#2856#0" expanded="false" />
+            <element signature="e#2879#3025#0" expanded="false" />
+            <element signature="e#3278#4157#0" expanded="false" />
+            <element signature="e#3547#4154#0" expanded="false" />
+            <element signature="e#3570#3745#0" expanded="false" />
+            <element signature="e#3768#3953#0" expanded="false" />
+            <element signature="e#4160#7562#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/controles/ipkMostrarElegir.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="32" selection-start="613" selection-end="614" vertical-scroll-proportion="0.022538552">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
+

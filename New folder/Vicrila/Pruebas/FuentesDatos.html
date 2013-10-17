@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <script type="text/javascript" src="../js/libs/json2.js"></script>
+    <link rel='stylesheet' type='text/css' href='../css/ipkweb/jquery-ui-1.8.18.custom.css' />
+    <link rel='stylesheet' type='text/css' href='../css/base.css' />
+    <link rel='stylesheet' type='text/css' href='../css/estilos.css' />
+
+    <title>Fuentes de datos</title>
+</head>
+<body>
+
+    <script type="text/javascript" src='../js/libs/jquery-1.7.1.min.js'></script>
+    <script type="text/javascript" src='../js/libs/jquery-ui-1.8.18.custom.min.js'></script>
+    <script type="text/javascript" src="../js/libs/jquery.layout.min.js"></script>
+    <script type="text/javascript" src="../js/libs/jquery.tmpl.min.js"></script>
+    <script type="text/javascript" src="../js/libs/underscore-min.js"></script>
+
+    <script type="text/javascript" src="../js/base/Utils.js"></script>
+    <script type="text/javascript" src="../js/base/framework.base.js"></script>
+    <script type="text/javascript" src="../js/base/framework.project.js"></script>
+    <script type="text/javascript" src="../js/clases/DataSource.js"></script>
+
+    <script type="text/javascript" src="../js/controles/form.CheckBox.js"></script>
+    <script type="text/javascript" src="../js/controles/form.Hidden.js"></script>
+    <script type="text/javascript" src="../js/controles/form.Textbox.js"></script>
+    <script type="text/javascript" src="../js/controles/form.TextboxCalendario.js"></script>
+    <script type="text/javascript" src="../js/controles/form.TextboxNumerico.js"></script>
+    <script type="text/javascript" src="../js/controles/form.ComboNavision.js"></script>
+
+    <script type="text/javascript" src="../js/controles/ipkRemoteDataSource.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkToolbar.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkLista.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTabla.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkFicha.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkFactory.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteTabla.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTablaEditable.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTablaRelacion.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkTablaHijos.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkMostrarElegir.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteFicha.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteInfraestructura.js"></script>
+    <script type="text/javascript" src="../js/controles/ipkRemoteDataSourceNavision.js"></script>
+    <script type="text/javascript" src="../js/controles/pruebas/UI.Lista.js"></script>
+    <script type="text/javascript" src="../js/componentes/IpkComportamientos.js"></script>
+    <script type="text/javascript" src="../js/componentes/editorComportamientos.js"></script>
+
+    <script type="text/javascript" src="../js/vistas/Pruebas/Factoria.js"></script>
+
+    <script type="text/javascript">
+        var tabla = undefined;
+        var toolbar = undefined;
+
+        var configuracionTabla = {
+            id         : 'tabla',
+            contenedor : 'tablaContainer'
+        };
+        var columnas = [
+            {
+                Nombre  : 'id',
+                Titulo  : 'id',
+                Tipo    : 'Int32',
+                Ancho   : '15px',
+                EsClave : true
+            },
+            {
+                Nombre  : 'Valor',
+                Titulo  : 'Valor',
+                Tipo    : 'String',
+                Ancho   : '15px',
+                Orden   : 1,
+                EsClave : false
+            },
+            {
+                Nombre  : 'Texto',
+                Titulo  : 'Texto',
+                Tipo    : 'String',
+                Ancho   : '100px',
+                Orden   : 2,
+                EsClave : false
+            }
+        ];
+        var datos = [
+            {
+                id : 1,
+                Valor : "EM",
+                Texto : "EMBALAJE"
+            },
+            {
+                id : 2,
+                Valor : "VD",
+                Texto : "Modificacion EMBALAJE"
+            }
+        ];
+
+        var configuracionToolbar = {
+            id         : 'toolbar',
+            contenedor : 'toolbarContainer'
+        };
+
+        $(document).ready(function(){
+
+            tabla = new IpkTabla(configuracionTabla);
+            tabla.setColumnas(columnas);
+            tabla.setDatos(datos);
+
+            tabla.onRowClicked = function(){
+                var self = this;
+                var idRegistro = this.getIdRegistroSeleccionada();
+                var registro   = _.find(this.datos.data, function(e){return e[self.campoClave()] == idRegistro;});
+
+                $('#valor').val(registro.Valor);
+                $('#texto').val(registro.Texto);
+            };
+
+            toolbar = new IpkToolbar(configuracionToolbar);
+            toolbar.agregarBoton({
+                nombre : 'BtnAddElement',
+                descripcion : 'Añadir un nuevo elemento en la colecci&oacute;n',
+                text : '',
+                icono : 'icon-plus',
+                accessKey : 'a'
+            });
+            toolbar.agregarBoton({
+                nombre : 'BtnEditElement',
+                descripcion : 'Edita un elemento en la colecci&oacute;n',
+                text : '',
+                icono : 'icon-pencil',
+                accessKey : 'e'
+            });
+            toolbar.agregarBoton({
+                nombre : 'BtnDeleteElement',
+                descripcion : 'Elimina el elemento seleccionado en la colecci&oacute;n',
+                text : '',
+                icono : 'icon-trash',
+                accessKey : 'b'
+            });
+
+            toolbar.onBtnAddElement = function(){
+                $('#valor').val('');
+                $('#texto').val('');
+
+                $('#editorFuenteDatos').dialog('open');
+            };
+            toolbar.onBtnEditElement = function(){
+                var self = this;
+                var idRegistro = tabla.getIdRegistroSeleccionada();
+                var registro   = _.find(tabla.datos.data, function(e){return e[tabla.campoClave()] == idRegistro;});
+
+                $('#valor').val(registro.Valor);
+                $('#texto').val(registro.Texto);
+
+                $('#editorFuenteDatos').dialog('open');
+            };
+            toolbar.onBtnDeleteElement = function(){
+
+            };
+
+            $('#editorFuenteDatos').dialog({
+                autoOpen    : false,
+                modal       : true,
+                title       : 'Edicion Elemento',
+                width       : '450',
+                buttons     :{
+                    'Guardar'  : function(){
+
+                        $(this).dialog('close');
+                    },
+                    'Cancelar' : function(){
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        });
+
+    </script>
+
+    <style type="text/css">
+        #datosFuenteDatos .toolbar{
+            margin: 0;
+        }
+        #editorFuenteDatos label{
+            display: inline-block;
+        }
+    </style>
+
+    <div id='datosFuenteDatos' style='width: 100%;'>
+        <div id='toolbarContainer'></div>
+        <div id='tablaContainer'></div>
+    </div>
+
+    <div id='editorFuenteDatos'>
+        <label for="valor" style="width: 100px">Valor</label>
+        <label for="texto" style="width: 250px">Texto</label>
+        <br>
+        <input type="text" id="valor" name="valor" style="width: 95px"/>
+        <input type="text" id="texto" name="texto" style="width: 300px"/>
+        <br>
+    </div>
+
+</body>
+</html>
+

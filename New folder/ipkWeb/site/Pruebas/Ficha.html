@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Ficha</title>
+    <link rel='stylesheet' type='text/css' href='../../css/ipktheme/jquery-ui-1.8.18.custom.css' />
+    <link rel='stylesheet' type='text/css' href='../../css/base.css' />
+    <link rel='stylesheet' type='text/css' href='../../css/estilos.css' />
+</head>
+<body>
+<style type="text/css">
+    .areaNoficaciones .btnClose{
+        position: relative;
+        right: 5px;
+        top: 5px;
+        float : right;
+        margin: 0;
+        padding:0;
+        margin-right: 10px;
+    }
+
+    .areaNoficaciones{
+        display: none;
+        margin: 0;
+        padding: 0;
+        color: #999;
+        height: 100px;
+        border-bottom: 1px solid #DDD;
+        margin-top: -5px;
+    }
+    
+    .controles{
+        padding: 10px 5px;
+    }
+    .ficha{
+        border-left: 1px solid #DDD;
+        border-right: 1px solid #DDD;
+        border-bottom: 1px solid #DDD;
+    }
+</style>
+<div id='contenido'>
+    <div id='informacion'>
+        <h2>Proyecto Cotizaci&oacute;n</h2>
+    </div>
+    <div id='resumen'>
+        <div class='ficha'>
+            <div id='toolbar' class='toolbar'>
+                <ul>
+                    <li class='botonConsulta btnEditar' title='Editar el registro'>
+                        <a href="#">
+                            <span class='icon-pencil'></span><span>Editar</span>
+                        </a>
+                    </li>
+                    <li class='botonConsulta btnBorrar' title='Borrar el registro'>
+                        <a href="#borrar">
+                            <span class='icon-trash'></span><span>Borrar</span>
+                        </a>
+                    </li>
+                    <li class='botonConsulta btnCopiar' title='Copiar el registro'>
+                        <a href="#copiar">
+                            <span class='icon-repeat'></span> <span>Copiar</span>
+                        </a>
+                    </li>
+                    <li class='botonEdicion btnGuardar' title='Guardar el registro'>
+                        <a href="#guardar">
+                            <span class='icon-ok'></span> <span>Guardar</span>
+                        </a>
+                    </li>
+                    <li class='botonEdicion btnCancelar' title='Cancelar la edicion del registro'>
+                        <a href="#cancelar">
+                            <span class='icon-remove'></span> <span>Cancelar</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class='clearFix'></div>
+            </div>
+            <div id='areaNotificaciones' class='areaNoficaciones'>
+                <div class='btnClose'>
+                    <a href="#cerrar">X</a>
+                </div>
+                <p>Area de notificaciones</p>
+            </div>
+            <div id='ctrlFormulario' class='controles'></div>
+        </div>
+
+    </div>
+</div>
+
+<script	type="text/template" id="fichaTemplate">
+    <tr id='ficha-${IdModelo}'>
+        <td>${Entidad}</td>
+        <td>${Nombre}</td>
+    </tr>
+</script>
+<script	type="text/template" id="modeloTemplate">
+    <tr id='modelo-${IdModelo}'>
+        <td>${Nombre}</td>
+    </tr>
+</script>
+<style type="text/css">
+    label{
+        width : 150px;
+        display: inline-block;
+        text-align: right;
+    }
+</style>
+
+<script type="text/javascript" src='../../js/libs/jquery-1.7.1.min.js'></script>
+<script type="text/javascript" src='../../js/libs/jquery-ui-1.8.18.custom.min.js'></script>
+<script type="text/javascript" src="../../js/libs/jquery.layout.min.js"></script>
+<script type="text/javascript" src="../../js/libs/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../../js/libs/underscore-min.js"></script>
+<script type="text/javascript" src="../../js/base/Utils.js"></script>
+<script type="text/javascript" src="../../js/base/framework.base.js"></script>
+<script type="text/javascript" src="../../js/base/framework.project.js"></script>
+<script type="text/javascript" src="../../js/componentes/ComponenteFicha.js"></script>
+<script type="text/javascript" src="../../js/vistas/Pruebas/Ficha.js"></script>
+<script type="text/javascript">
+        var controller;
+
+        $(document).ready(function(){
+
+            var parametros = {
+                Entidad : $.QueryString["entidad"],
+                Clave   : $.QueryString["clave"]
+            };
+
+            controller = new Ficha(parametros);
+        });
+
+    </script>
+
+<script	type="text/template" id="booleanTemplate">
+    <label for="${Nombre}" class="">${Nombre}</label>
+    <input type="checkbox" name="${Nombre}" id="${Nombre}" class="${Tipo}" />
+    <br>
+</script>
+
+<script	type="text/template" id="referenciaTemplate">
+    <label for="${Nombre}" class="">${Nombre}</label>
+    <input type="text" name="${Nombre}" id="${Nombre}" class="${Tipo}" />
+    <a id="${Nombre}-enlace" href="Ficha.html?entidad=${Nombre}&clave=${IdReferencia}">Ver</a>
+    <br>
+</script>
+
+<script	type="text/template" id="campoTemplate">
+    <label for="${Nombre}" class="">${Nombre}</label>
+    <input type="text" name="${Nombre}" id="${Nombre}" class="${Tipo}" />
+    <br>
+</script>
+</body>
+</html>

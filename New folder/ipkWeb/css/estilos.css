@@ -1,0 +1,101 @@
+body{
+	font-family: "arial";
+	font-family: "verdana";
+
+
+}
+
+.title{
+	font: normal 1.2em Arial, sans-serif;
+	border-right: 1px solid #DDD;
+	padding: 5px;
+}
+
+.block-Title{
+	background-color: #EEE;
+	background-color: #424242;
+	color: #FFF;
+	border-bottom: 1px solid #DDD;
+	border-bottom: 1px solid #424242;
+	display: block;
+	font: normal bold .8em Arial, sans-serif;
+	padding: 3px 5px;
+	text-align: center;
+}
+
+
+/*
+	CONTENIDO
+*/
+#content{
+	border: 1px solid #DDD;
+	border: 1px solid #333;
+	color: #666;
+	height: 90%;
+}
+	#left-content{
+
+		border-right: 2px solid #DDD;
+		border-right: 2px solid #424242;
+		float:left;
+		height: 100%;
+		width: 150px;
+	}
+
+	#center-content{
+		padding: 0px 5px;
+		float: left;
+	}
+		#center-content table{
+			border: 1px solid #E9E9E9;
+			border-collapse: collapse;
+
+			font-size: 12px;
+			width : 100%;
+		}
+			#center-content table thead{ 
+				background-color: #00A8C6; 
+				color:#FFF;
+			}
+				#center-content table thead tr th{ 
+					padding : 3px; 
+				}
+			#center-content table tbody tr td{ 
+				padding : 5px; 
+			}
+			#center-content table tfoot tr td{ 
+				background-color: #E9E9E9;
+				color: #666;
+				padding : 3px; 
+			}
+
+	#right-content{
+		width: 200px;
+		height: 100%;
+		border-left: 2px solid #DDD;
+		border-left: 2px solid #424242;
+		float:right;
+	}
+
+
+#panelPropiedades label{
+	margin-top : 5px;
+	display: inline-block;
+	font-size: 14px;
+}
+
+.ui-dialog .ui-dialog-content { font-size: 16px;  padding: 15px 10px;}
+.ui-dialog .ui-dialog-buttonpane { padding: 5px;}
+.ui-button-text {  font-size: 14px;}
+
+
+.ui-tabs .ui-tabs-nav {
+    margin: 0;
+    padding: 0;
+    background-image: none;
+    background-color: #E9E9E9;
+}
+.ui-tabs-nav .ui-widget-header {
+    border: none;
+    background-image: none;
+}

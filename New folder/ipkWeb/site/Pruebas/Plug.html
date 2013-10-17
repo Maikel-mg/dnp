@@ -1,0 +1,391 @@
+
+
+<html>
+	<head>
+		<title>Configuraci&oacute;n de modelos</title>
+		<style type="text/css">
+	/**
+	 *	Basic Layout Theme
+	 * 
+	 *	This theme uses the default layout class-names for all classes
+	 *	Add any 'custom class-names', from options: paneClass, resizerClass, togglerClass
+	 */
+	body{
+		font-family: Arial;
+	}
+
+	.ui-layout-pane { /* all 'panes' */ 
+		background: #FFF; 
+		border: 1px solid #BBB; 
+		padding: 10px; 
+		overflow: auto;
+	} 
+
+	.ui-layout-resizer { /* all 'resizer-bars' */ 
+		background: #DDD; 
+	} 
+
+	.ui-layout-toggler { /* all 'toggler-buttons' */ 
+		background: #AAA; 
+	} 
+
+
+	#grupos {
+		border: 1px solid #DDD;
+		font-family: Arial;
+
+		margin:0px;
+		padding: 0px;
+
+	}
+	#grupos li{
+		/*background-color: #E9E9E9;*/
+		font-size: 13px;
+		border-bottom: 1px solid #CCC;
+		padding:5px 5px;
+		list-style-type: none;
+	}
+	#grupos li:hover{
+		background-color: #EEE;
+		border-bottom: 1px solid #CCC;
+		font-weight: bold;
+
+	}
+	#grupos li.seleccionado{
+		background-color: #E9e9e9;
+		background-color: #C6E031;
+		font-weight: bold;
+	}
+	#grupos li a{
+		text-decoration:  none;
+		color: #333;
+	}
+
+	.miniToolbar{
+		background-color: #E9E9E9;
+		border:1px solid #D9D9D9;
+		width: 100%;
+		margin:0px 0px 5px 0px;
+		padding:0px;
+	}
+		.miniToolbar ul{
+			margin:0px;
+			padding:0px;	
+		}
+		.miniToolbar ul li{
+			border-right: 1px solid #CCC;
+			float: left;
+			font-size: 13px;
+			list-style-type: none;
+			margin:0px;
+			padding:5px 5px 5px 7px; 
+			width: 20px;
+		}
+		.miniToolbar ul li:hover{
+			background-color: #DDD;
+			border-right: 1px solid #888;
+		}
+		.miniToolbar ul a{
+			text-decoration: none;
+			color: #333;
+		}
+
+	#listadoCampos tbody tr:hover{
+		background-color: #E9E9E9;
+	}
+		#listadoCampos tbody tr.seleccionado{
+			background-color: #C6E031;		
+			font-weight: bold;
+		}
+
+	.listado tbody tr:hover{
+		background-color: #E9E9E9;
+	}
+		.listado tbody tr.seleccionado{
+			background-color: #C6E031;		
+			font-weight: bold;
+		}
+
+	.clearFix{
+		clear: both;
+	}
+
+
+	</style>
+        <link rel='stylesheet' type='text/css' href='../../css/ipktheme/jquery-ui-1.8.18.custom.css' />
+        <link rel='stylesheet' type='text/css' href='../../css/base.css' />
+        <link rel='stylesheet' type='text/css' href='../../css/estilos.css' />
+	</head>
+	<body>
+			<div class='ui-layout-north'>
+				<span class=''>Configurador modelos</span>
+			</div>
+			<div class="ui-layout-west">
+				<span class='block-Title'>Modelos</span>
+				<ul id='grupos'>
+				</ul>
+				<div id='toolbarCampos' class='miniToolbar'>
+					<ul>
+						<li id='btnNuevoGrupo' title='A&ntilde;adir nuevo'>
+							<a href="#" class='ui-icon ui-icon-plusthick' ></a>
+						</li>
+					</ul>
+					<div class='clearFix'></div>
+				</div>
+			</div>
+			<div class="ui-layout-east">
+                <span class='block-Title'>Propiedades</span>
+                <div id='panelPropiedades'>
+                    <label for='nombreCampo'>Nombre:</label>
+                    <br>
+                    <input type='text' id='nombreCampo' name='nombreCampo' style='width:100%;'/>
+                    <br>
+                    <input type='checkbox' id='esClave' /> <span style='font-size:10px;'>Clave Primaria</span>
+                    <br>
+                    <input type='checkbox' id='esIndice' /> <span style='font-size:10px;'>Indice Unico</span>
+                    <br>
+                    <input type='checkbox' id='obligatorio' /> <span style='font-size:10px;'>Obligatorio</span>
+                    <br>
+                    <label for='tipoCampo'>Tipo:</label>
+                    <br>
+                    <select id='tipoCampo' name='tipoCampo' style='width:100%;'>
+                        <option value='String'>Texto</option>
+                        <option value='Int32'>Numerico</option>
+                        <option value='DateTime'>Fecha</option>
+                        <option value='Boolean'>Checkbox</option>
+                        <option value='Reference'>Referencia</option>
+                        <option value='Collection'>Colecci&oacute;n</option>
+                    </select>
+                    <select id='referencia' name='referencia' style='width:100%;' class='noDisplay'>
+                    </select>
+                    <br>
+                </div>
+                <div id='botoneraPropiedades'>
+                    <input type='button' id='btnGuardar' value='Guardar' />
+                    <input type='button' id='btnCancelar' value='Cancelar' />
+                </div>
+			</div>
+			<div class="ui-layout-south">
+				Consola
+			</div>
+			<div class="ui-layout-center">
+				<div id='center-content' class="width100p">
+                    <h3 id='tituloCentro'>TITULO</h3>
+                    <div id="listado" class='listado '>
+                        <div id="tabla" class='listado '></div>
+                    </div>
+                    <div id="coches" class='listado '>
+                        <div id="tablaCoches" class='listado '></div>
+                    </div>
+			    </div>
+            </div>
+
+
+
+
+		<script type="text/javascript" src='../../js/libs/jquery-1.7.1.min.js'></script>
+		<script type="text/javascript" src='../../js/libs/jquery-ui-1.8.18.custom.min.js'></script>
+		<script type="text/javascript" src="../../js/libs/jquery.layout.min.js"></script>
+		<script type="text/javascript" src="../../js/libs/jquery.tmpl.min.js"></script>
+		<script type="text/javascript" src="../../js/libs/underscore-min.js"></script>
+		<script type="text/javascript" src="../../js/base/Utils.js"></script>
+		<script type="text/javascript" src="../../js/base/framework.base.js"></script>
+        <script type="text/javascript" src="../../js/base/framework.project.js"></script>
+		<script type="text/javascript" src="../../js/clases/formulario.js"></script>
+        <script type="text/javascript" src="../../js/clases/DataSource.js"></script>
+        <script type="text/javascript" src="../../js/clases/ControlGruposV2.js"></script>
+        <script type="text/javascript" src="../../js/clases/ComponenteListado.js"></script>
+        <script type="text/javascript" src="../../js/vistas/Administracion/Configurador.js"></script>
+        <script type="text/javascript" src="../../js/componentes/plugins/ipkListado.js"></script>
+		<script type="text/javascript">
+            var controller;
+            var claveListado = "Coches";
+            var modelo = {};
+            var listado = {};
+            var camposListado = {};
+            var plugin = {};
+            var tablaCoches = {};
+
+            app.eventos.subscribir("Listado", function(event, eventArgs){
+                if(eventArgs.entidad = 'Coches')
+                {
+                    app.log.debug('Datos de los coches', eventArgs);
+                    plugin.setDatos(eventArgs.datos);
+                }
+            });
+            app.eventos.subscribir("Buscar", function(event, eventArgs){
+                if(eventArgs.entidad = 'zz_Listados')
+                {
+                    this.infoListado = eventArgs.datos[0];
+                    this.infoModelo = eventArgs.datos[0].zz_Modelos;
+
+                    app.log.debug('Campos listado', eventArgs.datos[0]);
+
+
+                    cargarCamposListado(eventArgs.datos[0].IdListado);
+                }
+            });
+            app.eventos.subscribir("Filtrar", function(event, eventArgs){
+                if(eventArgs.entidad = 'zz_CamposListados')
+                {
+                    this.infoCampos = eventArgs.datos;
+
+                    var options = {
+                        infoModelo  : this.infoModelo,
+                        infoListado : this.infoListado,
+                        infoCampos  : this.infoCampos
+                    };
+
+                    plugin = $('#tabla').listado(options);
+
+                    var parametros = {
+                        Entidad : claveListado
+                    };
+
+                    app.servicios.generales.Listado(JSON.stringify(parametros));
+
+                }
+            });
+
+            app.eventos.subscribir(ComponenteListado.Eventos.OnBtnNuevoClick, function(e,d){
+                app.log.debug('datos', d);
+            });
+
+            var stub = [
+                {
+                    IdUsuario : 1,
+                    Nombre : "Maikel",
+                    Activo : true,
+                    FechaAlta : '06/01/2012'
+                },
+                {
+                    IdUsuario : 2,
+                    Nombre : "Xabi",
+                    Activo : true,
+                    FechaAlta : '07/01/2012'
+                }
+            ];
+
+            var stubCoches = [
+                {
+                    IdCoche         : 1,
+                    Nombre          : "C4",
+                    Descripcion     : "Mi carro",
+                    FechaSalida     : '07/01/2008',
+                    FechaFinFabricacion    : '07/01/2012'
+                },
+                {
+                    IdCoche         : 2,
+                    Nombre          : "Corsa",
+                    Descripcion     : "Mi otro carro",
+                    FechaSalida     : '07/01/2009',
+                    FechaFinFabricacion    : '07/01/2012'
+                }
+            ];
+
+            function cargarListado(clave){
+
+                var where = {
+                    "Clave" : "'"+clave+"'"
+                };
+
+                var parametros = {
+                    Entidad : "zz_Listados",
+                    Where   : where,
+                    Referencias : false,
+                    Colecciones : false
+                };
+
+                app.servicios.generales.Buscar(JSON.stringify(parametros));
+                /*
+                 listado = _.find(self.bd.listados , function(elemento){return elemento.Clave == clave});
+                 modelo = _.find(self.bd.modelos , function(elemento){return elemento.IdModelo == listado.Entidad});
+                 camposListado = _.filter(self.bd.camposListados , function(elemento){return elemento.IdListado == listado.IdListado});
+
+                 var options = {
+                 infoModelo  : modelo,
+                 infoListado : listado,
+                 infoCampos  : camposListado
+                 };
+
+                 return options;*/
+            };
+            function cargarCamposListado(clave){
+                var parametros = {
+                    Entidad : "zz_CamposListados",
+                    Where   : " it.zz_Listados.IdListado = " + clave
+                };
+
+                app.servicios.generales.Filtrar( JSON.stringify(parametros) );
+            };
+
+            cargarListado(claveListado);
+            $(document).ready(function(){
+				$('body').layout({
+					north: {
+						resizable  : false,
+						closable : false,
+						size: '40'
+					}
+				});
+
+
+                /*var cfgListado = cargarListado("Usuarios");
+
+                $.getJSON('../js/fixtures/BD_Infraestructura_Prueba.json', function(data){
+                    self.bd = data;
+                    var cfgListado = cargarListado("Usuarios");
+                    var cfgListadoCoches  = cargarListado("Coches");
+
+                    cfgListadoCoches.allowDetails = false;
+                    cfgListadoCoches.allowCopy = false;
+                    cfgListadoCoches.infoListado.EsME = true;
+
+
+                    app.log.debug('cfgListadoCoches', cfgListadoCoches);
+
+                    plugin = $('#tabla').listado(cfgListado);
+                    tablaCoches = $('#tablaCoches').listado(cfgListadoCoches);
+                    app.log.debug('plugin', plugin);
+
+                    plugin.setDatos(stub);
+                    tablaCoches.setDatos(stubCoches);
+                });
+*/
+
+
+                //controller = new ConfiguradorController();
+			});
+		</script>
+
+        <script	type="text/template" id="lateralTemplate">
+            <li id='modelos-${IdModelo}'>
+                <a href="#">${Nombre}</a>
+                <a href="#" class='ui-icon ui-icon-trash btnEliminar' style='float: right' ></a>
+                <a href="#" class='ui-icon ui-icon-pencil btnEditar' style='float: right' ></a>
+            </li>
+
+        </script>
+        <script	type="text/template" id="pruebaTemplate">
+            <tr id=''>
+                <td>${Nombre}</td>
+            </tr>
+        </script>
+        <script	type="text/template" id="centroTemplate">
+            <tr id='camposModelos-${IdCampo}'>
+                <td>${Nombre}</td>
+                <td>${Tipo}</td>
+                <td>${EsClave}</td>
+                <td>${EsIndice}</td>
+                <td>${Nullable}</td>
+            </tr>
+        </script>
+
+        <script	type="text/template" id="comboReferenciasTemplate">
+            <option value="${IdModelo}">${Nombre}</option>
+        </script>
+	</body>
+</html>
+
+
+

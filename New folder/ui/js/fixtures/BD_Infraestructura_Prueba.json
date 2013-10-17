@@ -1,0 +1,179 @@
+{
+    "modelos"         : [
+        {
+            "IdModelo"  : 1,
+            "Nombre"    : "Usuarios"
+        },
+        {
+            "IdModelo"  : 2,
+            "Nombre"    : "Coches"
+        }
+    ],
+    "camposModelos"   : [
+        {
+            "IdCampo"       : 1,
+            "IdModelo"      : 1,
+            "Nombre"        : "IdUsuario",
+            "Tipo"          : "Int32",
+            "EsClave"       : true,
+            "EsIndice"      : false,
+            "Nullable"      : false
+        },
+        {
+            "IdCampo"       : 2,
+            "IdModelo"      : 1,
+            "Nombre"        : "Nombre",
+            "Tipo"          : "String",
+            "EsClave"       : true,
+            "EsIndice"      : false,
+            "Nullable"      : false
+        },
+        {
+            "IdCampo"       : 3,
+            "IdModelo"      : 1,
+            "Nombre"        : "Activo",
+            "Tipo"          : "Boolean",
+            "EsClave"       : true,
+            "EsIndice"      : false,
+            "Nullable"      : true
+        },
+        {
+            "IdCampo"       : 4,
+            "IdModelo"      : 1,
+            "Nombre"        : "FechaAlta",
+            "Tipo"          : "DateTime",
+            "EsClave"       : true,
+            "EsIndice"      : false,
+            "Nullable"      : false
+        },
+        {
+            "IdCampo"       : 5,
+            "IdModelo"      : 1,
+            "Nombre"        : "Fichas",
+            "Tipo"          : "Collection",
+            "Referencia"    : 2,
+            "EsClave"       : true,
+            "EsIndice"      : false,
+            "Nullable"      : false
+        },
+        {
+            "IdCampo"       : 6,
+            "IdModelo"      : 2,
+            "Nombre"        : "IdCoche",
+            "Tipo"          : "Int32",
+            "EsClave"       : true,
+            "EsIndice"      : false,
+            "Nullable"      : false
+        },
+        {
+            "IdCampo"       : 7,
+            "IdModelo"      : 2,
+            "Nombre"        : "Nombre",
+            "Tipo"          : "String",
+            "EsClave"       : false,
+            "EsIndice"      : false,
+            "Nullable"      : true
+        },
+        {
+            "IdCampo"       : 8,
+            "IdModelo"      : 2,
+            "Nombre"        : "Descripcion",
+            "Tipo"          : "String",
+            "EsClave"       : false,
+            "EsIndice"      : false,
+            "Nullable"      : true
+        },
+        {
+            "IdCampo"       : 9,
+            "IdModelo"      : 2,
+            "Nombre"        : "FechaSalida",
+            "Tipo"          : "DateTime",
+            "EsClave"       : false,
+            "EsIndice"      : false,
+            "Nullable"      : true
+        }
+    ],
+    "listados"        : [
+        {
+            "IdListado"     : 1,
+            "Entidad"       : 1,
+            "Clave"         : "Usuarios",
+            "Nombre"        : "Usuarios",
+            "Descripcion"   : "Listado de los Usuarios",
+            "EsME"          : false,
+            "Campos"        : ["Nombre","Activo", "FechaAlta"]
+        },
+        {
+            "IdListado"     : 2,
+            "Entidad"       : 2,
+            "Clave"         : "Coches",
+            "Nombre"        : "Coches",
+            "Descripcion"   : "Listado de los Coches",
+            "EsME"          : false
+        }
+    ],
+    "camposListados"  : [
+        {
+            "IdCampoListado"     : 1,
+            "IdListado"          : 1,
+            "Nombre"             : "Nombre",
+            "Titulo"             : "Nombre",
+            "Tipo"               : "String",
+            "Ancho"              : 70,
+            "BusquedaInterna"    : true
+        },
+        {
+            "IdCampoListado"     : 2,
+            "IdListado"          : 1,
+            "Nombre"             : "Activo",
+            "Titulo"             : "Activo",
+            "Tipo"               : "Boolean",
+            "Ancho"              : 10,
+            "BusquedaInterna"    : true
+        },
+        {
+            "IdCampoListado"     : 3,
+            "IdListado"          : 1,
+            "Nombre"             : "FechaAlta",
+            "Titulo"             : "F. Alta",
+            "Tipo"               : "DateTime",
+            "Ancho"              : 20,
+            "BusquedaInterna"    : false
+        },
+        {
+            "IdCampoListado"     : 4,
+            "IdListado"          : 2,
+            "Nombre"             : "Nombre",
+            "Titulo"             : "Nombre",
+            "Tipo"               : "String",
+            "Ancho"              : 35,
+            "BusquedaInterna"    : true
+        },
+        {
+            "IdCampoListado"     : 5,
+            "IdListado"          : 2,
+            "Nombre"             : "Descripcion",
+            "Titulo"             : "Descripcion",
+            "Tipo"               : "String",
+            "Ancho"              : 45,
+            "BusquedaInterna"    : false
+        },
+        {
+            "IdCampoListado"     : 6,
+            "IdListado"          : 2,
+            "Nombre"             : "FechaSalida",
+            "Titulo"             : "f. Salida",
+            "Tipo"               : "DateTime",
+            "Ancho"              : 10,
+            "BusquedaInterna"    : false
+        }
+    ],
+    "fichas"          : [
+    ],
+    "camposFichas"    : [
+    ],
+    "filtros"         : [
+    ],
+    "camposfiltros"   : [
+    ]
+}

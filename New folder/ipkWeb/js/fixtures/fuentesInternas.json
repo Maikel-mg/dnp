@@ -1,0 +1,11 @@
+[
+	{ 
+		"id": "1", 
+		"nombre":"Si/No", 
+		"valores": [
+			{ "value": "",   "text" : "Selecciona una opci&oacute;n" },
+			{ "value": "SI", "text" : "SI" },
+			{ "value": "NO", "text" : "NO" }
+		]
+	}
+]

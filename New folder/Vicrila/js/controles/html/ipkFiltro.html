@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <div id='areaFiltro' class="filtro">
+        <span class="block-Title textAlignIzquierda" style="font-size: 17px;">Filtro</span>
+        <div id="accionesFiltro" style='margin:0'></div>
+        <div class="controlesFiltro">
+            <div id="camposFuente" class="listado">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Campo</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id='dlgCampos'>
+        <label for="campos">Campos</label>
+        <select  name="campos" id="campos"></select>
+        <br>
+        <label for="filtro">Filtro</label>
+        <input type='text' name="filtro" id="filtro" />
+    </div>
+
+    <script id='optionTemplate' type="text/template">
+        <option value="${Nombre}">${Titulo}</option>
+    </script>
+
+    <script id='camposTemplate' type="text/template">
+        <tr>
+            <td>${Campo}</td>
+            <td>${Valor}</td>
+        </tr>
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Workflow Manager</title>
+
+    <style type="text/css">
+        .tag {
+            font-size: 8px;
+            padding: 5px;
+        }
+        .accionesPendientes{
+            display: inline-block;
+        }
+        .accionesCompletadas{
+            display: inline-block;
+        }
+        .inlineButton{
+            background-color: transparent;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .boton{
+            border: 1px solid #888;
+            padding: 3px 10px;
+        }
+
+        .boton:hover{
+            border: 2px solid #666;
+            padding: 2px 9px;
+        }
+
+        .boton:active{
+            border: 1px solid #666;
+            padding: 2px 9px;
+            background-color: #DDD;
+        }
+    </style>
+</head>
+<body>
+<div id='workflowManager'>
+    <div id='dialogWorkflow'>
+        <div id='tabsWorkflow' class='width100p'>
+            <ul>
+                <li>
+                    <a href="#tabSoluciones">Soluciones</a>
+                </li>
+                <li>
+                    <a href="#tabFormas">Formas</a>
+                </li>
+            </ul>
+
+            <div id='tabSoluciones' class='listado '>
+                <table class='tabla' style='margin: 0px;'>
+                    <thead>
+                    <tr>
+                        <th class="width10p"></th>
+                        <th class="width10p textAlignCentro">PRODUCCION</th>
+                        <th class="width10p textAlignCentro">MOLDES</th>
+                        <th class="width10p textAlignCentro">DNP</th>
+                        <th class="width10p textAlignCentro">PROGRAMACION</th>
+                        <th class="width10p textAlignCentro">ANALITICA</th>
+                        <th class="width10p textAlignCentro">COMERCIAL</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div id='tabFormas' class='listado '>
+                <table class='tabla' style='margin: 0px;'>
+                    <thead>
+                    <tr>
+                        <th class="width10p"></th>
+                        <th class="width10p textAlignCentro">PRODUCCION</th>
+                        <th class="width10p textAlignCentro">MOLDES</th>
+                        <th class="width10p textAlignCentro">DNP</th>
+                        <th class="width10p textAlignCentro">PROGRAMACION</th>
+                        <th class="width10p textAlignCentro">ANALITICA</th>
+                        <th class="width10p textAlignCentro">COMERCIAL</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div style='text-align: center;'>
+                <input type="button" class='boton' id='btnLanzarWorkflow' value='Lanzar Workflow' style='margin-bottom: 5px;'/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/template" id='filaTemplate'>
+    <tr id='${TipoElemento}-${IdWorkflowEstate}-${IdElemento}'>
+        <td>${Descripcion} </td>
+        <td class='textAlignCentro'>
+            {{if Produccion == 'Completada'}}
+                <span class='tag bgGreen'>${Produccion}</span>
+                {{if app.seguridad.grupoActual == 'PRODUCCION' || app.seguridad.grupoActual == 'COMERCIAL'}}
+                    <div class='accionesCompletadas'>
+                        <a href="#" class='inlineButton' alt='Marcar la secci&oacute;n como NO completada.' title='Marcar la secci&oacute;n como NO completada.'>
+                            <span class='icon-remove'></span>
+                        </a>
+                    </div>
+                {{/if}}
+            {{/if}}
+            {{if Produccion == 'No Participa'}}
+            <span class='tag'>${Produccion}</span>
+            {{/if}}
+            {{if Produccion == 'Pendiente'}}
+            <span class='tag bgRed'>${Produccion}</span>
+            {{if app.seguridad.grupoActual == 'PRODUCCION' || app.seguridad.grupoActual == 'COMERCIAL'}}
+            <div class='accionesPendientes'>
+                <a href="#" class='inlineButton' alt='Marcar la secci&oacute;n como completada.' title='Marcar la secci&oacute;n como completada.'>
+                    <span class='icon-ok'></span>
+                </a>
+                {{if app.seguridad.grupoActual == 'COMERCIAL'}}
+                    <a href="#" class='inlineButton' alt='Enviar correo a los integrantes del grupo.' title='Enviar correo a los integrantes del grupo.'>
+                        <span class='icon-envelope'></span>
+                    </a>
+                {{/if}}
+            </div>
+            {{/if}}
+            {{/if}}
+        </td>
+        <td class='textAlignCentro'>
+            {{if Moldes == 'Completada'}}
+            <span class='tag bgGreen'>${Moldes}</span>
+                {{if app.seguridad.grupoActual == 'MOLDES' || app.seguridad.grupoActual == 'COMERCIAL'}}
+                    <div class='accionesCompletadas'>
+                        <a href="#" class='inlineButton' alt='Marcar la secci&oacute;n como NO completada.' title='Marcar la secci&oacute;n como NO completada.'>
+                            <span class='icon-remove'></span>
+                        </a>
+                    </div>
+                {{/if}}
+            {{/if}}
+            {{if Moldes == 'No Participa'}}
+            <span class='tag'>${Moldes}</span>
+            {{/if}}
+            {{if Moldes == 'Pendiente'}}
+            <span class='tag bgRed'>${Moldes}</span>
+            {{if app.seguridad.grupoActual == 'MOLDES' || app.seguridad.grupoActual == 'COMERCIAL'}}
+            <div class='accionesPendientes'>
+                <a href="#" class='inlineButton' alt='Marcar la secci&oacute;n como completada.' title='Marcar la secci&oacute;n como completada.'>
+                    <span class='icon-ok'></span>
+                </a>
+                {{if app.seguridad.grupoActual == 'COMERCIAL'}}
+                    <a href="#" class='inlineButton' alt='Enviar correo a los integrantes del grupo.' title='Enviar correo a los integrantes del grupo.'>
+                        <span class='icon-envelope'></span>
+                    </a>
+                {{/if}}
+            </div>
+            {{/if}}
+            {{/if}}
+        </td>
+        <td class='textAlignCentro'>
+            {{if Dnp == 'Completada'}}
+            <span class='tag bgGreen'>${Dnp}</span>
+                {{if app.seguridad.grupoActual == 'DNP' || app.seguridad.grupoActual == 'COMERCIAL'}}
+                    <div class='accionesCompletadas'>
+                        <a href="#" class='inlineButton' alt='Marcar la secci&oacute;n como NO completada.' title='Marcar la secci&oacute;n como NO completada.'>
+                            <span class='icon-remove'></span>
+                        </a>
+                    </div>
+                {{/if}}
+            {{/if}}
+            {{if Dnp == 'No Participa'}}
+            <span class='tag'>${Dnp}</span>
+            {{/if}}
+            {{if Dnp == 'Pendiente'}}
+            <span class='tag bgRed'>${Dnp}</span>
+            {{if app.seguridad.grupoActual == 'DNP' || app.seguridad.grupoActual == 'COMERCIAL'}}
+            <div class='accionesPendientes'>
+                <a href="#" class='inlineButton' alt='Marcar la secci&oacute;n como completada.' title='Marcar la secci&oacute;n como completada.'>
+                    <span class='icon-ok'></span>
+                </a>
+                {{if app.seguridad.grupoActual == 'COMERCIAL'}}
+                <a href="#" class='inlineButton' alt='Enviar correo a los integrantes del grupo.' title='Enviar correo a los integrantes del grupo.'>
+                    <span class='icon-envelope'></span>
+                </a>
+                {{/if}}
+            </div>
+            {{/if}}
+            {{/if}}
+        </td>
+        <td class='textAlignCentro'>
+            {{if Programacion == 'Completada'}}
+            <span class='tag bgGreen'>${Programacion}</span>
+                {{if app.seguridad.grupoActual == 'PROGRAMACION' || app.seguridad.grupoActual == 'COMERCIAL'}}
+                    <div class='accionesCompletadas'>
+                        <a href="#" class='inlineButton' alt='Marcar la secci&oacute;n como NO completada.' title='Marcar la secci&oacute;n como NO completada.'>
+                            <span class='icon-remove'></span>
+                        </a>
+                    </div>
+                {{/if}}
+            {{/if}}
+            {{if Programacion == 'No Participa'}}
+            <span class='tag'>${Programacion}</span>
+            {{/if}}
+            {{if Programacion == 'Pendiente'}}
+            <span class='tag bgRed'>${Programacion}</span>
+            {{if app.seguridad.grupoActual == 'PROGRAMACION' || app.seguridad.grupoActual == 'COMERCIAL'}}
+            <div class='accionesPendientes'>
+                <a href="#" class='inlineButton' alt='Marcar la secci&oacute;n como completada.' title='Marcar la secci&oacute;n como completada.'>
+                    <span class='icon-ok'></span>
+                </a>
+                {{if app.seguridad.grupoActual == 'COMERCIAL'}}
+                <a href="#" class='inlineButton' alt='Enviar correo a los integrantes del grupo.' title='Enviar correo a los integrantes del grupo.'>
+                    <span class='icon-envelope'></span>
+                </a>
+                {{/if}}
+            </div>
+            {{/if}}
+            {{/if}}
+        </td>
+        <td class='textAlignCentro'>
+            {{if Analitica == 'Completada'}}
+            <span class='tag bgGreen'>${Analitica}</span>
+                {{if app.seguridad.grupoActual == 'ANALITICA' || app.seguridad.grupoActual == 'COMERCIAL'}}
+                    <div class='accionesCompletadas'>
+                        <a href="#" class='inlineButton' alt='Marcar la secci&oacute;n como NO completada.' title='Marcar la secci&oacute;n como NO completada.'>
+                            <span class='icon-remove'></span>
+                        </a>
+                    </div>
+                {{/if}}
+            {{/if}}
+            {{if Analitica == 'No Participa'}}
+            <span class='tag'>${Analitica}</span>
+            {{/if}}
+            {{if Analitica == 'Pendiente'}}
+            <span class='tag bgRed'>${Analitica}</span>
+            {{if app.seguridad.grupoActual == 'ANALITICA' || app.seguridad.grupoActual == 'COMERCIAL'}}
+            <div class='accionesPendientes'>
+                <a href="#" class='inlineButton' alt='Marcar la secci&oacute;n como completada.' title='Marcar la secci&oacute;n como completada.'>
+                    <span class='icon-ok'></span>
+                </a>
+                {{if app.seguridad.grupoActual == 'COMERCIAL'}}
+                <a href="#" class='inlineButton' alt='Enviar correo a los integrantes del grupo.' title='Enviar correo a los integrantes del grupo.'>
+                    <span class='icon-envelope'></span>
+                </a>
+                {{/if}}
+            </div>
+            {{/if}}
+            {{/if}}
+        </td>
+        <td class='textAlignCentro'>
+            {{if Comercial == 'Completada'}}
+            <span class='tag bgGreen'>${Comercial}</span>
+                {{if app.seguridad.grupoActual == 'COMERCIAL'}}
+                    <div class='accionesCompletadas'>
+                        <a href="#" class='inlineButton' alt='Marcar la secci&oacute;n como NO completada.' title='Marcar la secci&oacute;n como NO completada.'>
+                            <span class='icon-remove'></span>
+                        </a>
+                    </div>
+                {{/if}}
+            {{/if}}
+            {{if Comercial == 'No Participa'}}
+            <span class='tag'>${Comercial}</span>
+            {{/if}}
+            {{if Comercial == 'Pendiente'}}
+            <span class='tag bgRed'>${Comercial}</span>
+            {{if app.seguridad.grupoActual == 'COMERCIAL'}}
+            <div class='accionesPendientes'>
+                <a href="#" class='inlineButton' alt='Marcar la secci&oacute;n como completada.' title='Marcar la secci&oacute;n como completada.'>
+                    <span class='icon-ok'></span>
+                </a>
+                <a href="#" class='inlineButton' alt='Enviar correo a los integrantes del grupo.' title='Enviar correo a los integrantes del grupo.'>
+                    <span class='icon-envelope'></span>
+                </a>
+            </div>
+            {{/if}}
+            {{/if}}
+        </td>
+    </tr>
+</script>
+</body>
+</html>

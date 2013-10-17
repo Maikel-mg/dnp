@@ -1,0 +1,160 @@
+
+<html lang="es">
+	<head>
+		<title>Estructura</title>
+
+        <link rel='stylesheet' type='text/css' href='../../../css/ipkweb/jquery-ui-1.8.18.custom.css' />
+        <link rel='stylesheet' type='text/css' href='../../../css/base.css' />
+        <link rel='stylesheet' type='text/css' href='../../../css/estilos.css' />
+	</head>
+	<body>
+
+			<div class='ui-layout-north' style='margin: 0; padding: 0; overflow: hidden;'>
+                <div id='menu' class='toolbar'>
+                    <ul>
+                        <li>
+                            <a href="../Listado/Dossieres.html">
+                                <span class='icon-inbox'>&nbsp;</span>
+                                <span>Dossieres</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class='clearFix'>&nbsp;</div>
+                </div>
+			</div>
+			<div class="ui-layout-center">
+				<div id='center-content' class="width100p">
+                    <h3 id='tituloCentro'>Estructura</h3>
+
+
+                    <div id='contenedorFicha1'></div>
+                    <div id='relaciones' class="miniToolbar">
+                        <ul >
+                            <li>
+                                <a href="#" id='verSoluciones' style='font-size: 17px;'>Soluciones</a>
+                            </li>
+                            <li>
+                                <a href="#" id='verArticulos' style='font-size: 17px;'>Articulos</a>
+                            </li>
+                            <li>
+                                <a href="#" id='verEmbalajes' style='font-size: 17px;'>Embalajes</a>
+                            </li>
+                        </ul>
+                        <div class="clearFix"></div>
+                    </div>
+                    <br>
+                    <div id='contenedorLista' class='listado'></div>
+                    <br>
+                    <div id='contenedorLista2' class='listado'></div>
+                    <br>
+                    <div id='contenedorLista3' class='listado'></div>
+                    <br>
+			    </div>
+            </div>
+
+
+		<script type="text/javascript" src='../../../js/libs/jquery-1.7.1.min.js'></script>
+		<script type="text/javascript" src='../../../js/libs/jquery-ui-1.8.18.custom.min.js'></script>
+		<script type="text/javascript" src="../../../js/libs/jquery.layout.min.js"></script>
+		<script type="text/javascript" src="../../../js/libs/jquery.tmpl.min.js"></script>
+		<script type="text/javascript" src="../../../js/libs/underscore-min.js"></script>
+		<script type="text/javascript" src="../../../js/base/Utils.js"></script>
+		<script type="text/javascript" src="../../../js/base/framework.base.js"></script>
+        <script type="text/javascript" src="../../../js/base/framework.project.js"></script>
+        <script type="text/javascript" src="../../../js/clases/DataSource.js"></script>
+        <script type="text/javascript" src="../../../js/clases/ComponenteListado.js"></script>
+        <script type="text/javascript" src="../../../js/vistas/Administracion/Configurador.js"></script>
+        <script type="text/javascript" src="../../../js/componentes/plugins/ipkLista.js"></script>
+        <script type="text/javascript" src="../../../js/componentes/plugins/ipkFicha.js"></script>
+        <script type="text/javascript" src="../../../js/componentes/plugins/ipkListado.js"></script>
+        <script type="text/javascript" src="../../../js/componentes/plugins/CheckBox.js"></script>
+        <script type="text/javascript" src="../../../js/componentes/plugins/Hidden.js"></script>
+        <script type="text/javascript" src="../../../js/componentes/plugins/Textbox.js"></script>
+        <script type="text/javascript" src="../../../js/componentes/plugins/TextboxNumerico.js"></script>
+        <script type="text/javascript" src="../../../js/componentes/plugins/TextboxCalendario.js"></script>
+        <script type="text/javascript" src="../../../js/componentes/plugins/ipkReferencia.js"></script>
+        <script type="text/javascript" src="../../../js/componentes/plugins/ipkColeccion.js"></script>
+        <script type="text/javascript" src="../../../js/componentes/plugins/ipkColeccionHijos.js"></script>
+        <script type="text/javascript" src="../../../js/vistas/Plantillas/Ficha.js"></script>
+        <script type="text/javascript" src="../../../js/vistas/Plantillas/Listado.js"></script>
+        <script type="text/javascript" src="../../../js/vistas/Pruebas/Estructura.js"></script>
+		<script type="text/javascript">
+            var controller = null;
+            var listado = null;
+            var listadoEmb = null;
+            var listadoArt = null;
+
+            $(document).ready(function(){
+				$('body').layout({
+					north: {
+						resizable  : false,
+						closable : false,
+						size: '30'
+					}
+				});
+
+                var options = {
+                    Ficha      : 'Dossier',
+                    contenedor : 'contenedorFicha1',
+                    Id         : 0
+                };
+
+                if($.QueryString["Id"] !== undefined)
+                    options.Id = $.QueryString["Id"];
+
+                controller = new FichaController(options);
+
+                var optionsListado = {
+                    Listado          : "Solucion",
+                    contenedor : 'contenedorLista',
+                    DireccionEdicion : "Estructura"
+                };
+
+                listado = new ListadoController(optionsListado);
+
+                var optionsEmb = {
+                    Listado          : "FormaEmb",
+                    contenedor : 'contenedorLista2'                };
+
+
+                listadoEmb = new ListadoController(optionsEmb);
+
+                var optionsArt = {
+                    Listado          : "FormaArt",
+                    contenedor : 'contenedorLista3'
+                };
+
+                listadoArt = new ListadoController(optionsArt);
+
+                $('#contenedorLista').dialog({
+                    autoOpen : false,
+                    width : '800px'
+                });
+                $('#contenedorLista2').dialog({
+                    autoOpen : false,
+                    width : '1000px'
+                });
+                $('#contenedorLista3').dialog({
+                    autoOpen : false,
+                    width : '1000px'
+                });
+                //listado._lista.setDatos(controller._ficha.datos.Soluciones);
+
+                $('#verSoluciones').on('click', function(){
+                    $('#contenedorLista').dialog('open');
+                });
+                $('#verArticulos').on('click', function(){
+                    $('#contenedorLista3').dialog('open');
+                });
+                $('#verEmbalajes').on('click', function(){
+                    $('#contenedorLista2').dialog('open');
+                });
+
+			});
+		</script>
+	</body>
+</html>
+
+
+
+

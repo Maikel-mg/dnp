@@ -1,0 +1,463 @@
+
+
+<html>
+	<head>
+		<title>Prueba de conjunto</title>
+		<style type="text/css">
+	/**
+	 *	Basic Layout Theme
+	 * 
+	 *	This theme uses the default layout class-names for all classes
+	 *	Add any 'custom class-names', from options: paneClass, resizerClass, togglerClass
+	 */
+	body{
+		font-family: Arial;
+	}
+
+	.ui-layout-pane { /* all 'panes' */ 
+		background: #FFF; 
+		border: 1px solid #BBB; 
+		padding: 10px; 
+		overflow: auto;
+	} 
+
+	.ui-layout-resizer { /* all 'resizer-bars' */ 
+		background: #DDD; 
+	} 
+
+	.ui-layout-toggler { /* all 'toggler-buttons' */ 
+		background: #AAA; 
+	}
+
+            .ipkLista {
+                border: 1px solid #DDD;
+                font-family: Arial;
+
+                margin:0px;
+                padding: 0px;
+
+            }
+            .ipkLista .cuerpo ul.datos{
+                padding: 0px;
+                margin: 0px;
+            }
+
+            .ipkLista .cuerpo ul.datos li{
+                /*background-color: #E9E9E9;*/
+                font-size: 13px;
+                border-bottom: 1px solid #CCC;
+                padding:5px 5px;
+                list-style-type: none;
+            }
+            .ipkLista .cuerpo ul.datos li:hover{
+                background-color: #EEE;
+                border-bottom: 1px solid #CCC;
+                font-weight: bold;
+
+            }
+            .ipkLista .cuerpo ul.datos li.seleccionado{
+                background-color: #E9e9e9;
+                background-color: #C6E031;
+                font-weight: bold;
+            }
+            .ipkLista .cuerpo ul.datos li a{
+                text-decoration:  none;
+                color: #333;
+            }
+
+            .ipkLista .miniToolbar{
+                margin-bottom: 0px;
+            }
+
+
+	#grupos {
+		border: 1px solid #DDD;
+		font-family: Arial;
+
+		margin:0px;
+		padding: 0px;
+
+	}
+	#grupos li{
+		/*background-color: #E9E9E9;*/
+		font-size: 13px;
+		border-bottom: 1px solid #CCC;
+		padding:5px 5px;
+		list-style-type: none;
+	}
+	#grupos li:hover{
+		background-color: #EEE;
+		border-bottom: 1px solid #CCC;
+		font-weight: bold;
+
+	}
+	#grupos li.seleccionado{
+		background-color: #E9e9e9;
+		background-color: #C6E031;
+		font-weight: bold;
+	}
+	#grupos li a{
+		text-decoration:  none;
+		color: #333;
+	}
+
+	.miniToolbar{
+		background-color: #E9E9E9;
+		border:1px solid #D9D9D9;
+		width: 100%;
+		margin:0px 0px 5px 0px;
+		padding:0px;
+	}
+		.miniToolbar ul{
+			margin:0px;
+			padding:0px;	
+		}
+		.miniToolbar ul li{
+			border-right: 1px solid #CCC;
+			float: left;
+			font-size: 13px;
+			list-style-type: none;
+			margin:0px;
+			padding:5px 5px 5px 7px; 
+			width: 20px;
+		}
+		.miniToolbar ul li:hover{
+			background-color: #DDD;
+			border-right: 1px solid #888;
+		}
+		.miniToolbar ul a{
+			text-decoration: none;
+			color: #333;
+		}
+
+	#listadoCampos tbody tr:hover{
+		background-color: #E9E9E9;
+	}
+		#listadoCampos tbody tr.seleccionado{
+			background-color: #C6E031;		
+			font-weight: bold;
+		}
+
+	.listado tbody tr:hover{
+		background-color: #E9E9E9;
+	}
+		.listado tbody tr.seleccionado{
+			background-color: #C6E031;		
+			font-weight: bold;
+		}
+
+	.clearFix{
+		clear: both;
+	}
+
+
+	</style>
+        <link rel='stylesheet' type='text/css' href='../../css/ipktheme/jquery-ui-1.8.18.custom.css' />
+        <link rel='stylesheet' type='text/css' href='../../css/base.css' />
+        <link rel='stylesheet' type='text/css' href='../../css/estilos.css' />
+	</head>
+	<body>
+			<div class='ui-layout-north'>
+				<span class=''>Edici&oacute;n de registros</span>
+			</div>
+			<div class="ui-layout-west">
+                <div id='contenedorLista'>
+                </div>
+			</div>
+			<div class="ui-layout-center">
+				<div id='center-content' class="width100p">
+                    <h3 id='tituloCentro'>TITULO</h3>
+
+                    <div id='contenedorFicha'></div>
+                    <br>
+                    <div id='contenedorTabla'></div>
+			    </div>
+            </div>
+
+
+		<script type="text/javascript" src='../../js/libs/jquery-1.7.1.min.js'></script>
+		<script type="text/javascript" src='../../js/libs/jquery-ui-1.8.18.custom.min.js'></script>
+		<script type="text/javascript" src="../../js/libs/jquery.layout.min.js"></script>
+		<script type="text/javascript" src="../../js/libs/jquery.tmpl.min.js"></script>
+		<script type="text/javascript" src="../../js/libs/underscore-min.js"></script>
+		<script type="text/javascript" src="../../js/base/Utils.js"></script>
+		<script type="text/javascript" src="../../js/base/framework.base.js"></script>
+        <script type="text/javascript" src="../../js/base/framework.project.js"></script>
+        <script type="text/javascript" src="../../js/clases/DataSource.js"></script>
+        <script type="text/javascript" src="../../js/clases/ComponenteListado.js"></script>
+        <script type="text/javascript" src="../../js/vistas/Administracion/Configurador.js"></script>
+        <script type="text/javascript" src="../../js/componentes/plugins/ipkLista.js"></script>
+        <script type="text/javascript" src="../../js/componentes/plugins/ipkFicha.js"></script>
+        <script type="text/javascript" src="../../js/componentes/plugins/ipkListado.js"></script>
+		<script type="text/javascript">
+
+            var entidadFicha = "Grupos";
+            var entidadTabla = "Usuarios";
+            var _lista = {};
+            var _ficha = {};
+            var _tabla = {};
+            var options = {};
+            var parametrosTabla = {};
+            var parametrosFicha = {};
+
+            app.eventos.subscribir("OnRecordInserted", function(e,v){
+                _lista.agregarRegistro(v.datos);
+                _lista.setSeleccionPorId(v.datos[options.campoId]);
+                cargarRegistro(v.datos[options.campoId]);
+            });
+            app.eventos.subscribir("OnRecordUpdated", function(e,v){
+                _lista.datos.update(v.datos);
+                _lista.refrescar();
+                cargarRegistro(v.datos[options.campoId]);
+            });
+            app.eventos.subscribir("OnRecordDeleted", function(e,v){
+                _lista.borrarFilaSeleccionada();
+                _ficha.limpiar();
+            });
+            app.eventos.subscribir("OnRecordCopied", function(e,v){
+                _lista.agregarRegistro(v.datos);
+            });
+            app.eventos.subscribir("onSeleccion", function(e,v){
+                app.log.debug('Selccion', v.datos);
+                cargarRegistro(v.datos[options.campoId]);
+                cargarRelacion(v.datos[options.campoId]);
+
+
+            });
+            app.eventos.subscribir("onNuevoClick", function(e,v){
+                _lista.removeSeleccion();
+                _ficha.limpiar();
+                _ficha.entrarModoEdicion();
+            });
+            app.eventos.subscribir("Listado", function(event, eventArgs){
+                switch(eventArgs.entidad)
+                {
+                    case entidadTabla:
+                    {
+                        app.log.debug('Datos de los coches', eventArgs);
+                        //_tabla.setDatos(eventArgs.datos);
+                        break;
+                    }
+                    case entidadFicha:
+                    {
+                        app.log.debug('Datos de los usuarios', eventArgs);
+                        //listaUsuarios.setDatos(eventArgs.datos);
+                        _lista.setDatos(eventArgs.datos);
+                        break;
+                    }
+
+
+                }
+            });
+            app.eventos.subscribir("Buscar", function(event, eventArgs){
+
+                switch(eventArgs.entidad)
+                {
+                    case 'zz_Listados':
+                    {
+                        app.log.debug('Busqueda Listados', eventArgs.datos[0]);
+                        parametrosTabla.infoListado = eventArgs.datos[0];
+                        parametrosTabla.infoModelo = eventArgs.datos[0].zz_Modelos;
+
+                        cargarCamposListado(eventArgs.datos[0].IdListado);
+                        break;
+                    }
+                    case 'zz_Fichas':
+                    {
+                        app.log.debug('Busqueda Ficha', eventArgs.datos[0]);
+                        parametrosFicha.infoFicha = eventArgs.datos[0];
+                        parametrosFicha.infoModelo = eventArgs.datos[0].zz_Modelos;
+
+                        cargarCamposFichas(eventArgs.datos[0].IdFicha);
+                        break;
+                    }
+                    case entidadFicha:
+                    {
+                        app.log.debug('Coches', eventArgs);
+                        _ficha.setData(eventArgs.datos);
+                        cargarFicha(eventArgs.entidad);
+                        break;
+                    }
+                    default :
+                    {
+                        app.log.debug('Coches', eventArgs);
+                        _ficha.setData(eventArgs.datos);
+                        cargarFicha(eventArgs.entidad);
+                        break;
+                    }
+                }
+            });
+            app.eventos.subscribir("Filtrar", function(event, eventArgs){
+                switch(eventArgs.entidad)
+                {
+                    case 'zz_CamposListados':
+                    {
+                        parametrosTabla.infoCampos = eventArgs.datos;
+
+                        _tabla = $('#contenedorTabla').listado(parametrosTabla);
+
+                        app.log.debug('Busqueda Listados', eventArgs.datos[0]);
+                        cargarDatos(entidadTabla);
+                        break;
+                    }
+                    case 'zz_CamposFichas':
+                    {
+                        app.log.debug('Campos de la ficha', eventArgs);
+                        parametrosFicha.infoCampos = eventArgs.datos;
+
+                        //_ficha.setEstructura(eventArgs.datos);
+                        _ficha.setEstructura(parametrosFicha);
+                        break;
+                    }
+                    case entidadTabla:
+                    {
+                        alert('Hemos filtrado la tabla de usuarios');
+                        app.log.debug('Datos de los coches', eventArgs);
+                        _tabla.setDatos(eventArgs.datos);
+                        break;
+                    }
+                    default :{}
+                }
+            });
+
+
+            function cargarDatos(Entidad){
+
+                var parametros = {
+                    Entidad : Entidad
+                };
+
+                app.servicios.generales.Listado(JSON.stringify(parametros));
+            };
+
+            function cargarListado(clave){
+
+                var where = {
+                    "Clave" : "'"+clave+"'"
+                };
+
+                var parametros = {
+                    Entidad : "zz_Listados",
+                    Where   : where,
+                    Referencias : true,
+                    Colecciones : true
+                };
+
+                app.servicios.generales.Buscar(JSON.stringify(parametros));
+
+            };
+            function cargarCamposListado(clave){
+                var parametros = {
+                    Entidad : "zz_CamposListados",
+                    Where   : " it.zz_Listados.IdListado = " + clave
+                };
+
+                app.servicios.generales.Filtrar( JSON.stringify(parametros) );
+            };
+            function cargarRegistro(id){
+                var where = {};
+                where[options.campoId] = id;
+
+                var parametros = {
+                    Entidad : entidadFicha,
+                    Where   : where,
+                    Referencias : true,
+                    Colecciones : true
+                };
+
+
+
+                app.servicios.generales.Buscar(JSON.stringify(parametros));
+            }
+            function cargarRelacion(id){
+                var parametros = {
+                    Entidad : entidadTabla,
+                    Where   : " it." + entidadFicha + "." + options.campoId + " = " + id
+                };
+
+                app.servicios.generales.Filtrar( JSON.stringify(parametros) );
+            };
+            function cargarFicha(clave){
+
+                var where = {
+                    "Clave" : "'"+clave+"'"
+                };
+
+                var parametros = {
+                    Entidad : "zz_Fichas",
+                    Where   : where,
+                    Referencias : true,
+                    Colecciones : true
+                };
+
+                app.servicios.generales.Buscar(JSON.stringify(parametros));
+            };
+            function cargarCamposFichas(clave){
+                var parametros = {
+                    Entidad : "zz_CamposFichas",
+                    Where   : " it.zz_Fichas.IdFicha = " + clave
+                };
+
+                app.servicios.generales.Filtrar( JSON.stringify(parametros) );
+            };
+
+            $(document).ready(function(){
+				$('body').layout({
+					north: {
+						resizable  : false,
+						closable : true,
+						size: '40'
+					}
+				});
+
+                var optionsUsuarios = {
+                    nombre : "listaUsuarios",
+                    titulo : "Listado Usuarios",
+                    campo  : "Nombre",
+                    campoId  : "IdUsuario",
+                    allowDelete: false,
+                    allowEdit: false,
+                    allowNew: true
+                };
+                var optionsCoches = {
+                    nombre : "listaCoches",
+                    titulo : "Coches",
+                    campo  : "Nombre",
+                    campoId  : "IdCoche",
+                    allowNew: true
+                };
+                var optionsGrupos = {
+                    nombre : "listaGrupos",
+                    titulo : "Grupos",
+                    campo  : "Nombre",
+                    campoId  : "IdGrupo",
+                    allowNew: true
+                };
+
+                switch(entidadFicha)
+                {
+                    case "Usuarios":
+                            options = optionsUsuarios;
+                        break;
+                    case "Coches":
+                            options = optionsCoches;
+                        break;
+                    case "Grupos":
+                            options = optionsGrupos;
+                        break;
+                }
+
+                _lista = $('#contenedorLista').lista(options);
+                _ficha = $('#contenedorFicha').ficha({});
+
+                cargarDatos(entidadFicha);
+                cargarFicha(entidadFicha);
+                cargarListado(entidadTabla);
+
+			});
+		</script>
+	</body>
+</html>
+
+
+

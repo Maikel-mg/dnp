@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Manual de uso de los controles Javascript</title>
+
+    <link rel='stylesheet' type='text/css' href='../../css/ipkweb/jquery-ui-1.8.18.custom.css' />
+    <link rel='stylesheet' type='text/css' href='../../css/base.css' />
+    <link rel='stylesheet' type='text/css' href='../../css/estilos.css' />
+
+    <script type="text/javascript" src='../../js/libs/jquery-1.7.1.min.js'></script>
+    <script type="text/javascript" src='../../js/libs/jquery-ui-1.8.18.custom.min.js'></script>
+    <script type="text/javascript" src="../../js/libs/jquery.layout.min.js"></script>
+</head>
+<body>
+    <div>
+        <div class='ui-layout-north' style='margin: 0; padding: 0; overflow: hidden;'>
+            <div id='menuPlaceholder'>
+            </div>
+        </div>
+        <div class="ui-layout-west">
+
+            <div id='listaPlaceholder'>
+            </div>
+        </div>
+        <div class="ui-layout-center">
+            <div id='accionesTablaPlaceholder'>
+            </div>
+            <div id='tablaPlaceholder' class='listado'>
+            </div>
+        </div>
+        <div class="ui-layout-east">
+            <div id='fichaPlaceholder'>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('body').layout({
+                north: {
+                    resizable  : false,
+                    closable : false,
+                    size: '40'
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Jasmine Test Runner</title>
+  <link rel="stylesheet" type="text/css" href="../../vendor/jasmine/jasmine.css"/>
+  <script type="text/javascript" src="../../vendor/jasmine/jasmine.js"></script>
+  <script type="text/javascript" src="../../vendor/jasmine/jasmine-html.js"></script>
+
+  <script type="text/javascript">
+    window.ensure__DEV__ = function (state, callback) {
+      var dev = window.__DEV__;
+      window.__DEV__ = state;
+      callback();
+      window.__DEV__ = dev;
+    };
+  </script>
+
+  <!-- Vendor JS -->
+  <script type="text/javascript" src="../../../js/libs/jquery-1.7.1.min.js"></script>
+
+  <!-- Source -->
+  <script type="text/javascript" src="../../src/Widget.js"></script>
+  <script type="text/javascript" src="../../src/Client.js"></script>
+  <script type="text/javascript" src="../../src/Controller.js"></script>
+
+  <!-- Jasmine extensions -->
+  <script type="text/javascript" src="../extensions/spyOnMicroevent.js"></script>
+</head>
+<body>
+
+<!-- Specs -->
+<script type="text/javascript" src="../demo_specs.js"></script>
+
+<script type="text/javascript">
+  window.onload = function () {
+    jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+    jasmine.getEnv().execute();
+  };
+</script>
+
+</body>
+</html>
