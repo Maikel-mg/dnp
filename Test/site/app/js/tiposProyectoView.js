@@ -18,6 +18,22 @@ var TiposProyectoView = Class.extend({
         this.colFasesProyecto = Env.colecciones('vcl.faseProyecto');
         this.colTareasFaseProyecto = Env.colecciones('vcl.tareaFaseProyecto');
 
+        this.colTiposProyecto.makePersistible({
+            table : 'mod_tiposProyecto',
+            service : Env.Service_WS
+
+        });
+        this.colFasesProyecto.makePersistible({
+            table : 'mod_fasesTipoProyecto',
+            service : Env.Service_WS
+
+        });
+        this.colTareasFaseProyecto.makePersistible({
+            table : 'mod_tareasTipoProyecto',
+            service : Env.Service_WS
+
+        });
+
         this.tablaTiposProyectoConfig  = {
             type: 'Table',
             name: 'tablaTiposProyecto',
@@ -123,30 +139,24 @@ var TiposProyectoView = Class.extend({
         this.gridTareasFasesProyecto.tabla.toolbar.onlyIcons();
     },
     initializeEvents : function(){
-        this.colTiposProyecto.on('updated', _.bind(this.actualizarTipoProyecto, this));
-        this.colTiposProyecto.on('inserted', _.bind(this.insertarTipoProyecto, this));
-        this.colTiposProyecto.on('deleted', _.bind(this.eliminarTipoProyecto, this));
+        this.colTiposProyecto.on('post-fetch', _.bind(this.cargarTiposDeProyectos, this));
+        this.colTiposProyecto.on('post-inserted', _.bind(this.obtenerTiposDeProyectos, this));
+        this.colTiposProyecto.on('post-updated', _.bind(this.obtenerTiposDeProyectos, this));
+        this.colTiposProyecto.on('post-deleted', _.bind(this.obtenerTiposDeProyectos, this));
 
-        this.colFasesProyecto.on('updated', _.bind(this.actualizarFaseTipoProyecto, this));
-        this.colFasesProyecto.on('inserted', _.bind(this.insertarFaseTipoProyecto, this));
-        this.colFasesProyecto.on('deleted', _.bind(this.eliminarFaseTipoProyecto, this));
+        this.colFasesProyecto.on('post-query', _.bind(this.cargarFasesTiposDeProyectos, this));
+        this.colFasesProyecto.on('post-inserted', _.bind(this.cargarFasesTipoProyectoSeleccionado, this));
+        this.colFasesProyecto.on('post-updated', _.bind(this.cargarFasesTipoProyectoSeleccionado, this));
+        this.colFasesProyecto.on('post-deleted', _.bind(this.cargarFasesTipoProyectoSeleccionado, this));
 
-        /*
-        this.colTareasFaseProyecto.on('updated', _.bind(this.actualizarTareaFaseProyecto, this));
-        this.colTareasFaseProyecto.on('inserted', _.bind(this.insertarTareaFaseProyecto, this));
-        this.colTareasFaseProyecto.on('deleted', _.bind(this.eliminarTareaFaseProyecto, this));
-        */
-        this.colTareasFaseProyecto.makePersistible({
-            table : 'mod_tareasTipoProyecto',
-            service : Env.Service_WS
-
-        });
-        this.colTareasFaseProyecto.on('post-updated', function(){ alert('post-updated')});
+        this.colTareasFaseProyecto.on('post-query', _.bind(this.cargarTareasFasesTiposDeProyecto, this));
+        this.colTareasFaseProyecto.on('post-inserted', _.bind(this.cargarTareasFasesProyectoSeleccionado, this));
+        this.colTareasFaseProyecto.on('post-updated', _.bind(this.cargarTareasFasesProyectoSeleccionado, this));
+        this.colTareasFaseProyecto.on('post-deleted', _.bind(this.cargarTareasFasesProyectoSeleccionado, this));
     },
 
     obtenerTiposDeProyectos : function(){
-        Env.Service_WS.execute({operation: 'listado', params : { table: 'mod_tiposProyecto'}})
-            .done(_.bind(this.cargarTiposDeProyectos, this));
+        this.colTiposProyecto.fetch();
     },
     cargarTiposDeProyectos: function(datos){
         if(datos.tieneDatos)
@@ -176,57 +186,6 @@ var TiposProyectoView = Class.extend({
             this.gridTareasFasesProyecto.tabla.collection.setData([]);
     },
 
-    // CRUD TIPOS PROYECTO
-    insertarTipoProyecto : function(registro){
-        Env.Service_WS.execute( { operation: 'insert', params : { table: 'mod_tiposProyecto', datos: registro.to_JSON()} } )
-            .done(_.bind(this.obtenerTiposDeProyectos, this));
-    },
-    actualizarTipoProyecto : function(registro){
-        var actualizacion =  registro.to_JSON();
-        delete actualizacion.id;
-
-        Env.Service_WS.execute( { operation: 'update', params : { table: 'mod_tiposProyecto', clave : {Clave : 'id', Valor : registro.get('id')}, datos: actualizacion, grupo : '' } } )
-            .done(_.bind(this.obtenerTiposDeProyectos, this));
-    },
-    eliminarTipoProyecto : function(registro){
-        Env.Service_WS.execute( { operation: 'delete', params : { table: 'mod_tiposProyecto', clave : 'id', valor: registro.get('id') } } )
-           .done(_.bind(this.obtenerTiposDeProyectos, this));
-    },
-
-    // CRUD FASES
-    insertarFaseTipoProyecto : function(registro){
-        Env.Service_WS.execute( { operation: 'insert', params : { table: 'mod_fasesTipoProyecto', datos: registro.to_JSON()} } )
-           .done(_.bind(this.cargarFasesTipoProyectoSeleccionado, this));
-    },
-    actualizarFaseTipoProyecto : function(registro){
-        var actualizacion =  registro.to_JSON();
-        delete actualizacion.id;
-
-        Env.Service_WS.execute( { operation: 'update', params : { table: 'mod_fasesTipoProyecto', clave : {Clave : 'id', Valor : registro.get('id')}, datos: actualizacion, grupo : '' } } )
-           .done(_.bind(this.cargarFasesTipoProyectoSeleccionado, this));
-    },
-    eliminarFaseTipoProyecto : function(registro){
-        Env.Service_WS.execute( { operation: 'delete', params : { table: 'mod_fasesTipoProyecto', clave : 'id', valor: registro.get('id') } } )
-            .done(_.bind(this.cargarFasesTipoProyectoSeleccionado, this));
-    },
-
-    // CRUD TAREAS
-    insertarTareaFaseProyecto : function(registro){
-        Env.Service_WS.execute( { operation: 'insert', params : { table: 'mod_tareasTipoProyecto', datos: registro.to_JSON()} } )
-            .done(_.bind(this.cargarTareasFasesProyectoSeleccionado, this));
-    },
-    actualizarTareaFaseProyecto : function(registro){
-        var actualizacion =  registro.to_JSON();
-        delete actualizacion.id;
-
-        Env.Service_WS.execute( { operation: 'update', params : { table: 'mod_tareasTipoProyecto', clave : {Clave : 'id', Valor : registro.get('id')}, datos: actualizacion, grupo : '' } } )
-            .done(_.bind(this.cargarTareasFasesProyectoSeleccionado, this));
-    },
-    eliminarTareaFaseProyecto : function(registro){
-        Env.Service_WS.execute( { operation: 'delete', params : { table: 'mod_tareasTipoProyecto', clave : 'id', valor: registro.get('id') } } )
-            .done(_.bind(this.cargarTareasFasesProyectoSeleccionado, this));
-    },
-
     // FUNCIONES
     setTipoProyectoFK : function(ficha){
         if(ficha.modo == Ficha.Modos.Alta)
@@ -235,8 +194,14 @@ var TiposProyectoView = Class.extend({
         }
     },
     cargarFasesTipoProyectoSeleccionado : function(tabla){
-                    Env.Service_WS.execute( { operation: 'buscar', params : { table :'mod_fasesTipoProyecto', clave: {idTipoProyecto: "'" + this.gridTiposProyecto.tabla.idFilaSeleccionada + "'"}, Referencias: false, Colecciones:false}})
-            .done(_.bind(this.cargarFasesTiposDeProyectos, this));
+        var query = {
+            query : {
+                idTipoProyecto: "'" + this.gridTiposProyecto.tabla.idFilaSeleccionada + "'"
+            },
+            referencias: false,
+            colecciones:false
+        };
+        this.colFasesProyecto.query(query);
     },
 
     setFaseProyectoFK : function(ficha){
@@ -246,9 +211,12 @@ var TiposProyectoView = Class.extend({
         }
     },
     cargarTareasFasesProyectoSeleccionado : function(tabla){
-
-        Env.Service_WS.execute( { operation: 'buscar', params : { table :'mod_tareasTipoProyecto', clave: {idFase: "'" + this.gridFasesProyecto.tabla.idFilaSeleccionada + "'"}, Referencias: false, Colecciones:false}})
-            .done(_.bind(this.cargarTareasFasesTiposDeProyecto, this));
+        var query = {
+            query : {idFase: "'" + this.gridFasesProyecto.tabla.idFilaSeleccionada + "'"},
+            referencias: false,
+            colecciones:false
+        };
+        this.colTareasFaseProyecto.query(query);
     },
 
     // EVENTOS
