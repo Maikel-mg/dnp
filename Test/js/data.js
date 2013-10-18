@@ -1201,11 +1201,11 @@ ProxyWebService = Class.extend({
             data: '',
             dataType: 'json',
             beforeSend : function(jqXHR, settings){
-                /*
+
                 console.log('beforeSend');
                 console.log(arguments);
                 console.log('----------');
-                */
+
             },
             dataFilter: function(data, dataType){
                 //console.log('dataFilter');
@@ -1269,6 +1269,7 @@ ProxyWebService = Class.extend({
         else if( resultado.estado === 'Error')
         {
             resultado.mensaje = 'Ha ocurrido un error: \n ' + respuestaJSON["Mensaje"];
+            resultado.llamada = arguments;
             alert(resultado.mensaje);
         }
 
