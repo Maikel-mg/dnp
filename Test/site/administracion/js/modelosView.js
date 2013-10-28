@@ -9,24 +9,29 @@ var ModelosView = Class.extend({
         this.createVariables();
         this.initializeUI();
         this.initializeEvents();
+
+        this.obtenerModelos();
     },
 
     createVariables : function () {
-        this.colModelos = Env.colecciones('ipk.modelo', Env.Service_ADM.execute({operation : 'getTable', params : {table: 'modelos'}}));
+        this.colModelos = Env.colecciones('ipk.modelo');
         this.colCamposModelo = Env.colecciones('ipk.campo_modelo');
+
+        this.colModelos.makePersistible({
+            table : 'adm_Modelos',
+            service : Env.Service_WS
+        });
+        this.colCamposModelo.makePersistible({
+            table : 'adm_CamposModelos',
+            service : Env.Service_WS
+        });
 
         this.tablaModelosConfig  = {
             type: 'Table',
             name: 'tabla',
             renderTo : '#gridModelos',
             presentacion :   Env.presentaciones('tbModelos', true),
-            modelCollection: this.colModelos,
-            events: {
-                control: {
-                    rowClick: _.bind(this.onModeloClick, this),
-                    rowDblClick: _.bind(this.onModeloDoubleClick, this)
-                }
-            }
+            modelCollection: this.colModelos
         };
         this.fichaModelosConfig = {
             type : 'Ficha',
@@ -46,12 +51,7 @@ var ModelosView = Class.extend({
             type : 'Ficha',
             name : 'fchModelos',
             title : 'Edición de campo de modelo',
-            presentacion :   Env.presentaciones('fchCamposModelo', true),
-            events: {
-                control: {
-                    opened : _.bind(this.inicializarModelo, this)
-                }
-            }
+            presentacion :   Env.presentaciones('fchCamposModelo', true)
         };
 
         this.gridModelos = {
@@ -80,108 +80,56 @@ var ModelosView = Class.extend({
         this.gridCamposModelos.render();
     },
     initializeEvents : function(){
-        this.colModelos.on('updated', _.bind(this.actualizarModelo, this));
-        this.colModelos.on('inserted', _.bind(this.insertarModelo, this));
-        this.colModelos.on('deleted', _.bind(this.eliminarModelo, this));
+        // DATA
+        this.colModelos.on('post-fetch', _.bind(this.cargarModelos, this));
+        this.colCamposModelo.on('post-query', _.bind(this.cargarCamposModelo, this));
 
-        this.colCamposModelo.on('updated', _.bind(this.actualizarCampoModelo, this));
-        this.colCamposModelo.on('inserted', _.bind(this.insertarCampoModelo, this));
-        this.colCamposModelo.on('deleted', _.bind(this.eliminarCampoModelo, this));
-    },
+        // UI
+        this.gridModelos.tabla.on('rowClick', _.bind(this.onModeloClick, this));
+        this.gridModelos.tabla.on('rowDblClick', _.bind(this.onModeloDoubleClick, this));
+        this.gridCamposModelos.ficha.on('opened',  _.bind(this.inicializarModelo, this));
 
-    // CRUD MODELOS
-    insertarModelo : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'insert',
-            params : {
-                table: 'modelos',
-                row : registro.to_JSON()
-            }
-        });
-    },
-    actualizarModelo : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'update',
-            params : {
-                table: 'modelos',
-                field : 'id',
-                value: registro.get('id'),
-                row : registro.to_JSON()
-            }
-        });
-
-    },
-    eliminarModelo : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'delete',
-            params : {
-                table: 'modelos',
-                field : 'id',
-                value: registro.get('id')
-            }
-        });
-    },
-
-    // CRUD CAMPOS MODELO
-    insertarCampoModelo : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'insert',
-            params : {
-                table: 'campos_modelo',
-                row : registro.to_JSON()
-            }
-        });
-    },
-    actualizarCampoModelo : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'update',
-            params : {
-                table: 'campos_modelo',
-                field : 'id',
-                value: registro.get('id'),
-                row : registro.to_JSON()
-            }
-        });
-    },
-    eliminarCampoModelo : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'delete',
-            params : {
-                table: 'campos_modelo',
-                field : 'id',
-                value: registro.get('id')
-            }
-        });
     },
 
     // FUNCIONES
+    obtenerModelos : function(){
+        this.colModelos.fetch();
+    },
+    cargarModelos: function(datos){
+        if(datos.tieneDatos)
+        {
+            this.gridModelos.tabla.collection.setData(datos.datos);
+            this.gridCamposModelos.ficha.find('idModelo').setData(datos.datos);
+        }
+    },
+    cargarCamposModelo : function(datos){
+        if(datos.tieneDatos)
+        {
+            this.gridCamposModelos.tabla.collection.setData(datos.datos);
+        }
+    },
+
     inicializarModelo : function(ficha){
         if(ficha.modo == Ficha.Modos.Alta)
         {
             ficha.find('idModelo').Value(this.gridModelos.tabla.idFilaSeleccionada);
         }
     },
-    cargarCamposModeloSeleccionado : function(tabla){
-        var campos = Env.Service_ADM.execute({
-            operation : 'query',
-            params : {
-                table: 'campos_modelo',
-                field : 'idModelo',
-                value : tabla.datosFilaSeleccionada.id
-            }
-        });
-        if(campos && campos.length > 0)
-            this.gridCamposModelos.tabla.collection.setData(campos);
-        else
-            this.gridCamposModelos.tabla.collection.setData([]);
+    obtenerCamposModeloSeleccionado : function(tabla){
+        var query = {
+            query : {idModelo: "'" + this.gridModelos.tabla.idFilaSeleccionada + "'"},
+            referencias: false,
+            colecciones:false
+        };
+        this.colCamposModelo.query(query);
     },
 
     // EVENTOS
     onModeloClick : function(tabla) {
-        this.cargarCamposModeloSeleccionado(tabla);
+        this.obtenerCamposModeloSeleccionado(tabla);
     },
     onModeloDoubleClick : function(tabla) {
-        this.cargarCamposModeloSeleccionado(tabla);
+        this.obtenerCamposModeloSeleccionado(tabla);
         this.gridModelos.tabla.toolbar.controls[1].$element.trigger('click');
     }
 });
