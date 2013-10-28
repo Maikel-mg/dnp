@@ -293,6 +293,8 @@ var PresentacionesView = Class.extend({
         this.gestionarAccionesPresentaciones(boton)
     },
 
+
+
     onCampoPresentacionDoubleClick : function() {
         this.gridCamposPresentaciones.tabla.toolbar.controls[1].$element.trigger('click');
     },
