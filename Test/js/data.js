@@ -1254,12 +1254,19 @@ ProxyWebService = Class.extend({
 
         if(resultado.estado === 'OK')
         {
-            resultado.tieneDatos = true;
             if(respuestaJSON["Datos"].length > 0)
+            {
                 resultado.datos = JSON.parse(respuestaJSON["Datos"]);
+                if(resultado.datos.length > 0)
+                    resultado.tieneDatos = true;
+                else
+                    resultado.tieneDatos = false;
+            }
             else
+            {
+                resultado.tieneDatos = false;
                 resultado.datos = "";
-
+            }
             resultado.mensaje = respuestaJSON["Mensaje"];
         }
         else if( resultado.estado === 'Empty')
