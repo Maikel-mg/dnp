@@ -9,26 +9,44 @@ var AccesosView = Class.extend({
         this.createVariables();
         this.initializeUI();
         this.initializeEvents();
+
+
+        this.obtenerModelos();
+        this.obtenerRoles();
+        this.obtenerFases();
+        this.obtenerAccesosSeleccion();
     },
 
     createVariables : function () {
-        this.colModelos = Env.colecciones('ipk.modelo', Env.Service_ADM.execute({operation:'getTable', params : {table : 'modelos'}}));
-        this.colRoles   = Env.colecciones('ipk.rol', Env.Service_ADM.execute({operation:'getTable', params : {table : 'roles'}}));
-        this.colFases   = Env.colecciones('ipk.fase', Env.Service_ADM.execute({operation:'getTable', params : {table : 'fases'}}));
+
+        this.colModelos = Env.colecciones('ipk.modelo');
+        this.colRoles   = Env.colecciones('ipk.rol');
+        this.colFases   = Env.colecciones('ipk.fase');
         this.colAccesos = Env.colecciones('ipk.acceso');
+
+        this.colModelos.makePersistible({
+            table   : 'adm_Modelos',
+            service : Env.Service_WS
+        });
+        this.colRoles.makePersistible({
+            table   : 'adm_Roles',
+            service : Env.Service_WS
+        });
+        this.colFases.makePersistible({
+            table   : 'adm_Fases',
+            service : Env.Service_WS
+        });
+        this.colAccesos.makePersistible({
+            table   : 'adm_Accesos',
+            service : Env.Service_WS
+        });
 
         this.tablaModelosConfig  = {
             type: 'Table',
             name: 'tabla',
             renderTo : '#gridModelos',
             presentacion :   Env.presentaciones('tbModelos', true),
-            modelCollection: this.colModelos,
-            events: {
-                control: {
-                    rowClick: _.bind(this.onModeloClick, this),
-                    rowDblClick: _.bind(this.onModeloDoubleClick, this)
-                }
-            }
+            modelCollection: this.colModelos
         };
         this.fichaModelosConfig = {
             type : 'Ficha',
@@ -42,12 +60,7 @@ var AccesosView = Class.extend({
             name: 'tablaRoles',
             renderTo : '#gridRoles',
             presentacion :   Env.presentaciones('tbRoles', true),
-            modelCollection: this.colRoles,
-            events: {
-                control: {
-                    rowClick: _.bind(this.onModeloClick, this)
-                }
-            }
+            modelCollection: this.colRoles
         };
         this.fichaRolesConfig = {
             type : 'Ficha',
@@ -61,12 +74,7 @@ var AccesosView = Class.extend({
             name: 'tablaFases',
             renderTo : '#gridFases',
             presentacion :   Env.presentaciones('tbFases', true),
-            modelCollection: this.colFases,
-            events: {
-                control: {
-                    rowClick: _.bind(this.onModeloClick, this)
-                }
-            }
+            modelCollection: this.colFases
         };
         this.fichaFasesConfig = {
             type : 'Ficha',
@@ -114,10 +122,7 @@ var AccesosView = Class.extend({
             tablaConfig: this.tablaAccesosConfig
         };
     },
-    initializeData : function () {
-        if(!localStorage[AppConfig.adminBD])
-            location = 'creacion.html';
-    },
+    initializeData : function () {},
     initializeUI : function(){
         this.gridModelos = new Grid(this.gridModelos);
         this.gridModelos.render();
@@ -136,161 +141,67 @@ var AccesosView = Class.extend({
         this.gridAccesos.tabla.toolbar.onlyIcons();
     },
     initializeEvents : function(){
-        this.colModelos.on('updated', _.bind(this.actualizarModelo, this));
-        this.colModelos.on('inserted', _.bind(this.insertarModelo, this));
-        this.colModelos.on('deleted', _.bind(this.eliminarModelo, this));
+        // DATA
+        this.colModelos.on('post-fetch', _.bind(this.cargarModelos, this));
+        this.colFases.on('post-fetch', _.bind(this.cargarFases, this));
+        this.colRoles.on('post-fetch', _.bind(this.cargarRoles, this));
+        this.colAccesos.on('post-query', _.bind(this.cargarAccesosSeleccion, this));
 
-        this.colRoles.on('updated', _.bind(this.actualizarRol, this));
-        this.colRoles.on('inserted', _.bind(this.insertarRol, this));
-        this.colRoles.on('deleted', _.bind(this.eliminarRol, this));
-
-        this.colFases.on('updated', _.bind(this.actualizarFase, this));
-        this.colFases.on('inserted', _.bind(this.insertarFase, this));
-        this.colFases.on('deleted', _.bind(this.eliminarFase, this));
-
-        this.colAccesos.on('updated', _.bind(this.actualizarAcceso, this));
-        this.colAccesos.on('inserted', _.bind(this.insertarAcceso, this));
-        this.colAccesos.on('deleted', _.bind(this.eliminarAcceso, this));
-
+        // UI
+        this.gridModelos.tabla.on('rowClick', _.bind(this.onFilterClick, this));
+        this.gridFases.tabla.on('rowClick', _.bind(this.onFilterClick, this));
+        this.gridRoles.tabla.on('rowClick', _.bind(this.onFilterClick, this));
         this.gridAccesos.ficha.on('opened', _.bind(this.inicializarFK, this));
     },
 
-    // CRUD MODELOS //
-    insertarModelo : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'insert',
-            params : {
-                table: 'modelos',
-                row : registro.to_JSON()
-            }
-        });
-    },
-    actualizarModelo : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'update',
-            params : {
-                table: 'modelos',
-                field : 'id',
-                value: registro.get('id'),
-                row : registro.to_JSON()
-            }
-        });
-
-    },
-    eliminarModelo : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'delete',
-            params : {
-                table: 'modelos',
-                field : 'id',
-                value: registro.get('id')
-            }
-        });
-    },
-
-    // CRUD ROLES//
-    insertarRol: function(registro){
-        Env.Service_ADM.execute({
-            operation: 'insert',
-            params : {
-                table: 'roles',
-                row : registro.to_JSON()
-            }
-        });
-
-    },
-    actualizarRol : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'update',
-            params : {
-                table: 'roles',
-                field : 'id',
-                value: registro.get('id'),
-                row : registro.to_JSON()
-            }
-        });
-
-    },
-    eliminarRol : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'delete',
-            params : {
-                table: 'roles',
-                field : 'id',
-                value: registro.get('id')
-            }
-        });
-    },
-
-    // CRUD FASES //
-    insertarFase: function(registro){
-        Env.Service_ADM.execute({
-            operation: 'insert',
-            params : {
-                table: 'fases',
-                row : registro.to_JSON()
-            }
-        });
-
-    },
-    actualizarFase : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'update',
-            params : {
-                table: 'fases',
-                field : 'id',
-                value: registro.get('id'),
-                row : registro.to_JSON()
-            }
-        });
-
-    },
-    eliminarFase : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'delete',
-            params : {
-                table: 'fases',
-                field : 'id',
-                value: registro.get('id')
-            }
-        });
-    },
-
-    // CRUD ACCESOS //
-    insertarAcceso: function(registro){
-        Env.Service_ADM.execute({
-            operation: 'insert',
-            params : {
-                table: 'accesos',
-                row : registro.to_JSON()
-            }
-        });
-
-    },
-    actualizarAcceso : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'update',
-            params : {
-                table: 'accesos',
-                field : 'id',
-                value: registro.get('id'),
-                row : registro.to_JSON()
-            }
-        });
-
-    },
-    eliminarAcceso : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'delete',
-            params : {
-                table: 'accesos',
-                field : 'id',
-                value: registro.get('id')
-            }
-        });
-    },
-
     // FUNCIONES
+    obtenerModelos : function(){
+        this.colModelos.fetch();
+    },
+    obtenerRoles : function(){
+        this.colRoles.fetch();
+    },
+    obtenerFases: function(){
+        this.colFases.fetch();
+    },
+    obtenerAccesosSeleccion : function(){
+        if(this.gridModelos.tabla.idFilaSeleccionada !== undefined && this.gridRoles.tabla.idFilaSeleccionada !== undefined && this.gridFases.tabla.idFilaSeleccionada !== undefined)
+        {
+            var consulta = {
+            query : {
+                idModelo : "'" + this.gridModelos.tabla.idFilaSeleccionada + "'",
+                idRol : "'" + this.gridRoles.tabla.idFilaSeleccionada + "'",
+                idFase : "'" + this.gridFases.tabla.idFilaSeleccionada + "'"
+            },
+            referencias : false,
+            colecciones : false
+        };
+            this.colAccesos.query(consulta);
+        }
+    },
+
+    cargarModelos : function(datos){
+        if(datos.tieneDatos)
+            this.gridModelos.tabla.collection.setData(datos.datos);
+    },
+    cargarRoles : function(datos){
+        if(datos.tieneDatos)
+            this.gridRoles.tabla.collection.setData(datos.datos);
+    },
+    cargarFases : function(datos){
+        if(datos.tieneDatos)
+            this.gridFases.tabla.collection.setData(datos.datos);
+    },
+    cargarAccesosSeleccion : function(datos){
+        if(datos.tieneDatos)
+            this.gridAccesos.tabla.collection.setData(datos.datos);
+        else
+        {
+            alert('No hay accesos creados para los datos seleccionados');
+            this.gridAccesos.tabla.collection.setData([]);
+        }
+    },
+
     inicializarFK : function(ficha){
         if(ficha.modo == Ficha.Modos.Alta)
         {
@@ -299,38 +210,9 @@ var AccesosView = Class.extend({
             ficha.find('idFase').Value(this.gridFases.tabla.idFilaSeleccionada);
         }
     },
-    cargarCamposModeloSeleccionado : function(tabla){
-
-        if(this.gridModelos.tabla.idFilaSeleccionada !== undefined && this.gridRoles.tabla.idFilaSeleccionada !== undefined && this.gridFases.tabla.idFilaSeleccionada !== undefined)
-        {
-            var accesos = Env.Service_ADM.execute({
-                operation:  'query',
-                params : {
-                    table : 'accesos',
-                    fields : {
-                        idModelo : this.gridModelos.tabla.idFilaSeleccionada,
-                        idRol : this.gridRoles.tabla.idFilaSeleccionada,
-                        idFase : this.gridFases.tabla.idFilaSeleccionada
-                    }
-                }
-            });
-
-            if(accesos)
-            {
-                accesos = (accesos.length > 0) ? accesos : [accesos];
-                this.gridAccesos.tabla.collection.setData(accesos);
-            }
-            else
-                this.gridAccesos.tabla.collection.setData( []);
-        }
-    },
 
     // EVENTOS
-    onModeloClick : function(tabla) {
-        this.cargarCamposModeloSeleccionado(tabla);
-    },
-    onModeloDoubleClick : function(tabla) {
-        this.cargarCamposModeloSeleccionado(tabla);
-        this.gridModelos.tabla.toolbar.controls[1].$element.trigger('click');
+    onFilterClick : function(tabla) {
+        this.obtenerAccesosSeleccion();
     }
 });

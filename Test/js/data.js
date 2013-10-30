@@ -9,7 +9,7 @@ WhithEvents = {
      *
      * @param {string}   event - Nombre del evento
      * @param {Function} callback - Funcion que se va a ejcutar cuando el evento sea lanzado
-     * @param {Object}   context - Contexto en el que se ejecuta el evento
+     * @param [{Object}]   context - Contexto en el que se ejecuta el evento
      */
     on : function(event, callback, context){
         this.publications = this.publications || [];
@@ -773,6 +773,13 @@ Collection = Class.extend({
         return nuevo;
     },
 
+    fetch : function(){
+        this.makeFetch();
+    },
+    query : function(params){
+        this.makeQuery(params);
+    },
+
     /**
      * Inserta el registro en la coleccion, si el parametro es un JSON se crea una instancia del modelo para el que esta configurada la coleccion
      *
@@ -818,8 +825,6 @@ Collection = Class.extend({
         var registroEliminado ;
         if(posicion !== -1)
         {
-            console.log(posicion);
-
             registroEliminado = this.registros[posicion];
 
             delete this.registros[posicion];
@@ -846,8 +851,6 @@ Collection = Class.extend({
 
         if(registro)
         {
-            console.log(registro);
-
             nuevosDatos = $.extend({} , registro.to_JSON() , datos);
             registro.setData(nuevosDatos);
 
@@ -856,7 +859,6 @@ Collection = Class.extend({
     },
 
     /**
-     *
      * Busca la posicion del elemento dentro de la coleccion por el filtro indicado
      *
      * @name    buscarPosicion
@@ -999,22 +1001,42 @@ Collection = Class.extend({
         return _[operacion].apply(_, newArguments);
     },
 
+    //TODO : Refactorizar esto sacandolo de la coleccion
     makePersistible : function(params){
-        var that = this;
         this.service = params.service;
         this.table = params.table;
 
-        this.on('updated', _.bind(this.makeUpdate, this));
-        this.on('inserted', function(){ that.trigger('post-inserted', that);});
-        this.on('deleted', function(){ that.trigger('post-deleted', that);});
+        this.on('updated' , _.bind(this.makeUpdate, this));
+        this.on('inserted', _.bind(this.makeInsert, this));
+        this.on('deleted' , _.bind(this.makeDelete, this));
+    },
+    makeFetch : function(){
+        var that = this;
+        this.service.execute({operation: 'listado', params : { table: this.table}})
+            .done(function(data){ that.trigger('post-fetch', data);});
+    },
+    makeQuery : function(params){
+        var that = this;
+        this.service.execute( { operation: 'buscar', params : { table : this.table, query : params.query, Referencias: params.referencias || false, Colecciones: params.colecciones || false}})
+            .done(function(data){ that.trigger('post-query', data);});
+    },
+    makeInsert : function(registro){
+        var that = this;
+        this.service.execute( { operation: 'insert', params : { table: this.table, datos: registro.to_JSON()} } )
+            .done(function(data){ that.trigger('post-inserted', data);});
     },
     makeUpdate : function(registro){
         var actualizacion =  registro.to_JSON();
         delete actualizacion.id;
         var that = this;
 
-        Env.Service_WS.execute( { operation: 'update', params : { table: this.table, clave : {Clave : 'id', Valor : registro.get('id')}, datos: actualizacion, grupo : '' } } )
-            .done(function(){ that.trigger('post-updated', that);});
+        this.service.execute( { operation: 'update', params : { table: this.table, clave : {Clave : 'id', Valor : registro.get('id')}, datos: actualizacion, grupo : '' } } )
+            .done(function(data){ that.trigger('post-updated', data);});
+    },
+    makeDelete : function(registro){
+        var that = this;
+        this.service.execute( { operation: 'delete', params : { table:this.table, clave : 'id', valor: registro.get('id') } } )
+            .done(function(data){ that.trigger('post-deleted', data);});
     }
 });
 CollectionManager = Class.extend({
@@ -1179,11 +1201,11 @@ ProxyWebService = Class.extend({
             data: '',
             dataType: 'json',
             beforeSend : function(jqXHR, settings){
-                /*
+
                 console.log('beforeSend');
                 console.log(arguments);
                 console.log('----------');
-                */
+
             },
             dataFilter: function(data, dataType){
                 //console.log('dataFilter');
@@ -1210,11 +1232,11 @@ ProxyWebService = Class.extend({
             },
             */
             complete : function (jqXHR, textStatus, errorThrown) {
-
+                /*
                 console.log('complete');
                 console.log(arguments);
                 console.log('----------');
-
+                */
             }
         }
     },
@@ -1232,12 +1254,19 @@ ProxyWebService = Class.extend({
 
         if(resultado.estado === 'OK')
         {
-            resultado.tieneDatos = true;
             if(respuestaJSON["Datos"].length > 0)
+            {
                 resultado.datos = JSON.parse(respuestaJSON["Datos"]);
+                if(resultado.datos.length > 0)
+                    resultado.tieneDatos = true;
+                else
+                    resultado.tieneDatos = false;
+            }
             else
+            {
+                resultado.tieneDatos = false;
                 resultado.datos = "";
-
+            }
             resultado.mensaje = respuestaJSON["Mensaje"];
         }
         else if( resultado.estado === 'Empty')
@@ -1247,6 +1276,7 @@ ProxyWebService = Class.extend({
         else if( resultado.estado === 'Error')
         {
             resultado.mensaje = 'Ha ocurrido un error: \n ' + respuestaJSON["Mensaje"];
+            resultado.llamada = arguments;
             alert(resultado.mensaje);
         }
 

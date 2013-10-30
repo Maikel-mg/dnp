@@ -55,7 +55,6 @@ Controls.Toolbar = {
         events : {
             control : {
                 buttonClicked : function(boton, toolbar){
-                    console.log(boton.$element.text());
                     window.location = "http://localhost:13776/site/app/encuestas/" + boton.$element.text() + ".html";
                 }
             }

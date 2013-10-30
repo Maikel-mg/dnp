@@ -9,25 +9,34 @@ var PresentacionesView = Class.extend({
         this.createVariables();
         this.initializeUI();
         this.initializeEvents();
+
+        this.obtenerPresentaciones();
     },
 
     createVariables : function () {
-        this.colPresentacion = Env.colecciones('ipk.presentaciones', Env.Service_ADM.execute({operation: 'getTable', params : {table: 'presentaciones'}}));
+        this.colPresentacion = Env.colecciones('ipk.presentaciones');
         this.colCamposPresentacion = Env.colecciones('ipk.campo_presentacion');
+        this.colCamposModelo = Env.colecciones('ipk.campo_modelo');
+
+        this.colPresentacion.makePersistible({
+            table : 'adm_Presentaciones',
+            service : Env.Service_WS
+        });
+        this.colCamposPresentacion.makePersistible({
+            table : 'adm_CamposPresentacion',
+            service : Env.Service_WS
+        });
+        this.colCamposModelo.makePersistible({
+            table : 'adm_CamposModelos',
+            service : Env.Service_WS
+        });
 
         this.tablaPresentacionesConfig  = {
             type: 'Table',
             name: 'tablaPresentaciones',
             renderTo : '#gridPresentaciones',
             presentacion : Env.presentaciones('tbPresentaciones', true),
-            modelCollection: this.colPresentacion,
-            events: {
-                control: {
-                    rowClick: _.bind(this.onPresentacionClick, this),
-                    rowDblClick: _.bind(this.onPresentacionDoubleClick, this),
-                    buttonClicked :_.bind(this.gestionarAccionesPresentaciones, this)
-                }
-            }
+            modelCollection: this.colPresentacion
         };
         this.fichaPresentacionesConfig = {
             type : 'Ficha',
@@ -41,24 +50,13 @@ var PresentacionesView = Class.extend({
             name: 'tablaCamposPresentacion',
             renderTo : '#gridCamposPresentacion',
             presentacion :  Env.presentaciones('tbCampoPresentacion', true) ,
-            modelCollection: this.colCamposPresentacion,
-            events: {
-                control: {
-                    rowDblClick: _.bind(this.onCampoPresentacionDoubleClick, this),
-                    buttonClicked : _.bind(this.gestionarAccionesCamposPresentaciones, this)
-                }
-            }
+            modelCollection: this.colCamposPresentacion
         };
         this.fichaCamposPresentacionesConfig = {
             type : 'Ficha',
             name : 'fchModelos',
             title : 'Edicion de campo de la presentacion',
-            presentacion :  Env.presentaciones('fchCamposPresentacion', true),
-            events: {
-                control: {
-                    opened : _.bind(this.inicializarPresentacion, this)
-                }
-            }
+            presentacion :  Env.presentaciones('fchCamposPresentacion', true)
         };
 
         this.gridPresentaciones = {
@@ -73,7 +71,6 @@ var PresentacionesView = Class.extend({
             fichaConfig: this.fichaCamposPresentacionesConfig,
             tablaConfig: this.tablaCamposPresentacionesConfig
         };
-
     },
     initializeData : function () {
         if(!localStorage[AppConfig.adminBD])
@@ -131,50 +128,59 @@ var PresentacionesView = Class.extend({
         this.gridCamposPresentaciones.tabla.sort('Orden');
     },
     initializeEvents : function(){
+        // DATA
+        this.colPresentacion.on('post-fetch', _.bind(this.cargarPresentaciones , this));
+        this.colCamposPresentacion.on('post-query', _.bind(this.cargarCamposPresentaciones, this));
+        this.colCamposModelo.on('post-query', _.bind(this.cargarCamposModelo, this));
 
-        this.colPresentacion.on('updated', _.bind(this.actualizarPresentacion, this));
-        this.colPresentacion.on('inserted', _.bind(this.insertarPresentacion, this));
-        this.colPresentacion.on('deleted', _.bind(this.eliminarPresentacion, this));
+        //UI
+        this.gridPresentaciones.tabla.on('rowClick', _.bind(this.onPresentacionClick,this));
+        this.gridPresentaciones.tabla.on('rowDblClick', _.bind(this.onPresentacionDoubleClick,this));
+        this.gridPresentaciones.tabla.on('buttonClicked', _.bind(this.onPresentacionButtonClicked,this));
 
-        this.colCamposPresentacion.on('updated', _.bind(this.actualizarCampoPresentacion, this));
-        this.colCamposPresentacion.on('inserted', _.bind(this.insertarCampoPresentacion, this));
-        this.colCamposPresentacion.on('deleted', _.bind(this.eliminarCampoPresentacion, this));
+        this.gridCamposPresentaciones.tabla.on('rowDblClick', _.bind(this.onCampoPresentacionDoubleClick,this));
+        this.gridCamposPresentaciones.tabla.on('buttonClicked', _.bind(this.onCampoPresentacionButtonClicked,this));
     },
 
     // FUNCIONES
-    cargarCamposPresentacionSeleccionada : function(tabla){
+    obtenerPresentaciones: function(){
+        this.colPresentacion.fetch();
+    },
+    obtenerCamposPresentacion: function(){
+        var query = {
+            query : {idPresentacion: "'" + this.gridPresentaciones.tabla.idFilaSeleccionada + "'"},
+            referencias: false,
+            colecciones:false
+        };
+        this.colCamposPresentacion.query(query);
+    },
+    obtenerCamposModelo: function(){
+        var query = {
+            query : {idModelo: "'" + this.gridPresentaciones.tabla.datosFilaSeleccionada.idModelo + "'"},
+            referencias: false,
+            colecciones:false
+        };
+        this.colCamposModelo.query(query);
+    },
 
-        var campos = Env.Service_ADM.execute({
-            operation : 'query',
-            params : {
-                table: 'campos_presentacion',
-                field : 'idPresentacion',
-                value : tabla.datosFilaSeleccionada.id
+    cargarPresentaciones : function(datos){
+            if(datos.tieneDatos)
+            {
+                this.gridPresentaciones.tabla.collection.setData(datos.datos);
+                this.gridCamposPresentaciones.ficha.find('idPresentacion').setData(datos.datos);
             }
-        });
-        if(campos && campos.length > 0)
-            this.gridCamposPresentaciones.tabla.collection.setData(campos);
+    },
+    cargarCamposPresentaciones : function(datos){
+        if(datos.tieneDatos)
+            this.gridCamposPresentaciones.tabla.collection.setData(datos.datos);
         else
             this.gridCamposPresentaciones.tabla.collection.setData([]);
     },
-    cargarCamposModelo : function(tabla){
-        var campos = Env.Service_ADM.execute({
-            operation : 'query',
-            params : {
-                table: 'campos_modelo',
-                field : 'idModelo',
-                value : tabla.datosFilaSeleccionada.idModelo
-            }
-        });
-
-        if(campos && campos.length > 0)
-            this.gridCamposPresentaciones.ficha.find('idCampoModelo').setData(campos);
-    },
-    inicializarPresentacion : function(ficha){
-        if(ficha.modo == Ficha.Modos.Alta)
-        {
-            ficha.find('idPresentacion').Value(this.gridPresentaciones.tabla.idFilaSeleccionada);
-        }
+    cargarCamposModelo : function(datos){
+        if(datos.tieneDatos)
+            this.gridCamposPresentaciones.ficha.find('idCampoModelo').setData(datos.datos);
+        else
+            this.gridCamposPresentaciones.tabla.collection.setData([]);
     },
 
     gestionarAccionesPresentaciones : function(boton){
@@ -273,82 +279,27 @@ var PresentacionesView = Class.extend({
         this.gridCamposPresentaciones.tabla.collection.setData(camposModelo);
     },
 
-    // CRUD PRESENTACIONES
-    insertarPresentacion : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'insert',
-            params : {
-                table: 'presentaciones',
-                row : registro.to_JSON()
-            }
-        });
-    },
-    actualizarPresentacion : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'update',
-            params : {
-                table: 'presentaciones',
-                field : 'id',
-                value: registro.get('id'),
-                row : registro.to_JSON()
-            }
-        });
-
-    },
-    eliminarPresentacion : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'delete',
-            params : {
-                table: 'presentaciones',
-                field : 'id',
-                value: registro.get('id')
-            }
-        });
-    },
-
-    // CRUD CAMPOS PRESENTACIONES
-    insertarCampoPresentacion : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'insert',
-            params : {
-                table: 'campos_presentacion',
-                row : registro.to_JSON()
-            }
-        });
-    },
-    actualizarCampoPresentacion : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'update',
-            params : {
-                table: 'campos_presentacion',
-                field : 'id',
-                value: registro.get('id'),
-                row : registro.to_JSON()
-            }
-        });
-    },
-    eliminarCampoPresentacion : function(registro){
-        Env.Service_ADM.execute({
-            operation: 'delete',
-            params : {
-                table: 'campos_presentacion',
-                field : 'id',
-                value: registro.get('id')
-            }
-        });
-    },
-
     // EVENTOS
-    onPresentacionClick : function(tabla) {
-        this.cargarCamposPresentacionSeleccionada(tabla);
-        this.cargarCamposModelo(tabla);
+    onPresentacionClick : function() {
+        this.obtenerCamposPresentacion();
+        this.obtenerCamposModelo();
     },
     onPresentacionDoubleClick : function() {
-        this.cargarCamposPresentacionSeleccionada(this.gridPresentaciones.tabla);
+        this.onPresentacionClick();
         this.gridPresentaciones.tabla.toolbar.controls[1].$element.trigger('click');
     } ,
+    onPresentacionButtonClicked : function(boton){
+        this.gestionarAccionesPresentaciones(boton)
+    },
+
+
 
     onCampoPresentacionDoubleClick : function() {
         this.gridCamposPresentaciones.tabla.toolbar.controls[1].$element.trigger('click');
+    },
+    onCampoPresentacionButtonClicked : function(boton){
+        this.gestionarAccionesCamposPresentaciones(boton)
     }
+
+
 });
