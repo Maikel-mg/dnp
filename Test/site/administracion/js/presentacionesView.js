@@ -71,7 +71,6 @@ var PresentacionesView = Class.extend({
             fichaConfig: this.fichaCamposPresentacionesConfig,
             tablaConfig: this.tablaCamposPresentacionesConfig
         };
-
     },
     initializeData : function () {
         if(!localStorage[AppConfig.adminBD])
@@ -165,11 +164,11 @@ var PresentacionesView = Class.extend({
     },
 
     cargarPresentaciones : function(datos){
-        if(datos.tieneDatos)
-        {
-            this.gridPresentaciones.tabla.collection.setData(datos.datos);
-            this.gridCamposPresentaciones.ficha.find('idPresentacion').setData(datos.datos);
-        }
+            if(datos.tieneDatos)
+            {
+                this.gridPresentaciones.tabla.collection.setData(datos.datos);
+                this.gridCamposPresentaciones.ficha.find('idPresentacion').setData(datos.datos);
+            }
     },
     cargarCamposPresentaciones : function(datos){
         if(datos.tieneDatos)
