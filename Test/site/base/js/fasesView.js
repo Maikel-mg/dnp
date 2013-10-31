@@ -63,7 +63,11 @@ var FasesView = Class.extend({
         if(datos.tieneDatos)
             this.gridFases.tabla.collection.setData(datos.datos);
         else
+        {
             alert('No hay fases creadas');
+            this.gridFases.tabla.collection.setData([]);
+        }
+
     },
 
     // EVENTOS
