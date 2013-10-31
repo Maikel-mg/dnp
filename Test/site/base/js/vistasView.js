@@ -9,31 +9,49 @@ var VistasView = Class.extend({
         this.createVariables();
         this.initializeUI();
         this.initializeEvents();
+
+        this.obtenerPresentaciones();
+        this.obtenerRoles();
+        this.obtenerFases();
     },
 
     createVariables : function () {
 
-        this.colModelos = Env.colecciones('ipk.presentaciones', Env.Service_BASE.execute({operation:'getTable', params : {table : 'presentaciones'}}));
-        this.colRoles   = Env.colecciones('ipk.rol', Env.Service_BASE.execute({operation:'getTable', params : {table : 'roles'}}));
-        this.colFases   = Env.colecciones('ipk.fase', Env.Service_BASE.execute({operation:'getTable', params : {table : 'fases'}}));
+        this.colPresentaciones = Env.colecciones('ipk.presentaciones');
+        this.colRoles   = Env.colecciones('ipk.rol');
+        this.colFases   = Env.colecciones('ipk.fase');
         this.colVistas   = Env.colecciones('ipk.vista_presentacion');
         this.colCamposVista = Env.colecciones('ipk.vista_campo_presentacion');
 
-        this.tablaModelosConfig  = {
+        this.colPresentaciones.makePersistible({
+            table : 'base_Presentaciones',
+            service : Env.Service_WS
+        });
+        this.colRoles.makePersistible({
+            table : 'base_Roles',
+            service : Env.Service_WS
+        });
+        this.colFases.makePersistible({
+            table : 'base_Fases',
+            service : Env.Service_WS
+        });
+        this.colVistas.makePersistible({
+            table : 'base_VistaPresentacion',
+            service : Env.Service_WS
+        });
+        this.colCamposVista.makePersistible({
+            table : 'base_VistaCampoPresentacion',
+            service : Env.Service_WS
+        });
+
+        this.tablaPresentacionConfig  = {
             type: 'Table',
             name: 'tablaPresentaciones',
             renderTo : '#gridModelos',
             presentacion :   Env.presentaciones('tbPresentaciones', true),
-            modelCollection: this.colModelos,
-            events: {
-                control: {
-                    rowClick: _.bind(this.onModeloClick, this),
-                    rowDblClick: _.bind(this.onModeloDoubleClick, this),
-                    buttonClicked : function(){}
-                }
-            }
+            modelCollection: this.colPresentaciones
         };
-        this.fichaModelosConfig = {
+        this.fichaPresentacionConfig = {
             type : 'Ficha',
             name : 'fchPresentaciones',
             title : 'Edición de modelos',
@@ -46,13 +64,7 @@ var VistasView = Class.extend({
             name: 'tablaRoles',
             renderTo : '#gridRoles',
             presentacion :   Env.presentaciones('tbRoles', true),
-            modelCollection: this.colRoles,
-            events: {
-                control: {
-                    rowClick: _.bind(this.onModeloClick, this),
-                    buttonClicked : function(){}
-                }
-            }
+            modelCollection: this.colRoles
         };
         this.fichaRolesConfig = {
             type : 'Ficha',
@@ -66,13 +78,7 @@ var VistasView = Class.extend({
             name: 'tablaFases',
             renderTo : '#gridFases',
             presentacion :   Env.presentaciones('tbFases', true),
-            modelCollection: this.colFases,
-            events: {
-                control: {
-                    rowClick : _.bind(this.onModeloClick, this),
-                    buttonClicked : function(){}
-                }
-            }
+            modelCollection: this.colFases
         };
         this.fichaFasesConfig = {
             type : 'Ficha',
@@ -86,12 +92,7 @@ var VistasView = Class.extend({
             name: 'tablaVistas',
             renderTo : '#gridAccesos',
             presentacion :   Env.presentaciones('tbVistaPresentacion', true),
-            modelCollection: this.colVistas    ,
-            events :{
-                control : {
-                    rowClick : _.bind(this.onVistaClick, this)
-                }
-            }
+            modelCollection: this.colVistas
         };
         this.fichaVistasConfig = {
             type : 'Ficha',
@@ -114,11 +115,11 @@ var VistasView = Class.extend({
             presentacion : Env.presentaciones('fchVistaCamposPresentacion', true)
         };
 
-        this.gridModelos = {
+        this.gridPresentaciones  = {
             type: 'Grid',
             name: 'gridPresentaciones',
-            fichaConfig: this.fichaModelosConfig,
-            tablaConfig: this.tablaModelosConfig
+            fichaConfig: this.fichaPresentacionConfig,
+            tablaConfig: this.tablaPresentacionConfig
         };
         this.gridRoles = {
             type: 'Grid',
@@ -146,13 +147,11 @@ var VistasView = Class.extend({
         };
     },
     initializeData : function () {
-        if(!localStorage[AppConfig.adminBD])
-            location = 'creacion.html';
     },
     initializeUI : function(){
-        this.gridModelos = new Grid(this.gridModelos);
-        this.gridModelos.render();
-        this.gridModelos.tabla.toolbar.onlyIcons();
+        this.gridPresentaciones = new Grid(this.gridPresentaciones);
+        this.gridPresentaciones.render();
+        this.gridPresentaciones.tabla.toolbar.onlyIcons();
 
         this.gridRoles = new Grid(this.gridRoles);
         this.gridRoles.render();
@@ -179,206 +178,96 @@ var VistasView = Class.extend({
         //this.gridCamposVista.tabla.toolbar.onlyIcons();
     },
     initializeEvents : function(){
-        this.colModelos.on('updated', _.bind(this.actualizarModelo, this));
-        this.colModelos.on('inserted', _.bind(this.insertarModelo, this));
-        this.colModelos.on('deleted', _.bind(this.eliminarModelo, this));
+        // DATA
+        this.colPresentaciones.on('post-fetch', _.bind(this.cargarPresentaciones, this));
+        this.colRoles.on('post-fetch' , _.bind(this.cargarRoles, this));
+        this.colFases.on('post-fetch' , _.bind(this.cargarFases, this));
+        this.colVistas.on('post-query' , _.bind(this.cargarVistas, this));
+        this.colCamposVista.on('post-query' , _.bind(this.cargarCamposVistas, this));
 
-        this.colRoles.on('updated', _.bind(this.actualizarRol, this));
-        this.colRoles.on('inserted', _.bind(this.insertarRol, this));
-        this.colRoles.on('deleted', _.bind(this.eliminarRol, this));
-
-        this.colFases.on('updated', _.bind(this.actualizarFase, this));
-        this.colFases.on('inserted', _.bind(this.insertarFase, this));
-        this.colFases.on('deleted', _.bind(this.eliminarFase, this));
-
-        this.colVistas.on('updated', _.bind(this.actualizarVista, this));
-        this.colVistas.on('inserted', _.bind(this.insertarVista, this));
-        this.colVistas.on('deleted', _.bind(this.eliminarVista, this));
-
-        this.colCamposVista.on('updated', _.bind(this.actualizarCampoVista, this));
-        this.colCamposVista.on('inserted', _.bind(this.insertarCampoVista, this));
-        this.colCamposVista.on('deleted', _.bind(this.eliminarCampoVista, this));
+        // UI
+        this.gridPresentaciones.tabla.on('rowClick', _.bind(this.onPresentacionClick, this));
+        this.gridPresentaciones.tabla.on('rowDblClick', _.bind(this.onPresentacionDoubleClick, this));
+        this.gridRoles.tabla.on('rowClick', _.bind(this.onRolClick, this));
+        this.gridFases.tabla.on('rowClick', _.bind(this.onFaseClick, this));
+        this.gridVistas.tabla.on('rowClick', _.bind(this.onVistaClick, this));
 
         this.gridVistas.ficha.on('opened', _.bind(this.inicializarFK, this));
-        this.gridVistas.tabla.on('rowClick', _.bind(this.inicializarFK, this));
 
+        this.gridCamposVista.ficha.on('opened', _.bind(this.inicializarCampoVistaFK, this));
         this.gridCamposVista.tabla.on('buttonClicked', _.bind(this.gestionarAccionesCamposVistas, this));
-
     },
 
-    // CRUD MODELOS //
-    insertarModelo : function(registro){
-
-        Env.Service_BASE.execute({
-            operation: 'insert',
-            params : {
-                table: 'presentaciones',
-                row : registro.to_JSON()
-            }
-        });
-
+    // FUNCIONES
+    obtenerPresentaciones: function(){
+        this.colPresentaciones.fetch();
     },
-    actualizarModelo : function(registro){
-        Env.Service_BASE.execute({
-            operation: 'update',
-            params : {
-                table: 'presentaciones',
-                field : 'id',
-                value: registro.get('id'),
-                row : registro.to_JSON()
-            }
-        });
-
+    obtenerRoles: function(){
+        this.colRoles.fetch();
     },
-    eliminarModelo : function(registro){
-        Env.Service_BASE.execute({
-            operation: 'delete',
-            params : {
-                table: 'presentaciones',
-                field : 'id',
-                value: registro.get('id')
-            }
-        });
+    obtenerFases: function(){
+        this.colFases.fetch();
+    },
+    obtenerVistasSeleccion: function(){
+        var objQuery = {
+            query : {
+                idPresentacion : "'" + this.gridPresentaciones.tabla.idFilaSeleccionada + "'",
+                idRol : "'" + this.gridRoles.tabla.idFilaSeleccionada + "'",
+                idFase : "'" + this.gridFases.tabla.idFilaSeleccionada + "'"
+            },
+            referencias: true,
+            colecciones : true
+        }
+        this.colVistas.query(objQuery);
+    },
+    obtenerCamposVistasSeleccion: function(){
+        var objQuery = {
+            query : {
+                idVista : "'" + this.gridVistas.tabla.idFilaSeleccionada + "'"
+            },
+            referencias: false,
+            colecciones : false
+        };
+        this.colCamposVista.query(objQuery);
     },
 
-    // CRUD ROLES//
-    insertarRol: function(registro){
-
-        Env.Service_BASE.execute({
-            operation: 'insert',
-            params : {
-                table: 'roles',
-                row : registro.to_JSON()
-            }
-        });
-
+    cargarPresentaciones :function(datos){
+        if(datos.tieneDatos)
+        {
+            this.gridPresentaciones.tabla.collection.setData(datos.datos);
+        }
     },
-    actualizarRol : function(registro){
-        Env.Service_BASE.execute({
-            operation: 'update',
-            params : {
-                table: 'roles',
-                field : 'id',
-                value: registro.get('id'),
-                row : registro.to_JSON()
-            }
-        });
-
+    cargarRoles :function(datos){
+        if(datos.tieneDatos)
+        {
+            this.gridRoles.tabla.collection.setData(datos.datos);
+        }
     },
-    eliminarRol : function(registro){
-        Env.Service_BASE.execute({
-            operation: 'delete',
-            params : {
-                table: 'roles',
-                field : 'id',
-                value: registro.get('id')
-            }
-        });
+    cargarFases :function(datos){
+        if(datos.tieneDatos)
+        {
+            this.gridFases.tabla.collection.setData(datos.datos);
+        }
     },
-
-    // CRUD FASES //
-    insertarFase: function(registro){
-
-        Env.Service_BASE.execute({
-            operation: 'insert',
-            params : {
-                table: 'fases',
-                row : registro.to_JSON()
-            }
-        });
-
+    cargarVistas :function(datos){
+        if(datos.tieneDatos)
+        {
+            this.gridVistas.tabla.collection.setData(datos.datos);
+        }
+        else
+        {
+            alert('No hay vistas para la selección realizada.')
+        }
     },
-    actualizarFase : function(registro){
-        Env.Service_BASEexecute({
-            operation: 'update',
-            params : {
-                table: 'fases',
-                field : 'id',
-                value: registro.get('id'),
-                row : registro.to_JSON()
-            }
-        });
-
-    },
-    eliminarFase : function(registro){
-        Env.Service_BASE.execute({
-            operation: 'delete',
-            params : {
-                table: 'fases',
-                field : 'id',
-                value: registro.get('id')
-            }
-        });
-    },
-
-    // CRUD VISTAS //
-    insertarVista: function(registro){
-
-        Env.Service_BASE.execute({
-            operation: 'insert',
-            params : {
-                table: 'vista_presentacion',
-                row : registro.to_JSON()
-            }
-        });
-
-    },
-    actualizarVista : function(registro){
-        Env.Service_BASE.execute({
-            operation: 'update',
-            params : {
-                table: 'vista_presentacion',
-                field : 'id',
-                value: registro.get('id'),
-                row : registro.to_JSON()
-            }
-        });
-
-    },
-    eliminarVista : function(registro){
-        Env.Service_BASE.execute({
-            operation: 'delete',
-            params : {
-                table: 'vista_presentacion',
-                field : 'id',
-                value: registro.get('id')
-            }
-        });
-    },
-
-    // CRUD CAMPO VISTAS //
-    insertarCampoVista: function(registro){
-
-        Env.Service_BASE.execute({
-            operation: 'insert',
-            params : {
-                table: 'campos_vista_presentacion',
-                row : registro.to_JSON()
-            }
-        });
-
-    },
-    actualizarCampoVista : function(registro){
-        Env.Service_BASE.execute({
-            operation: 'update',
-            params : {
-                table: 'campos_vista_presentacion',
-                field : 'id',
-                value: registro.get('id'),
-                row : registro.to_JSON()
-            }
-        });
-
-    },
-    eliminarCampoVista : function(registro){
-        Env.Service_BASE.execute({
-            operation: 'delete',
-            params : {
-                table: 'campos_vista_presentacion',
-                field : 'id',
-                value: registro.get('id')
-            }
-        });
+    cargarCamposVistas :function(datos){
+        if(datos.tieneDatos)
+        {
+            this.gridCamposVista.tabla.collection.setData(datos.datos);
+        }
+        else
+        {
+            alert('No hay campos para la vista seleccionada.');
+        }
     },
 
     gestionarAccionesCamposVistas : function(boton){
@@ -390,7 +279,9 @@ var VistasView = Class.extend({
         }
     },
     importarCamposDesdePresentacion : function() {
-        var camposPresentacion = Env.Service_BASE.execute({
+        alert('No implementado');
+        /*
+        var camposPresentacion = Env.Service_ADM.execute({
             operation : 'query',
             params : {
                 table : 'campos_presentacion',
@@ -405,59 +296,44 @@ var VistasView = Class.extend({
             campo.idVista = that.gridVistas.tabla.idFilaSeleccionada;
             that.gridCamposVista.tabla.collection.crear(campo);
         });
+        */
     },
 
     inicializarFK : function(ficha){
         if(ficha.modo == Ficha.Modos.Alta)
         {
-            ficha.find('idPresentacion').Value(this.gridModelos.tabla.idFilaSeleccionada);
+            ficha.find('idPresentacion').Value(this.gridPresentaciones.tabla.idFilaSeleccionada);
             ficha.find('idRol').Value(this.gridRoles.tabla.idFilaSeleccionada);
             ficha.find('idFase').Value(this.gridFases.tabla.idFilaSeleccionada);
+
         }
     }              ,
-    cargarCamposModeloSeleccionado : function(tabla){
+    cargarCamposModeloSeleccionado : function(){
 
-        if(this.gridModelos.tabla.idFilaSeleccionada !== undefined && this.gridRoles.tabla.idFilaSeleccionada !== undefined && this.gridFases.tabla.idFilaSeleccionada !== undefined)
+        if(this.gridPresentaciones.tabla.idFilaSeleccionada !== undefined && this.gridRoles.tabla.idFilaSeleccionada !== undefined && this.gridFases.tabla.idFilaSeleccionada !== undefined)
         {
-            var vistas = Env.Service_BASE.execute({
-                operation:  'query',
-                params : {
-                    table : 'vista_presentacion',
-                    fields : {
-                        idPresentacion : this.gridModelos.tabla.idFilaSeleccionada,
-                        idRol : this.gridRoles.tabla.idFilaSeleccionada,
-                        idFase : this.gridFases.tabla.idFilaSeleccionada
-                    }
-                }
-            });
-
-            if(vistas)
-            {
-                vistas = (vistas.length > 0) ? vistas : [vistas];
-                this.gridVistas.tabla.collection.setData(vistas);
-
-                if(vistas.length == 1)
-                    this.cargarCamposVistaSeleccionada(vistas[0].id)
-            }
-            else
-            {
-                this.gridVistas.tabla.collection.setData( []);
-                this.gridCamposVista.tabla.collection.setData( []);
-                alert('No hay VISTAS creadas para los criterios seleccionados');
-            }
+            this.obtenerVistasSeleccion();
         }
     },
-    cargarCamposVistaSeleccionada : function(idVista){
-        var campos_vista = Env.Service_BASE.execute({
-            operation:  'query',
-            params : {
-                table : 'campos_vista_presentacion',
-                field : 'idVista',
-                value : idVista
-            }
-        });
-        this.gridCamposVista.tabla.collection.setData(campos_vista);
+    inicializarCampoVistaFK : function(ficha){
+        if(ficha.modo == Ficha.Modos.Alta)
+        {
+            ficha.find('idVista').Value(this.gridVistas.tabla.idFilaSeleccionada);
+        }
     },
+
+    // EVENTOS
+    onPresentacionClick : function(){},
+    onPresentacionDoubleClick : function(){
+        this.cargarCamposModeloSeleccionado();
+    },
+    onRolClick : function(){
+        this.cargarCamposModeloSeleccionado();
+    },
+    onFaseClick : function(){
+        this.cargarCamposModeloSeleccionado();
+    },
+
     onModeloClick : function(tabla) {
         this.cargarCamposModeloSeleccionado(tabla);
     },
@@ -466,7 +342,6 @@ var VistasView = Class.extend({
         this.gridModelos.tabla.toolbar.controls[1].$element.trigger('click');
     },
     onVistaClick : function(tabla) {
-        alert(tabla.idFilaSeleccionada);
-        this.cargarCamposVistaSeleccionada(tabla.idFilaSeleccionada);
+        this.obtenerCamposVistasSeleccion();
     }
 });
