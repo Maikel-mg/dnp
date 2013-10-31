@@ -9,86 +9,66 @@ var FasesView = Class.extend({
         this.createVariables();
         this.initializeUI();
         this.initializeEvents();
+
+        this.obtenerFases();
     },
 
     createVariables : function () {
-        var dataRoles = Env.Service_BASE.execute({operation : 'getTable', params : {table : 'fases'}});
-        this.colRoles = Env.colecciones('ipk.fase', dataRoles);
+        this.colFases = Env.colecciones('ipk.fase');
+        this.colFases.makePersistible({
+            table: 'adm_Fases',
+            service : Env.Service_WS
+        });
 
-        this.tablaModelosConfig  = {
+        this.tablaFasesConfig  = {
             type: 'Table',
-            name: 'tablaRoles',
-            renderTo : '#gridRoles',
+            name: 'tablaFases',
+            renderTo : '#gridFases',
             presentacion :   Env.presentaciones('tbFases', true),
-            modelCollection: this.colRoles,
-            events: {
-                control: {
-                    rowClick: _.bind(this.onModeloClick, this),
-                    rowDblClick: _.bind(this.onModeloDoubleClick, this)
-                }
-            }
+            modelCollection: this.colFases
         };
-        this.fichaModelosConfig = {
+        this.fichaFasesConfig = {
             type : 'Ficha',
-            name : 'fchRoles',
+            name : 'fchFses',
             title : 'Edición de fases',
             presentacion : Env.presentaciones('fchFases', true)
         };
-        this.gridModelos = {
+        this.gridFases = {
             type: 'Grid',
-            name: 'gridModelos',
-            fichaConfig: this.fichaModelosConfig,
-            tablaConfig: this.tablaModelosConfig
+            name: 'gridFases',
+            fichaConfig: this.fichaFasesConfig,
+            tablaConfig: this.tablaFasesConfig
         };
     },
     initializeData : function () {
     },
     initializeUI : function(){
-        this.gridModelos = new Grid(this.gridModelos);
-        this.gridModelos.render();
+        this.gridFases = new Grid(this.gridFases);
+        this.gridFases.render();
     },
     initializeEvents : function(){
-        this.colRoles.on('updated', _.bind(this.actualizarFases, this));
-        this.colRoles.on('inserted', _.bind(this.insertarFases, this));
-        this.colRoles.on('deleted', _.bind(this.eliminarFases, this));
+        // DATA
+        this.colFases.on('post-fetch', _.bind(this.cargarFases, this));
+
+        // UI
+        this.gridFases.tabla.on('rowClick', _.bind(this.onFaseClick, this));
+        this.gridFases.tabla.on('rowDblClick', _.bind(this.onFaseDoubleClick, this));
     },
 
-    // CRUD FASES
-    insertarFases : function(registro){
-        Env.Service_BASE.execute({
-            operation: 'insert',
-            params : {
-                table: 'fases',
-                row : registro.to_JSON()
-            }
-        });
+    // FUNCIONES
+    obtenerFases : function(){
+        this.colFases.fetch();
     },
-    actualizarFases : function(registro){
-        Env.Service_BASE.execute({
-            operation: 'update',
-            params : {
-                table: 'fases',
-                field : 'id',
-                value: registro.get('id'),
-                row : registro.to_JSON()
-            }
-        });
-    },
-    eliminarFases : function(registro){
-        Env.Service_BASE.execute({
-            operation: 'delete',
-            params : {
-                table: 'fases',
-                field : 'id',
-                value: registro.get('id')
-            }
-        });
+    cargarFases : function(datos){
+        if(datos.tieneDatos)
+            this.gridFases.tabla.collection.setData(datos.datos);
+        else
+            alert('No hay fases creadas');
     },
 
     // EVENTOS
-    onModeloClick : function() {
-    },
-    onModeloDoubleClick : function() {
-        this.gridModelos.tabla.toolbar.controls[1].$element.trigger('click');
+    onFaseClick : function() {},
+    onFaseDoubleClick : function() {
+        this.gridFases.tabla.toolbar.controls[1].$element.trigger('click');
     }
 });
