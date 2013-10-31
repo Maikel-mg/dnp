@@ -16,7 +16,7 @@ var FasesView = Class.extend({
     createVariables : function () {
         this.colFases = Env.colecciones('ipk.fase');
         this.colFases.makePersistible({
-            table: 'adm_Fases',
+            table: 'base_Fases',
             service : Env.Service_WS
         });
 

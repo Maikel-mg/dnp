@@ -16,7 +16,7 @@ var RolesView = Class.extend({
     createVariables : function () {
         this.colRoles = Env.colecciones('ipk.rol');
         this.colRoles.makePersistible({
-            table : 'adm_Roles',
+            table : 'base_Roles',
             service : Env.Service_WS
         });
 
