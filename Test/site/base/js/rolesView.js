@@ -9,87 +9,64 @@ var RolesView = Class.extend({
         this.createVariables();
         this.initializeUI();
         this.initializeEvents();
+
+        this.obtenerRoles();
     },
 
     createVariables : function () {
-        var dataRoles = Env.Service_BASE.execute({operation : 'getTable', params : {table : 'roles'}});
-        this.colRoles = Env.colecciones('ipk.rol', dataRoles);
+        this.colRoles = Env.colecciones('ipk.rol');
+        this.colRoles.makePersistible({
+            table : 'adm_Roles',
+            service : Env.Service_WS
+        });
 
-        this.tablaModelosConfig  = {
+        this.tablaRolesConfig  = {
             type: 'Table',
             name: 'tablaRoles',
             renderTo : '#gridRoles',
             presentacion :   Env.presentaciones('tbRoles', true),
-            modelCollection: this.colRoles,
-            events: {
-                control: {
-                    rowClick: _.bind(this.onModeloClick, this),
-                    rowDblClick: _.bind(this.onModeloDoubleClick, this)
-                }
-            }
+            modelCollection: this.colRoles
         };
-        this.fichaModelosConfig = {
+        this.fichaRolesConfig = {
             type : 'Ficha',
             name : 'fchRoles',
             title : 'Edición de roles',
             presentacion : Env.presentaciones('fchRoles', true)
         };
-        this.gridModelos = {
+        this.gridRoles = {
             type: 'Grid',
-            name: 'gridModelos',
-            fichaConfig: this.fichaModelosConfig,
-            tablaConfig: this.tablaModelosConfig
+            name: 'gridRoles',
+            fichaConfig: this.fichaRolesConfig,
+            tablaConfig: this.tablaRolesConfig
         };
     },
     initializeData : function () {
     },
     initializeUI : function(){
-        this.gridModelos = new Grid(this.gridModelos);
-        this.gridModelos.render();
-        //this.gridModelos.tabla.toolbar.onlyIcons();
+        this.gridRoles = new Grid(this.gridRoles);
+        this.gridRoles.render();
     },
     initializeEvents : function(){
-        this.colRoles.on('updated', _.bind(this.actualizarRol, this));
-        this.colRoles.on('inserted', _.bind(this.insertarRol, this));
-        this.colRoles.on('deleted', _.bind(this.eliminarRol, this));
+        // DATA
+        this.colRoles.on('post-fetch', _.bind(this.cargarRoles, this));
+
+        // UI
+        this.gridRoles.tabla.on('rowClick', _.bind(this.onRolClick, this));
+        this.gridRoles.tabla.on('rowDblClick', _.bind(this.onRolDoubleClick, this));
     },
 
-    // CRUD ROLES
-    insertarRol : function(registro){
-        Env.Service_BASE.execute({
-            operation: 'insert',
-            params : {
-                table: 'roles',
-                row : registro.to_JSON()
-            }
-        });
+    obtenerRoles : function(){
+        this.colRoles.fetch();
     },
-    actualizarRol : function(registro){
-        Env.Service_BASE.execute({
-            operation: 'update',
-            params : {
-                table: 'roles',
-                field : 'id',
-                value: registro.get('id'),
-                row : registro.to_JSON()
-            }
-        });
-    },
-    eliminarRol : function(registro){
-        Env.Service_BASE.execute({
-            operation: 'delete',
-            params : {
-                table: 'roles',
-                field : 'id',
-                value: registro.get('id')
-            }
-        });
+    cargarRoles : function(datos){
+        if(datos.tieneDatos)
+        {
+            this.gridRoles.tabla.collection.setData(datos.datos);
+        }
     },
 
-    onModeloClick : function() {
-
-    },
-    onModeloDoubleClick : function() {
-        this.gridModelos.tabla.toolbar.controls[1].$element.trigger('click');
+    onRolClick : function() { },
+    onRolDoubleClick : function() {
+        this.gridRoles.tabla.toolbar.controls[1].$element.trigger('click');
     }
 });
