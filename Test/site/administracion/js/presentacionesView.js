@@ -1,6 +1,6 @@
 var PresentacionesView = Class.extend({
     initialize : function(){
-        this.initializeComponent();
+        Env.on('loaded' , _.bind( this.initializeComponent, this) );
 
         return this;
     },
@@ -266,6 +266,7 @@ var PresentacionesView = Class.extend({
         var that = this;
         _.each(camposModelo, function(campo){
             campo.idPresentacion = that.gridPresentaciones.tabla.idFilaSeleccionada;
+            // TODO : Cambiar esto para que funcione desde el webservice
             Env.Service_ADM.execute({
                 operation: 'insert',
                 params : {
