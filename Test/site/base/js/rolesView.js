@@ -1,6 +1,6 @@
 var RolesView = Class.extend({
     initialize : function(){
-        this.initializeComponent();
+        Env.on('loaded' , _.bind( this.initializeComponent, this) );
 
         return this;
     },
