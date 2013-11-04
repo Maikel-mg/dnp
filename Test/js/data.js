@@ -100,7 +100,7 @@ Model = Class.extend({
 
         this.hasChanged = false;
 
-        $.extend(this.camposIniciales, this.config.campos);
+        $.extend(this.camposIniciales, this.config.campos );
         $.extend(this.campos, this.config.campos);
 
         $.extend(this , this.config.metodos);
@@ -1201,11 +1201,11 @@ ProxyWebService = Class.extend({
             data: '',
             dataType: 'json',
             beforeSend : function(jqXHR, settings){
-
+/*
                 console.log('beforeSend');
                 console.log(arguments);
                 console.log('----------');
-
+*/
             },
             dataFilter: function(data, dataType){
                 //console.log('dataFilter');
@@ -1365,11 +1365,121 @@ ProxyWebService = Class.extend({
     }
 });
 
-var Application = Class.extend({
+var Contexto = Class.extend({
+    include: WhithEvents,
     initialize : function(){
+        this.loaded = $.Deferred();
+        this.base_loaded = false;
+        this.adm_loaded = false;
+
+
         this.createVariables();
-        this.loadBBDD();
-        this.loadModels();
+
+        return this;
+    },
+    createVariables : function(){
+        this.base = {};
+        this.adm = {};
+
+        this.ModelStore =    new ModelManager();
+        this.CollectionStore =  new CollectionManager({modelStore : this.ModelStore});
+
+        this.Service = new Service({
+            proxy: 'WebService',
+            url : 'http://localhost:8080/Servicio.asmx/Execute'
+        });
+
+        this.sincronizar();
+    },
+    sincronizar : function(){
+       this.sincronizar_base();
+       this.sincronizar_adm();
+    },
+    sincronizar_base : function(){
+        this.base_loaded = false;
+        $.when(
+                this.Service.execute({operation:'listado', params: {table:'base_Modelos'}}),
+                this.Service.execute({operation:'listado', params: {table:'base_CamposModelos'}}),
+                this.Service.execute({operation:'listado', params: {table:'base_Presentaciones'}}),
+                this.Service.execute({operation:'listado', params: {table:'base_CamposPresentacion'}}),
+                this.Service.execute({operation:'listado', params: {table:'base_Fases'}}),
+                this.Service.execute({operation:'listado', params: {table:'base_Roles'}}),
+                this.Service.execute({operation:'listado', params: {table:'base_Accesos'}}),
+                this.Service.execute({operation:'listado', params: {table:'base_Usuarios'}}),
+                this.Service.execute({operation:'listado', params: {table:'base_VistaPresentacion'}}),
+                this.Service.execute({operation:'listado', params: {table:'base_VistaCampoPresentacion'}})
+            ).done(
+                _.bind(this.cachear_base, this)
+        );
+    },
+    sincronizar_adm : function(){
+        this.adm_loaded = false;
+        $.when(
+                this.Service.execute({operation:'listado', params: {table:'adm_Modelos'}}),
+                this.Service.execute({operation:'listado', params: {table:'adm_CamposModelos'}}),
+                this.Service.execute({operation:'listado', params: {table:'adm_Presentaciones'}}),
+                this.Service.execute({operation:'listado', params: {table:'adm_CamposPresentacion'}}),
+                this.Service.execute({operation:'listado', params: {table:'adm_Fases'}}),
+                this.Service.execute({operation:'listado', params: {table:'adm_Roles'}}),
+                this.Service.execute({operation:'listado', params: {table:'adm_Accesos'}}),
+                this.Service.execute({operation:'listado', params: {table:'adm_Usuarios'}}),
+                this.Service.execute({operation:'listado', params: {table:'adm_VistaPresentacion'}}),
+                this.Service.execute({operation:'listado', params: {table:'adm_VistaCampoPresentacion'}})
+
+            ).done(
+                _.bind(this.cachear_adm, this)
+        );
+    },
+    cachear_base : function(modelos, camposModelos, presentaciones, camposPresentaciones, fases, roles, accesos, usuarios, vistas, camposVistas){
+
+        this.base.modelos = modelos[0].datos;
+        this.base.camposModelos = camposModelos[0].datos;
+        this.base.presentaciones = presentaciones[0].datos;
+        this.base.camposPresentaciones = camposPresentaciones[0].datos;
+        this.base.fases = fases[0].datos;
+        this.base.roles = roles[0].datos;
+        this.base.accesos = accesos[0].datos;
+        this.base.usuarios = usuarios[0].datos;
+        this.base.vistas = vistas[0].datos;
+        this.base.camposVistas = camposVistas[0].datos;
+
+        this.base_loaded = true;
+        this.check_status();
+    },
+    cachear_adm  : function(modelos, camposModelos, presentaciones, camposPresentaciones, fases, roles, accesos, usuarios, vistas, camposVistas){
+
+        this.adm.modelos = modelos[0].datos;
+        this.adm.camposModelos = camposModelos[0].datos;
+        this.adm.presentaciones = presentaciones[0].datos;
+        this.adm.camposPresentaciones = camposPresentaciones[0].datos;
+        this.adm.fases = fases[0].datos;
+        this.adm.roles = roles[0].datos;
+        this.adm.accesos = accesos[0].datos;
+        this.adm.usuarios = usuarios[0].datos;
+        this.adm.vistas = vistas[0].datos;
+        this.adm.camposVistas = camposVistas[0].datos;
+
+        this.adm_loaded = true;
+        this.check_status();
+    },
+    check_status : function(){
+        if(this.adm_loaded && this.base_loaded)
+        {
+            this.trigger('loaded', this);
+            this.loaded.resolve();
+        }
+
+    }
+});
+var Application = Class.extend({
+    include: WhithEvents,
+    initialize : function(){
+        console.log('Cargando ...');
+        this.loaded = $.Deferred();
+
+        this.createVariables();
+        //this.loadBBDD();
+        //this.loadModels();
 
     },
     createVariables : function(){
@@ -1392,76 +1502,31 @@ var Application = Class.extend({
             proxy: 'LocalStorage',
             dbName : AppConfig.baseBD
         });
-    },
-    loadBBDD : function(){
-        if(!localStorage[AppConfig.adminBD])
-            location = 'error.html';
-
-        /*
-        if(localStorage[AppConfig.adminBD])
-        {
-            this.adminBBDD = JSON.parse(localStorage[AppConfig.adminBD]);
-            this.dataBBDD =  JSON.parse(localStorage[AppConfig.dataBD]);
-        }
-        */
-    },
-    createBackup : function(){
-        var d = new Date();
-        var identificador = d.getMonth() + 1 + '' + d.getDate() + '' + d.getFullYear() + '_' + d.getHours() + '' + d.getMinutes() + '' + d.getSeconds();
-
-        var  backupsBBDDs = {};
-        var backup = {};
-
-        backup.admin = this.adminBBDD;
-        backup.data = this.dataBBDD;
-
-        if(localStorage[AppConfig.backupsBD])
-            backupsBBDDs =  JSON.parse(localStorage[AppConfig.backupsBD]);
-        else
-            backupsBBDDs = {};
-
-        backupsBBDDs[identificador] = backup;
-        localStorage[AppConfig.backupsBD] = JSON.stringify(backupsBBDDs);
-
+        this.Contexto = new Contexto();
+        this.Contexto.on('loaded', _.bind(this.loadModels, this));
     },
     loadModels : function(){
         var that = this;
-        var listadoModelos_ADM = this.Service_ADM.execute({
-                operation : 'getTable',
-                params : {
-                    table : 'modelos'
-                }
-            });
+        var listadoModelos_ADM = this.Contexto.adm.modelos;
 
         _.each(listadoModelos_ADM, function(modelo){
-            modelo.campos = that.Service_ADM.execute({
-                operation : 'query',
-                params : {
-                    table : 'campos_modelo',
-                    field : 'idModelo',
-                    value : modelo.id
-                }
+            modelo.campos = _.filter(that.Contexto.adm.camposModelos, function(campo){
+                return campo.idModelo == modelo.id;
             });
         });
         this.ModelStore.load(listadoModelos_ADM);
 
-        var listadoModelos_BASE = this.Service_BASE.execute({
-                operation : 'getTable',
-                params : {
-                    table : 'modelos'
-                }
-            });
+        var listadoModelos_BASE = this.Contexto.base.modelos;
+
         _.each(listadoModelos_BASE, function(modelo){
-            modelo.campos = that.Service_BASE.execute({
-                operation : 'query',
-                params : {
-                    table : 'campos_modelo',
-                    field : 'idModelo',
-                    value : modelo.id
-                }
+            modelo.campos = _.filter(that.Contexto.base.camposModelos, function(campo){
+                return campo.idModelo == modelo.id;
             });
         });
         this.ModelStore.load(listadoModelos_BASE);
+
+        this.trigger('loaded', this);
+        console.log('Cargado!!!!');
     },
     modelos : function(nombre, datos){
         return this.ModelStore.crear(nombre, datos);
@@ -1471,25 +1536,15 @@ var Application = Class.extend({
     },
     presentaciones : function(clave, base){
         var presentacion = undefined;
-        var service = (base) ? this.Service_BASE : this.Service_ADM;
 
-        presentacion = service.execute({
-                operation : 'query',
-                params : {
-                    table : 'presentaciones',
-                    field : 'clave',
-                    value : clave
-                }
-            });
-        presentacion = presentacion[0];
-        presentacion.campos = service.execute({
-                operation : 'query',
-                params : {
-                    table : 'campos_presentacion',
-                    field : 'idPresentacion',
-                    value : presentacion.id
-                }
-            });
+        var service = (base) ? this.Contexto.base : this.Contexto.adm;
+
+        presentacion = _.find(service.presentaciones, function(registro){
+            return registro.clave == clave;
+        });
+        presentacion.campos =_.filter(service.camposPresentaciones, function(registro){
+            return registro.idPresentacion == presentacion.id;
+        });
 
         return presentacion;
     }
