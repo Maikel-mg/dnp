@@ -449,7 +449,7 @@ span.ui-dialog-title{	font-size: 15px; }
 .colTurquoise{ background-color: #1ABC9C;   color: #FFF;}
 .colGreenSea{ background-color: #16A085;   color: #FFF;}
 .colEmerland{ background-color: #2ECC71;   color: #FFF;}
-.colNephritis{ background-color: #27AE60;   color: #FFF;}
+.colNephritis{ background-color: #27AE60  !important;   color: #FFF  !important;}
 .colPeterRiver{ background-color: #3498DB;   color: #FFF;}
 .colBelizeHole{ background-color: #2980B9;   color: #FFF;}
 .colAmethyst{ background-color: #9B59B6;  color: #FFF; }
@@ -460,12 +460,12 @@ span.ui-dialog-title{	font-size: 15px; }
 .colOrange{ background-color: #F39C12;   color: #FFF;}
 .colCarrot{ background-color: #E67E22;   color: #FFF;}
 .colPumpkin{ background-color: #D35400;   color: #FFF;}
-.colAlizarin{ background-color: #E74C3C;   color: #FFF;}
+.colAlizarin{ background-color: #E74C3C !important;   color: #FFF !important;}
 .colPomergranate{ background-color: #C0392B;   color: #FFF;}
 .colClouds{ background-color: #ECF0F1;  color: #000; }
 .colSilver{ background-color: #BDC3C7;  color: #FFF; }
 .colConcrete{ background-color: #95A5A6;   color: #FFF;}
-.colAsbestos{ background-color: #7F8C8D;   color: #FFF;}
+.colAsbestos{ background-color: #7F8C8D !important;   color: #FFF !important;}
 
 .borTurquoise{border-color: #1ABC9C;  }
 .borGreenSea{border-color: #16A085;   }

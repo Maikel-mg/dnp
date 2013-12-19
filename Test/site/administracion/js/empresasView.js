@@ -1,4 +1,4 @@
-var RolesView = Class.extend({
+var EmpresasView = Class.extend({
     initialize : function(){
         Env.on('loaded' , _.bind( this.initializeComponent, this) );
 
@@ -14,9 +14,9 @@ var RolesView = Class.extend({
     },
 
     createVariables : function () {
-        this.colRoles = Env.colecciones('ipk.rol');
+        this.colRoles = Env.colecciones('vcl.mod_Empresa');
         this.colRoles.makePersistible({
-            table : 'base_Roles',
+            table : 'mod_Empresas',
             service : Env.Service_WS
         });
 
@@ -24,18 +24,18 @@ var RolesView = Class.extend({
             type: 'Table',
             name: 'tablaRoles',
             renderTo : '#gridRoles',
-            presentacion :   Env.presentaciones('tbRoles', true),
+            presentacion :   Env.presentaciones('tbEmpresa'),
             modelCollection: this.colRoles
         };
         this.fichaRolesConfig = {
             type : 'Ficha',
             name : 'fchRoles',
-            title : 'Edición de roles',
-            presentacion : Env.presentaciones('fchRoles', true)
+            title : 'Edición de empresa',
+            presentacion : Env.presentaciones('fchEmpresa')
         };
         this.gridRoles = {
             type: 'Grid',
-            name: 'gridRoles',
+            name: 'gridEmpresa',
             fichaConfig: this.fichaRolesConfig,
             tablaConfig: this.tablaRolesConfig
         };

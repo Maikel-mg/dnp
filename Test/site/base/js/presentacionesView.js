@@ -1,7 +1,6 @@
 var PresentacionesView = Class.extend({
     initialize : function(){
-        this.initializeComponent();
-
+        Env.on('loaded' , _.bind( this.initializeComponent, this) );
         return this;
     },
     initializeComponent : function(){
@@ -267,6 +266,7 @@ var PresentacionesView = Class.extend({
         var that = this;
         _.each(camposModelo, function(campo){
             campo.idPresentacion = that.gridPresentaciones.tabla.idFilaSeleccionada;
+            // TODO : Cambiar esto por la implementación contra el webservice
             Env.Service_BASE.execute({
                 operation: 'insert',
                 params : {

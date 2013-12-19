@@ -100,7 +100,7 @@ Model = Class.extend({
 
         this.hasChanged = false;
 
-        $.extend(this.camposIniciales, this.config.campos);
+        $.extend(this.camposIniciales, this.config.campos );
         $.extend(this.campos, this.config.campos);
 
         $.extend(this , this.config.metodos);
@@ -237,8 +237,15 @@ Model = Class.extend({
                 that.campos[campo.nombre] = data[campo.nombre];
             else
             {
-                if(data[campo.nombre])
-                    that.campos[campo.nombre] = data[campo.nombre];
+                if(campo.tipo == enums.TipoCampoModelo.String)
+                {
+                    if( Utils.isString(data[campo.nombre]) )
+                        that.campos[campo.nombre] = data[campo.nombre];
+                }
+                else{
+                    if( data[campo.nombre] )
+                        that.campos[campo.nombre] = data[campo.nombre];
+                }
             }
         });
         _.each(colecciones, function(coleccion){
@@ -440,7 +447,7 @@ Model = Class.extend({
             _.each(colecciones, function (e) {
                 console.log(that.get(e.nombre));
                 console.log(e);
-            }); 
+            });
         }
         else
         {
@@ -1088,9 +1095,11 @@ CollectionStore = new CollectionManager({modelStore:ModelStore});
 
 Service = Class.extend({
     initialize : function(params){
+        logger.append('Service', 'initialize', '', arguments);
         this.proxy = new  window["Proxy" + params.proxy](params);
     },
     execute  : function(command){
+        logger.append('Service', 'execute', '', arguments);
         return this.proxy[command.operation](command.params);
     }
 });
@@ -1189,6 +1198,7 @@ ProxyLocalStorage = Class.extend({
 });
 ProxyWebService = Class.extend({
     initialize : function(params){
+        logger.append('ProxyWebService', 'initialize', '', arguments);
         this.config = params;
         this.url = params.url;
     },
@@ -1201,11 +1211,11 @@ ProxyWebService = Class.extend({
             data: '',
             dataType: 'json',
             beforeSend : function(jqXHR, settings){
-
+/*
                 console.log('beforeSend');
                 console.log(arguments);
                 console.log('----------');
-
+*/
             },
             dataFilter: function(data, dataType){
                 //console.log('dataFilter');
@@ -1284,6 +1294,8 @@ ProxyWebService = Class.extend({
         return resultado;
     },
     listado : function(params){
+        logger.append('ProxyWebService', 'listado', '', arguments);
+
         var ajaxParams = {
             Operacion : {
                 operation : 'Listado',
@@ -1300,6 +1312,8 @@ ProxyWebService = Class.extend({
         return $.ajax(options);
     },
     insert : function(params){
+        logger.append('ProxyWebService', 'insert', '', arguments);
+
         var ajaxParams = {
             Operacion : {
                 operation : 'Insert',
@@ -1309,7 +1323,6 @@ ProxyWebService = Class.extend({
                 }
             }
         };
-
         var options = $.extend(this._ajaxConfig(), {
             data: JSON.stringify(ajaxParams)
         });
@@ -1317,6 +1330,8 @@ ProxyWebService = Class.extend({
         return $.ajax(options);
     },
     update : function(params){
+        logger.append('ProxyWebService', 'update', '', arguments);
+
         var ajaxParams = {
             Operacion : {
                 operation : 'Update',
@@ -1328,7 +1343,6 @@ ProxyWebService = Class.extend({
                 }
             }
         };
-
         var options = $.extend(this._ajaxConfig(), {
             data: JSON.stringify(ajaxParams)
         });
@@ -1336,13 +1350,14 @@ ProxyWebService = Class.extend({
         return $.ajax(options);
     },
     delete   : function(params){
+        logger.append('ProxyWebService', 'delete', '', arguments);
+
         var ajaxParams = {
             Operacion : {
                 operation : 'Delete',
                 params : params
             }
         };
-
         var options = $.extend(this._ajaxConfig(), {
             data: JSON.stringify(ajaxParams)
         });
@@ -1350,10 +1365,27 @@ ProxyWebService = Class.extend({
         return $.ajax(options);
     },
     buscar : function(params){
+        logger.append('ProxyWebService', 'buscar', '', arguments);
+
         var ajaxParams = {
             Operacion : {
                 operation : 'Buscar',
                 params : params
+            }
+        };
+        var options = $.extend(this._ajaxConfig(), {
+            data: JSON.stringify(ajaxParams)
+        });
+
+        return $.ajax(options);
+    },
+    entidades : function(){
+        logger.append('ProxyWebService', 'entidades', '', arguments);
+
+        var ajaxParams = {
+            Operacion : {
+                operation : 'Entidades',
+                params : {}
             }
         };
 
@@ -1365,14 +1397,253 @@ ProxyWebService = Class.extend({
     }
 });
 
-var Application = Class.extend({
+var Logger = Class.extend({
+    initialize: function(){
+        this._log = [];
+        this.append('Logger', 'initialize', 'Inicializacion del log');
+    },
+    append : function(objeto, metodo , mensaje, datos){
+        this._log.push({
+            time : new Date().toLocaleTimeString(),
+            objeto : objeto,
+            metodo : metodo,
+            mensaje : mensaje,
+            datos : datos
+        });
+    },
+    view : function(toString){
+        if(console && console.log)
+        {
+            if(toString)
+                _.each(this._log, _.bind(this.toConsoleString, this));
+            else
+                _.each(this._log, _.bind(this.toConsole, this));
+        }
+    },
+    viewBy : function(filtro, toString){
+        if(console && console.log)
+        {
+            var filtro = _.where(this._log, filtro);
+            if(toString)
+                _.each(filtro, _.bind(this.toConsoleString, this));
+            else
+                _.each(filtro, _.bind(this.toConsole, this));
+        }
+    },
+    groupBy : function(campo, toString){
+        if(console && console.log)
+        {
+            var filtro = _.groupBy(this._log, campo);
+            _.each(filtro, _.bind(this.toConsoleGroup, this, toString));
+        }
+    },
+    toConsoleGroup : function(toString, datos, grupo ){
+        var llamada = '';
+
+        console.log('GRUPO :: ' + grupo);
+        if(toString)
+            _.each(datos, _.bind(this.toConsoleString, this));
+        else
+            _.each(datos, _.bind(this.toConsole, this));
+        console.log('');
+    },
+    toConsole : function(elemento){
+        if(elemento.datos)
+        {
+            elemento.llamada = this.formatLlamada(elemento);
+        }
+        console.log(elemento);
+    },
+    toConsoleString : function(elemento){
+        if(elemento.datos)
+        {
+            elemento.llamada = this.formatLlamada(elemento);
+            //console.log(elemento);
+
+        }
+        console.log(this.formatLlamada(elemento));
+    },
+    formatLlamada : function(elemento){
+        var cadena = '';
+
+        _.each(elemento.datos , function(dato){
+            if(cadena != '')
+                cadena += ',';
+
+            //cadena += (Utils.getType(dato) == 'object') ? JSON.stringify(dato) : dato;
+            cadena += dato;
+        });
+
+        return elemento.time + ' :: ' + elemento.objeto + '.' +elemento.metodo + '(' + cadena + ')';
+    }
+});
+var logger = new Logger();
+
+/**
+ * Clase que carga toda la información necesaria para el funcionamiento de las aplicacion y lo cachea en memoria
+ *
+ * @class Contexto
+ * @mixin {WithEvents}
+ * @type {Contexto}
+ */
+var Contexto = Class.extend({
+    include: WhithEvents,
+    /**
+     * @constructor
+     * @returns {Contexto}
+     */
     initialize : function(){
+        logger.append('Contexto', 'initialize', 'Creando Contexto...');
+
+        this.loaded = $.Deferred();
+        this.base_loaded = false;
+        this.adm_loaded = false;
+
+
         this.createVariables();
-        this.loadBBDD();
-        this.loadModels();
+
+        return this;
+    },
+    /**
+     *
+     *
+     * @function
+     * @public
+     */
+    createVariables : function(){
+        logger.append('Contexto', 'createVariables', '');
+
+        this.base = {};
+        this.adm = {};
+
+        this.ModelStore =    new ModelManager();
+        this.CollectionStore =  new CollectionManager({modelStore : this.ModelStore});
+
+        this.Service = new Service({
+            proxy: 'WebService',
+            url : 'http://localhost:8080/Servicio.asmx/Execute'
+        });
+
+        this.sincronizar();
+    },
+    sincronizar : function(){
+       logger.append('Contexto', 'sincronizar', '');
+
+       this.sincronizar_base();
+       this.sincronizar_adm();
+    },
+    sincronizar_base : function(){
+        logger.append('Contexto', 'sincronizar_base', '');
+
+        this.base_loaded = false;
+        $.when(
+                this.Service.execute({operation:'listado', params: {table:'base_Modelos'}}),
+                this.Service.execute({operation:'listado', params: {table:'base_CamposModelos'}}),
+                this.Service.execute({operation:'listado', params: {table:'base_Presentaciones'}}),
+                this.Service.execute({operation:'listado', params: {table:'base_CamposPresentacion'}}),
+                this.Service.execute({operation:'listado', params: {table:'base_Fases'}}),
+                this.Service.execute({operation:'listado', params: {table:'base_Roles'}}),
+                this.Service.execute({operation:'listado', params: {table:'base_Accesos'}}),
+                this.Service.execute({operation:'listado', params: {table:'base_Usuarios'}}),
+                this.Service.execute({operation:'listado', params: {table:'base_VistaPresentacion'}}),
+                this.Service.execute({operation:'listado', params: {table:'base_VistaCampoPresentacion'}})
+            ).done(
+                _.bind(this.cachear_base, this)
+        );
+    },
+    sincronizar_adm : function(){
+        logger.append('Contexto', 'sincronizar_adm', '');
+
+        this.adm_loaded = false;
+        $.when(
+                this.Service.execute({operation:'listado', params: {table:'adm_Modelos'}}),
+                this.Service.execute({operation:'listado', params: {table:'adm_CamposModelos'}}),
+                this.Service.execute({operation:'listado', params: {table:'adm_Presentaciones'}}),
+                this.Service.execute({operation:'listado', params: {table:'adm_CamposPresentacion'}}),
+                this.Service.execute({operation:'listado', params: {table:'adm_Fases'}}),
+                this.Service.execute({operation:'listado', params: {table:'adm_Roles'}}),
+                this.Service.execute({operation:'listado', params: {table:'adm_Accesos'}}),
+                this.Service.execute({operation:'listado', params: {table:'adm_Usuarios'}}),
+                this.Service.execute({operation:'listado', params: {table:'adm_VistaPresentacion'}}),
+                this.Service.execute({operation:'listado', params: {table:'adm_VistaCampoPresentacion'}})
+
+            ).done(
+                _.bind(this.cachear_adm, this)
+        );
+    },
+    cachear_base : function(modelos, camposModelos, presentaciones, camposPresentaciones, fases, roles, accesos, usuarios, vistas, camposVistas){
+        //logger.append('Contexto', 'cachear_base', '' ,arguments);
+
+        this.base.modelos = modelos[0].datos;
+        this.base.camposModelos = camposModelos[0].datos;
+        this.base.presentaciones = presentaciones[0].datos;
+        this.base.camposPresentaciones = camposPresentaciones[0].datos;
+        this.base.fases = fases[0].datos;
+        this.base.roles = roles[0].datos;
+        this.base.accesos = accesos[0].datos;
+        this.base.usuarios = usuarios[0].datos;
+        this.base.vistas = vistas[0].datos;
+        this.base.camposVistas = camposVistas[0].datos;
+
+        this.base_loaded = true;
+        this.check_status();
+    },
+    cachear_adm  : function(modelos, camposModelos, presentaciones, camposPresentaciones, fases, roles, accesos, usuarios, vistas, camposVistas){
+        //logger.append('Contexto', 'cachear_adm', '' ,arguments);
+
+        this.adm.modelos = modelos[0].datos;
+        this.adm.camposModelos = camposModelos[0].datos;
+        this.adm.presentaciones = presentaciones[0].datos;
+        this.adm.camposPresentaciones = camposPresentaciones[0].datos;
+        this.adm.fases = fases[0].datos;
+        this.adm.roles = roles[0].datos;
+        this.adm.accesos = accesos[0].datos;
+        this.adm.usuarios = usuarios[0].datos;
+        this.adm.vistas = vistas[0].datos;
+        this.adm.camposVistas = camposVistas[0].datos;
+
+        this.adm_loaded = true;
+        this.check_status();
+    },
+    check_status : function(){
+        logger.append('Contexto', 'check_status', '');
+
+        if(this.adm_loaded && this.base_loaded)
+        {
+            this.trigger('loaded', this);
+            this.loaded.resolve();
+        }
+    },
+    list : function(tabla, tipo){
+        logger.append('Contexto', 'list', '', arguments);
+
+        var final = [];
+
+        if(tipo){
+            final = final.concat(this[tipo][tabla]);
+        }
+        else{
+            final = final.concat(this.base[tabla]);
+            final = final.concat(this.adm[tabla]);
+        }
+
+        return final;
+    }
+});
+var Application = Class.extend({
+    include: WhithEvents,
+    initialize : function(){
+        logger.append('Applicacion', 'initialize', 'Cargando Applicacion...');
+
+        this.loaded = $.Deferred();
+
+        this.createVariables();
+        //this.loadBBDD();
+        //this.loadModels();
 
     },
     createVariables : function(){
+        logger.append('Applicacion', 'createVariables' ,'Creacion de la variables de la apliacion');
         this.ModelStore =    new ModelManager();
         this.CollectionStore =  new CollectionManager({modelStore : this.ModelStore});
 
@@ -1380,7 +1651,7 @@ var Application = Class.extend({
             proxy: 'WebService',
             url : 'http://localhost:8080/Servicio.asmx/Execute'
         });
-        this.Service = new Service({
+/*        this.Service = new Service({
             proxy: 'LocalStorage',
             dbName : AppConfig.dataBD
         });
@@ -1391,105 +1662,57 @@ var Application = Class.extend({
         this.Service_BASE = new Service({
             proxy: 'LocalStorage',
             dbName : AppConfig.baseBD
-        });
-    },
-    loadBBDD : function(){
-        if(!localStorage[AppConfig.adminBD])
-            location = 'error.html';
-
-        /*
-        if(localStorage[AppConfig.adminBD])
-        {
-            this.adminBBDD = JSON.parse(localStorage[AppConfig.adminBD]);
-            this.dataBBDD =  JSON.parse(localStorage[AppConfig.dataBD]);
-        }
-        */
-    },
-    createBackup : function(){
-        var d = new Date();
-        var identificador = d.getMonth() + 1 + '' + d.getDate() + '' + d.getFullYear() + '_' + d.getHours() + '' + d.getMinutes() + '' + d.getSeconds();
-
-        var  backupsBBDDs = {};
-        var backup = {};
-
-        backup.admin = this.adminBBDD;
-        backup.data = this.dataBBDD;
-
-        if(localStorage[AppConfig.backupsBD])
-            backupsBBDDs =  JSON.parse(localStorage[AppConfig.backupsBD]);
-        else
-            backupsBBDDs = {};
-
-        backupsBBDDs[identificador] = backup;
-        localStorage[AppConfig.backupsBD] = JSON.stringify(backupsBBDDs);
-
+        });*/
+        this.Contexto = new Contexto();
+        this.Contexto.on('loaded', _.bind(this.loadModels, this));
     },
     loadModels : function(){
+        logger.append('Applicacion', 'loadModels', 'Carga de los modelos de la aplicacion');
+
         var that = this;
-        var listadoModelos_ADM = this.Service_ADM.execute({
-                operation : 'getTable',
-                params : {
-                    table : 'modelos'
-                }
-            });
+        var listadoModelos_ADM = this.Contexto.adm.modelos;
 
         _.each(listadoModelos_ADM, function(modelo){
-            modelo.campos = that.Service_ADM.execute({
-                operation : 'query',
-                params : {
-                    table : 'campos_modelo',
-                    field : 'idModelo',
-                    value : modelo.id
-                }
+            modelo.campos = _.filter(that.Contexto.adm.camposModelos, function(campo){
+                return campo.idModelo == modelo.id;
             });
         });
         this.ModelStore.load(listadoModelos_ADM);
 
-        var listadoModelos_BASE = this.Service_BASE.execute({
-                operation : 'getTable',
-                params : {
-                    table : 'modelos'
-                }
-            });
+        var listadoModelos_BASE = this.Contexto.base.modelos;
+
         _.each(listadoModelos_BASE, function(modelo){
-            modelo.campos = that.Service_BASE.execute({
-                operation : 'query',
-                params : {
-                    table : 'campos_modelo',
-                    field : 'idModelo',
-                    value : modelo.id
-                }
+            modelo.campos = _.filter(that.Contexto.base.camposModelos, function(campo){
+                return campo.idModelo == modelo.id;
             });
         });
         this.ModelStore.load(listadoModelos_BASE);
+
+        this.trigger('loaded', this);
     },
     modelos : function(nombre, datos){
+        logger.append('Applicacion', 'modelos', 'Peticion de creacion de un modelo', arguments);
+
         return this.ModelStore.crear(nombre, datos);
     },
     colecciones : function(nombre, datos){
+        logger.append('Applicacion', 'colecciones', 'Peticion de creacion de una coleccion', arguments);
+
         return this.CollectionStore.crear(nombre, datos);
     },
     presentaciones : function(clave, base){
-        var presentacion = undefined;
-        var service = (base) ? this.Service_BASE : this.Service_ADM;
+        logger.append('Applicacion', 'presentaciones', 'Peticion de una presentacion', arguments);
 
-        presentacion = service.execute({
-                operation : 'query',
-                params : {
-                    table : 'presentaciones',
-                    field : 'clave',
-                    value : clave
-                }
-            });
-        presentacion = presentacion[0];
-        presentacion.campos = service.execute({
-                operation : 'query',
-                params : {
-                    table : 'campos_presentacion',
-                    field : 'idPresentacion',
-                    value : presentacion.id
-                }
-            });
+        var presentacion = undefined;
+
+        var service = (base) ? this.Contexto.base : this.Contexto.adm;
+
+        presentacion = _.find(service.presentaciones, function(registro){
+            return registro.clave == clave;
+        });
+        presentacion.campos =_.filter(service.camposPresentaciones, function(registro){
+            return registro.idPresentacion == presentacion.id;
+        });
 
         return presentacion;
     }
@@ -1940,3 +2163,4 @@ var Utils = {
 
     //Utils.stringPaddingLeft('1.000.000', '0', 0) + "," + Utils.stringPaddingLeft('500', '0', 3) + " €"
 };
+

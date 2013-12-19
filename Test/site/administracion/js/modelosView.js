@@ -1,6 +1,6 @@
 var ModelosView = Class.extend({
     initialize : function(){
-        this.initializeComponent();
+        Env.on('loaded' , _.bind( this.initializeComponent, this) );
 
         return this;
     },
@@ -74,6 +74,17 @@ var ModelosView = Class.extend({
     initializeUI : function(){
         this.gridModelos = new Grid(this.gridModelos);
         this.gridModelos.render();
+
+        this.gridModelos.tabla.toolbar.addAction( {
+            nombre : 'btnImportar',
+            value :'Importar',
+            descripcion :'Importar a partir de BD',
+            clases : '',
+            accessKey : undefined,
+            icono : 'icon-download'
+
+        } );
+
         this.gridModelos.tabla.toolbar.onlyIcons();
 
         this.gridCamposModelos = new Grid(this.gridCamposModelos);
@@ -87,6 +98,7 @@ var ModelosView = Class.extend({
         // UI
         this.gridModelos.tabla.on('rowClick', _.bind(this.onModeloClick, this));
         this.gridModelos.tabla.on('rowDblClick', _.bind(this.onModeloDoubleClick, this));
+        this.gridModelos.tabla.on('buttonClicked', _.bind(this.onModeloButtonClicked, this));
         this.gridCamposModelos.ficha.on('opened',  _.bind(this.inicializarModelo, this));
 
     },
@@ -109,6 +121,73 @@ var ModelosView = Class.extend({
         }
     },
 
+    gestionarAccionesModelos : function(boton){
+        switch (boton.nombre)
+        {
+            case 'btnImportar':
+                this.buscarEntidad();
+                break;
+        }
+    },
+    buscarEntidad : function(){
+        logger.append('ModelosView', 'importarEntidad', 'Entrada', arguments);
+
+        var nombre = undefined;
+        nombre = window.prompt('Introduce el nombre del modelo a importar');
+
+        if(nombre){
+            console.log(nombre);
+            logger.append('ModelosView', 'importarEntidad', 'Busqueda de entidad :: ' + nombre, {nombre: nombre});
+
+            Env.Service_WS.execute({ operation : 'entidades' }).done(_.bind(this.gestionarResultadosImportacion,  this, nombre));
+        }
+        logger.append('ModelosView', 'importarEntidad', 'Salida');
+    },
+    gestionarResultadosImportacion : function(nombre, resultados){
+        var entidad = _.where(resultados.datos, {EntityName : nombre});
+        if(entidad && entidad.length > 0)
+            this.importarEntidad(entidad[0]);
+        else
+            alert('No se ha encontrado ninguna entidad con el nombre indicado');
+    },
+    importarEntidad : function(entidad){
+
+        var modelo = Env.ModelStore.crear('ipk.modelo', {nombre : entidad.EntityName});
+        Env.Service_WS.execute({
+            operation : 'insert',
+            params : {
+                table: 'adm_Modelos',
+                datos : modelo.to_JSON()
+            }
+        }).done(
+            _.bind(this.importarCamposEntidad, this, entidad, modelo)
+        );
+    },
+    importarCamposEntidad : function(entidad, modelo){
+        var campoModelo = undefined;
+
+        _.each(entidad.PropertyNames, function(item){
+            campoModelo = Env.ModelStore.crear('ipk.campo_modelo', {
+                nombre : item.Name,
+                nombreInterno : item.Name,
+                tipo : item.Type.toLowerCase(),
+                tipoInterno : item.Type.toLowerCase(),
+                titulo : item.Name,
+                idReferencia: 'ipk.modelo',
+                idModelo : modelo.get('id')
+            });
+
+            Env.Service_WS.execute({
+                operation : 'insert',
+                params : {
+                    table: 'adm_CamposModelos',
+                    datos : campoModelo.to_JSON()
+                }
+            })
+        });
+
+        this.obtenerModelos();
+    },
     inicializarModelo : function(ficha){
         if(ficha.modo == Ficha.Modos.Alta)
         {
@@ -131,5 +210,8 @@ var ModelosView = Class.extend({
     onModeloDoubleClick : function(tabla) {
         this.obtenerCamposModeloSeleccionado(tabla);
         this.gridModelos.tabla.toolbar.controls[1].$element.trigger('click');
+    },
+    onModeloButtonClicked : function(boton) {
+        this.gestionarAccionesModelos(boton);
     }
 });

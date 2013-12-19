@@ -238,9 +238,9 @@ Panel = Class.extend( Container , {
     toHtml : function(){
         if(!this.isRendered)
         {
-            var $header = $("<div class='header'/>");
-            var $content = $("<div class='content'/>");
-            var $footer = $("<div class='footer'/>");
+            this.$header = $("<div class='colAsbestos  header'/>");
+            this.$content = $("<div class='content'/>");
+            this.$footer = $("<div class='footer'/>");
 
 
             this.$element = $("<div class='ctrlPanel'/>");
@@ -249,14 +249,18 @@ Panel = Class.extend( Container , {
             if(this.value)
             {
                 var $title = $("<span />").text(this.value);
-                $header.append($title);
-                this.$element.append( $header );
+                this.$header.append($title);
+                this.$element.append( this.$header );
             }
 
-            this.$element.append( $content );
-            this.$element.append( $footer );
+            this.$headerActions = $('<div class="headerActions floatLeft" style="margin-right: 5px"><i class="icon-white icon-chevron-up"></i></div>');
+            this.$header.append(this.$headerActions);
+            this.$header.on('click', _.bind(this.toggleCollapse, this));
 
-            this.containerArea = $content;
+            this.$element.append( this.$content );
+            this.$element.append( this.$footer );
+
+            this.containerArea = this.$content;
 
             this.addEvents(this.events);
         }
@@ -299,6 +303,25 @@ Panel = Class.extend( Container , {
             else
                 this.$element.resizable({handles : this.resizable});
         }
+    },
+    collapse : function(){
+            this.$element.style('height', 'auto');
+            this.$content.hide();
+            this.$footer.hide();
+            this.$headerActions.find('i')._toggleClass('icon-chevron-down');
+            this.$headerActions.find('i')._toggleClass('icon-chevron-up');
+    },
+    decollapse : function(){
+            this.$content.show();
+            this.$footer.show();
+            this.$headerActions.find('i')._toggleClass('icon-chevron-down');
+            this.$headerActions.find('i')._toggleClass('icon-chevron-up');
+    },
+    toggleCollapse : function(){
+            this.$content.toggle();
+            this.$footer.toggle();
+            this.$headerActions.find('i')._toggleClass('icon-chevron-down');
+            this.$headerActions.find('i')._toggleClass('icon-chevron-up');
     }
 });
 Dialog = Class.extend( Container , {
@@ -1549,7 +1572,7 @@ Table = Class.extend( Component , {
         var campo = _.find(this.columns, function(e){ return e.nombre == columna});
 
         var datosFiltro = undefined ;
-        if(campo.tipoInterno == enums.TipoCampoModelo.String )
+        if(campo.tipoInterno.toLowerCase() == enums.TipoCampoModelo.String )
             datosFiltro = _.filter(this.data, function(e){return e[columna].indexOf(valor) !=-1});
         else
             datosFiltro = _.filter(this.data, function(e){return e[columna].toString() == valor.toLowerCase()});
@@ -1683,6 +1706,7 @@ Ficha = Class.extend(Dialog , {
         this.parent(params);
 
         this.elements = _.clone(this.presentacion.campos);
+        this.grupos = _.groupBy(this.elements, 'grupo');
         this.modo = Ficha.Modos.Consulta;
     },
     toHtml : function(){
@@ -1724,6 +1748,8 @@ Ficha = Class.extend(Dialog , {
 
         this.isRendered = true;
 
+        this.trigger('rendered', this );
+
         return this.$element;
     },
     renderChilds : function(){
@@ -1731,10 +1757,87 @@ Ficha = Class.extend(Dialog , {
             tmpControlLabel = undefined,
             estiloControl;
 
-        _.each(this.elements , function(r) { r.orden = parseInt(r.orden); });
-        this.elements = _.sortBy(this.elements, 'orden'); //Ordenamos los campos orden del registro
+        _.each(this.elements , function(r) {
+            r.orden = parseInt(r.orden);
+            if(r.grupo == null || r.grupo == undefined) r.grupo = '';
+        });
 
-        for( var i = 0; i < this.elements.length; i++)
+//        console.log(  _.groupBy(this.elements, 'grupo')  );
+        this.grupos = _.groupBy(this.elements, 'grupo');
+        console.log('GRUPOS');
+        console.log(this.grupos);
+
+        var grupo = undefined,
+            camposGrupo = undefined;
+
+        for( var nombreGrupo in this.grupos){
+                camposGrupo = _.sortBy(this.grupos[nombreGrupo], 'orden');
+
+                console.log(nombreGrupo);
+                console.log(camposGrupo);
+                console.log('....');
+                var config = { nombre : nombreGrupo,
+                    nombreInterno : nombreGrupo,
+                    value : nombreGrupo.toUpperCase()
+                };
+
+                if(nombreGrupo == "")
+                {
+                    config.styles = '{ "border": "0"}';
+                    config.value = '_PRUEBA_';
+                }
+
+
+                grupo = new Panel( config );
+                grupo.container = this;
+                grupo.render();
+
+
+                for( var i = 0; i < camposGrupo.length; i++)
+                {
+                    camposGrupo[i] = $.extend({} , tmplCampoPresentacion, camposGrupo[i]);
+                    camposGrupo[i].container = grupo;
+                    if(camposGrupo[i].titulo.length > 0)
+                    {
+                        estiloControl = camposGrupo[i].styles;
+                        camposGrupo[i].styles = {
+                            display : 'inline-block',
+                            width : '10%'
+                        };
+                        camposGrupo[i].value = camposGrupo[i].titulo;
+                        tmpControlLabel = new Label($.extend({} , camposGrupo[i], { nombre : camposGrupo[i].nombre + 'Label',nombreInterno : camposGrupo[i].nombreInterno + 'Label'}));
+                        camposGrupo[i].container = grupo;
+                        this.controls.push( tmpControlLabel );
+                        tmpControlLabel.render();
+                        camposGrupo[i].value = "";
+                    }
+
+                    camposGrupo[i].styles = estiloControl;
+                    tmpControl = new window[camposGrupo[i].tipo](camposGrupo[i]);
+                    grupo.controls.push( tmpControl );
+                    this.controls.push( tmpControl );
+                    camposGrupo[i].container = grupo;
+
+                    tmpControl.render();
+
+                    if(camposGrupo[i].modo == enums.ModoCampoPresentacion.Oculto)
+                    {
+                        tmpControlLabel.hide();
+                        tmpControl.hide();
+                    }
+                }
+
+
+
+        }
+
+
+
+
+
+
+
+/*        for( var i = 0; i < this.elements.length; i++)
         {
                 this.elements[i] = $.extend({} , tmplCampoPresentacion, this.elements[i]);
                 this.elements[i].container = this;
@@ -1766,7 +1869,10 @@ Ficha = Class.extend(Dialog , {
                     tmpControl.hide();
                 }
 
-        }
+        }*/
+    },
+    tieneGrupos : function(){
+     return  this.grupos;
     },
     toString : function(){
         return this.parent() + " Panel ";

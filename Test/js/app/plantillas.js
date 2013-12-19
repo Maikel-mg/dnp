@@ -140,6 +140,7 @@ var tmplCampoPresentacion = {
     modo : enums.ModoCampoPresentacion.Consulta,
     orden : 0,
     ancho : 0,
+    grupo : '',
     tag : '',
     eventos : {}
 };
