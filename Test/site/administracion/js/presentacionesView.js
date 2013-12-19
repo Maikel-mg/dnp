@@ -267,11 +267,11 @@ var PresentacionesView = Class.extend({
         _.each(camposModelo, function(campo){
             campo.idPresentacion = that.gridPresentaciones.tabla.idFilaSeleccionada;
             // TODO : Cambiar esto para que funcione desde el webservice
-            Env.Service_ADM.execute({
+            Env.Service_WS.execute({
                 operation: 'insert',
                 params : {
-                    table: 'campos_presentacion',
-                    row : Env.modelos('ipk.campo_presentacion', campo).to_JSON()
+                    table: 'adm_CamposPresentacion',
+                    datos : Env.modelos('ipk.campo_presentacion', campo).to_JSON()
                 }
             });
             console.log(campo);
@@ -293,14 +293,10 @@ var PresentacionesView = Class.extend({
         this.gestionarAccionesPresentaciones(boton)
     },
 
-
-
     onCampoPresentacionDoubleClick : function() {
         this.gridCamposPresentaciones.tabla.toolbar.controls[1].$element.trigger('click');
     },
     onCampoPresentacionButtonClicked : function(boton){
         this.gestionarAccionesCamposPresentaciones(boton)
     }
-
-
 });

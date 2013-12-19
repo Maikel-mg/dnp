@@ -1,10 +1,14 @@
 var ModelosView = Class.extend({
     initialize : function(){
+        logger.append('ModelosView', 'initialize', '');
+
         Env.on('loaded' , _.bind( this.initializeComponent, this) );
 
         return this;
     },
     initializeComponent : function(){
+        logger.append('ModelosView', 'initializeComponent', '');
+
         this.initializeData();
         this.createVariables();
         this.initializeUI();
@@ -14,6 +18,8 @@ var ModelosView = Class.extend({
     },
 
     createVariables : function () {
+        logger.append('ModelosView', 'createVariables', '');
+
         this.colModelos = Env.colecciones('ipk.modelo');
         this.colCamposModelo = Env.colecciones('ipk.campo_modelo');
 
@@ -67,8 +73,12 @@ var ModelosView = Class.extend({
             tablaConfig: this.tablaCamposModeloConfig
         };
     },
-    initializeData : function (){},
+    initializeData : function (){
+        logger.append('ModelosView', 'initializeData', '');
+    },
     initializeUI : function(){
+        logger.append('ModelosView', 'initializeUI', '');
+
         this.gridModelos = new Grid(this.gridModelos);
         this.gridModelos.render();
         this.gridModelos.tabla.toolbar.onlyIcons();
@@ -77,6 +87,8 @@ var ModelosView = Class.extend({
         this.gridCamposModelos.render();
     },
     initializeEvents : function(){
+        logger.append('ModelosView', 'initializeEvents', '');
+
         // DATA
         this.colModelos.on('post-fetch', _.bind(this.cargarModelos, this));
         this.colCamposModelo.on('post-query', _.bind(this.cargarCamposModelo, this));
@@ -90,9 +102,13 @@ var ModelosView = Class.extend({
 
     // FUNCIONES
     obtenerModelos : function(){
+        logger.append('ModelosView', 'obtenerModelos', '');
+
         this.colModelos.fetch();
     },
     cargarModelos: function(datos){
+        logger.append('ModelosView', 'cargarModelos', '', arguments);
+
         if(datos.tieneDatos)
         {
             this.gridModelos.tabla.collection.setData(datos.datos);
@@ -100,6 +116,8 @@ var ModelosView = Class.extend({
         }
     },
     cargarCamposModelo : function(datos){
+        logger.append('ModelosView', 'cargarCamposModelo', '', arguments);
+
         if(datos.tieneDatos)
         {
             this.gridCamposModelos.tabla.collection.setData(datos.datos);
@@ -107,12 +125,16 @@ var ModelosView = Class.extend({
     },
 
     inicializarModelo : function(ficha){
+        logger.append('ModelosView', 'inicializarModelo', '', arguments);
+
         if(ficha.modo == Ficha.Modos.Alta)
         {
             ficha.find('idModelo').Value(this.gridModelos.tabla.idFilaSeleccionada);
         }
     },
     obtenerCamposModeloSeleccionado : function(){
+        logger.append('ModelosView', 'obtenerCamposModeloSeleccionado', '', arguments);
+
         var query = {
             query : {idModelo: "'" + this.gridModelos.tabla.idFilaSeleccionada + "'"},
             referencias: false,
@@ -123,9 +145,13 @@ var ModelosView = Class.extend({
 
     // EVENTOS
     onModeloClick : function(tabla) {
+        logger.append('ModelosView', 'onModeloClick', '', arguments);
+
         this.obtenerCamposModeloSeleccionado(tabla);
     },
     onModeloDoubleClick : function(tabla) {
+        logger.append('ModelosView', 'onModeloDoubleClick', '', arguments);
+
         this.obtenerCamposModeloSeleccionado(tabla);
         this.gridModelos.tabla.toolbar.controls[1].$element.trigger('click');
     }

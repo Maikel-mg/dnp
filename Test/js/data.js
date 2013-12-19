@@ -237,8 +237,15 @@ Model = Class.extend({
                 that.campos[campo.nombre] = data[campo.nombre];
             else
             {
-                if(data[campo.nombre])
-                    that.campos[campo.nombre] = data[campo.nombre];
+                if(campo.tipo == enums.TipoCampoModelo.String)
+                {
+                    if( Utils.isString(data[campo.nombre]) )
+                        that.campos[campo.nombre] = data[campo.nombre];
+                }
+                else{
+                    if( data[campo.nombre] )
+                        that.campos[campo.nombre] = data[campo.nombre];
+                }
             }
         });
         _.each(colecciones, function(coleccion){
@@ -440,7 +447,7 @@ Model = Class.extend({
             _.each(colecciones, function (e) {
                 console.log(that.get(e.nombre));
                 console.log(e);
-            }); 
+            });
         }
         else
         {
@@ -1088,9 +1095,11 @@ CollectionStore = new CollectionManager({modelStore:ModelStore});
 
 Service = Class.extend({
     initialize : function(params){
+        logger.append('Service', 'initialize', '', arguments);
         this.proxy = new  window["Proxy" + params.proxy](params);
     },
     execute  : function(command){
+        logger.append('Service', 'execute', '', arguments);
         return this.proxy[command.operation](command.params);
     }
 });
@@ -1189,6 +1198,7 @@ ProxyLocalStorage = Class.extend({
 });
 ProxyWebService = Class.extend({
     initialize : function(params){
+        logger.append('ProxyWebService', 'initialize', '', arguments);
         this.config = params;
         this.url = params.url;
     },
@@ -1284,6 +1294,8 @@ ProxyWebService = Class.extend({
         return resultado;
     },
     listado : function(params){
+        logger.append('ProxyWebService', 'listado', '', arguments);
+
         var ajaxParams = {
             Operacion : {
                 operation : 'Listado',
@@ -1300,6 +1312,8 @@ ProxyWebService = Class.extend({
         return $.ajax(options);
     },
     insert : function(params){
+        logger.append('ProxyWebService', 'insert', '', arguments);
+
         var ajaxParams = {
             Operacion : {
                 operation : 'Insert',
@@ -1309,7 +1323,6 @@ ProxyWebService = Class.extend({
                 }
             }
         };
-
         var options = $.extend(this._ajaxConfig(), {
             data: JSON.stringify(ajaxParams)
         });
@@ -1317,6 +1330,8 @@ ProxyWebService = Class.extend({
         return $.ajax(options);
     },
     update : function(params){
+        logger.append('ProxyWebService', 'update', '', arguments);
+
         var ajaxParams = {
             Operacion : {
                 operation : 'Update',
@@ -1328,7 +1343,6 @@ ProxyWebService = Class.extend({
                 }
             }
         };
-
         var options = $.extend(this._ajaxConfig(), {
             data: JSON.stringify(ajaxParams)
         });
@@ -1336,13 +1350,14 @@ ProxyWebService = Class.extend({
         return $.ajax(options);
     },
     delete   : function(params){
+        logger.append('ProxyWebService', 'delete', '', arguments);
+
         var ajaxParams = {
             Operacion : {
                 operation : 'Delete',
                 params : params
             }
         };
-
         var options = $.extend(this._ajaxConfig(), {
             data: JSON.stringify(ajaxParams)
         });
@@ -1350,10 +1365,27 @@ ProxyWebService = Class.extend({
         return $.ajax(options);
     },
     buscar : function(params){
+        logger.append('ProxyWebService', 'buscar', '', arguments);
+
         var ajaxParams = {
             Operacion : {
                 operation : 'Buscar',
                 params : params
+            }
+        };
+        var options = $.extend(this._ajaxConfig(), {
+            data: JSON.stringify(ajaxParams)
+        });
+
+        return $.ajax(options);
+    },
+    entidades : function(){
+        logger.append('ProxyWebService', 'entidades', '', arguments);
+
+        var ajaxParams = {
+            Operacion : {
+                operation : 'Entidades',
+                params : {}
             }
         };
 
@@ -1365,9 +1397,104 @@ ProxyWebService = Class.extend({
     }
 });
 
+var Logger = Class.extend({
+    initialize: function(){
+        this._log = [];
+        this.append('Logger', 'initialize', 'Inicializacion del log');
+    },
+    append : function(objeto, metodo , mensaje, datos){
+        this._log.push({
+            time : new Date().toLocaleTimeString(),
+            objeto : objeto,
+            metodo : metodo,
+            mensaje : mensaje,
+            datos : datos
+        });
+    },
+    view : function(toString){
+        if(console && console.log)
+        {
+            if(toString)
+                _.each(this._log, _.bind(this.toConsoleString, this));
+            else
+                _.each(this._log, _.bind(this.toConsole, this));
+        }
+    },
+    viewBy : function(filtro, toString){
+        if(console && console.log)
+        {
+            var filtro = _.where(this._log, filtro);
+            if(toString)
+                _.each(filtro, _.bind(this.toConsoleString, this));
+            else
+                _.each(filtro, _.bind(this.toConsole, this));
+        }
+    },
+    groupBy : function(campo, toString){
+        if(console && console.log)
+        {
+            var filtro = _.groupBy(this._log, campo);
+            _.each(filtro, _.bind(this.toConsoleGroup, this, toString));
+        }
+    },
+    toConsoleGroup : function(toString, datos, grupo ){
+        var llamada = '';
+
+        console.log('GRUPO :: ' + grupo);
+        if(toString)
+            _.each(datos, _.bind(this.toConsoleString, this));
+        else
+            _.each(datos, _.bind(this.toConsole, this));
+        console.log('');
+    },
+    toConsole : function(elemento){
+        if(elemento.datos)
+        {
+            elemento.llamada = this.formatLlamada(elemento);
+        }
+        console.log(elemento);
+    },
+    toConsoleString : function(elemento){
+        if(elemento.datos)
+        {
+            elemento.llamada = this.formatLlamada(elemento);
+            //console.log(elemento);
+
+        }
+        console.log(this.formatLlamada(elemento));
+    },
+    formatLlamada : function(elemento){
+        var cadena = '';
+
+        _.each(elemento.datos , function(dato){
+            if(cadena != '')
+                cadena += ',';
+
+            //cadena += (Utils.getType(dato) == 'object') ? JSON.stringify(dato) : dato;
+            cadena += dato;
+        });
+
+        return elemento.time + ' :: ' + elemento.objeto + '.' +elemento.metodo + '(' + cadena + ')';
+    }
+});
+var logger = new Logger();
+
+/**
+ * Clase que carga toda la información necesaria para el funcionamiento de las aplicacion y lo cachea en memoria
+ *
+ * @class Contexto
+ * @mixin {WithEvents}
+ * @type {Contexto}
+ */
 var Contexto = Class.extend({
     include: WhithEvents,
+    /**
+     * @constructor
+     * @returns {Contexto}
+     */
     initialize : function(){
+        logger.append('Contexto', 'initialize', 'Creando Contexto...');
+
         this.loaded = $.Deferred();
         this.base_loaded = false;
         this.adm_loaded = false;
@@ -1377,7 +1504,15 @@ var Contexto = Class.extend({
 
         return this;
     },
+    /**
+     *
+     *
+     * @function
+     * @public
+     */
     createVariables : function(){
+        logger.append('Contexto', 'createVariables', '');
+
         this.base = {};
         this.adm = {};
 
@@ -1392,10 +1527,14 @@ var Contexto = Class.extend({
         this.sincronizar();
     },
     sincronizar : function(){
+       logger.append('Contexto', 'sincronizar', '');
+
        this.sincronizar_base();
        this.sincronizar_adm();
     },
     sincronizar_base : function(){
+        logger.append('Contexto', 'sincronizar_base', '');
+
         this.base_loaded = false;
         $.when(
                 this.Service.execute({operation:'listado', params: {table:'base_Modelos'}}),
@@ -1413,6 +1552,8 @@ var Contexto = Class.extend({
         );
     },
     sincronizar_adm : function(){
+        logger.append('Contexto', 'sincronizar_adm', '');
+
         this.adm_loaded = false;
         $.when(
                 this.Service.execute({operation:'listado', params: {table:'adm_Modelos'}}),
@@ -1431,6 +1572,7 @@ var Contexto = Class.extend({
         );
     },
     cachear_base : function(modelos, camposModelos, presentaciones, camposPresentaciones, fases, roles, accesos, usuarios, vistas, camposVistas){
+        //logger.append('Contexto', 'cachear_base', '' ,arguments);
 
         this.base.modelos = modelos[0].datos;
         this.base.camposModelos = camposModelos[0].datos;
@@ -1447,6 +1589,7 @@ var Contexto = Class.extend({
         this.check_status();
     },
     cachear_adm  : function(modelos, camposModelos, presentaciones, camposPresentaciones, fases, roles, accesos, usuarios, vistas, camposVistas){
+        //logger.append('Contexto', 'cachear_adm', '' ,arguments);
 
         this.adm.modelos = modelos[0].datos;
         this.adm.camposModelos = camposModelos[0].datos;
@@ -1463,18 +1606,35 @@ var Contexto = Class.extend({
         this.check_status();
     },
     check_status : function(){
+        logger.append('Contexto', 'check_status', '');
+
         if(this.adm_loaded && this.base_loaded)
         {
             this.trigger('loaded', this);
             this.loaded.resolve();
         }
+    },
+    list : function(tabla, tipo){
+        logger.append('Contexto', 'list', '', arguments);
 
+        var final = [];
+
+        if(tipo){
+            final = final.concat(this[tipo][tabla]);
+        }
+        else{
+            final = final.concat(this.base[tabla]);
+            final = final.concat(this.adm[tabla]);
+        }
+
+        return final;
     }
 });
 var Application = Class.extend({
     include: WhithEvents,
     initialize : function(){
-        console.log('Cargando ...');
+        logger.append('Applicacion', 'initialize', 'Cargando Applicacion...');
+
         this.loaded = $.Deferred();
 
         this.createVariables();
@@ -1483,6 +1643,7 @@ var Application = Class.extend({
 
     },
     createVariables : function(){
+        logger.append('Applicacion', 'createVariables' ,'Creacion de la variables de la apliacion');
         this.ModelStore =    new ModelManager();
         this.CollectionStore =  new CollectionManager({modelStore : this.ModelStore});
 
@@ -1490,7 +1651,7 @@ var Application = Class.extend({
             proxy: 'WebService',
             url : 'http://localhost:8080/Servicio.asmx/Execute'
         });
-        this.Service = new Service({
+/*        this.Service = new Service({
             proxy: 'LocalStorage',
             dbName : AppConfig.dataBD
         });
@@ -1501,11 +1662,13 @@ var Application = Class.extend({
         this.Service_BASE = new Service({
             proxy: 'LocalStorage',
             dbName : AppConfig.baseBD
-        });
+        });*/
         this.Contexto = new Contexto();
         this.Contexto.on('loaded', _.bind(this.loadModels, this));
     },
     loadModels : function(){
+        logger.append('Applicacion', 'loadModels', 'Carga de los modelos de la aplicacion');
+
         var that = this;
         var listadoModelos_ADM = this.Contexto.adm.modelos;
 
@@ -1526,15 +1689,20 @@ var Application = Class.extend({
         this.ModelStore.load(listadoModelos_BASE);
 
         this.trigger('loaded', this);
-        console.log('Cargado!!!!');
     },
     modelos : function(nombre, datos){
+        logger.append('Applicacion', 'modelos', 'Peticion de creacion de un modelo', arguments);
+
         return this.ModelStore.crear(nombre, datos);
     },
     colecciones : function(nombre, datos){
+        logger.append('Applicacion', 'colecciones', 'Peticion de creacion de una coleccion', arguments);
+
         return this.CollectionStore.crear(nombre, datos);
     },
     presentaciones : function(clave, base){
+        logger.append('Applicacion', 'presentaciones', 'Peticion de una presentacion', arguments);
+
         var presentacion = undefined;
 
         var service = (base) ? this.Contexto.base : this.Contexto.adm;
@@ -1995,3 +2163,4 @@ var Utils = {
 
     //Utils.stringPaddingLeft('1.000.000', '0', 0) + "," + Utils.stringPaddingLeft('500', '0', 3) + " €"
 };
+
